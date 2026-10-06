@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Estrategia Pro</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            text-align: center;
+            padding-top: 15%;
+        }
+        h1 {
+            color: #004085;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tu Estrategia Pro</h1>
+    <p>Sitio en construcción. Próximamente: Dashboards directivos para Pymes.</p>
+</body>
+</html>
