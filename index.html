@@ -106,27 +106,39 @@
         <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
     </div>
 
-    <!-- NAVEGACIÓN ACTUALIZADA CON REDES SOCIALES -->
-    <nav class="fixed top-0 w-full h-[70px] bg-white border-b border-slate-200 z-50 flex items-center px-4 md:px-8 justify-between shadow-sm">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="app.setMainView('home')">
-            <div class="w-10 h-10 rounded-lg bg-brand-blue flex items-center justify-center text-white shadow-md">
-                <i class="fa-solid fa-rocket text-xl"></i>
+    <nav class="fixed top-0 w-full h-[70px] bg-white border-b border-slate-200 z-50 flex items-center px-2 md:px-8 justify-between shadow-sm">
+        <div class="flex items-center gap-2 md:gap-3 cursor-pointer" onclick="app.setMainView('home')">
+            <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-brand-blue flex items-center justify-center text-white shadow-md flex-shrink-0">
+                <i class="fa-solid fa-rocket text-sm md:text-xl"></i>
             </div>
-            <span class="font-black text-2xl text-slate-900 tracking-tight">Estrategia<span class="text-brand-blue">Pro</span></span>
+            <span class="font-black text-lg md:text-2xl text-slate-900 tracking-tight hidden sm:block">Estrategia<span class="text-brand-blue">Pro</span></span>
         </div>
         
-        <!-- Botones de Redes Sociales -->
-        <div class="flex items-center gap-2 md:gap-3">
-            <!-- Botón de Instagram -->
-            <a href="https://www.instagram.com/tu.estrategiapro?srtk=aXhka25kdXVucnBy" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-sm transition shadow-md flex items-center gap-2 hover:-translate-y-0.5">
-                <i class="fa-brands fa-instagram text-lg md:text-xl"></i> 
-                <span class="hidden sm:inline">Instagram</span>
-            </a>
+        <!-- Botones de Redes Sociales y Contacto -->
+        <div class="flex items-center gap-1.5 md:gap-3">
             
+            <!-- Botón de Email -->
+            <a href="mailto:tu.estrategiapro@gmail.com" title="Enviar Email" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
+                <i class="fa-solid fa-envelope text-base md:text-lg"></i>
+                <span class="hidden xl:inline font-bold text-sm">tu.estrategiapro@gmail.com</span>
+            </a>
+
             <!-- Botón de LinkedIn -->
-            <a href="https://www.linkedin.com/company/tu-estratégia-pro/" target="_blank" rel="noopener noreferrer" class="bg-[#0A66C2] hover:bg-[#004182] text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-sm transition shadow-md flex items-center gap-2 hover:-translate-y-0.5">
-                <i class="fa-brands fa-linkedin text-lg md:text-xl"></i> 
-                <span class="hidden sm:inline">LinkedIn</span>
+            <a href="https://www.linkedin.com/company/tu-estratégia-pro/" title="Ver LinkedIn" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-white hover:bg-[#0A66C2] bg-slate-100 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
+                <i class="fa-brands fa-linkedin text-base md:text-lg"></i> 
+                <span class="hidden lg:inline font-bold text-sm">LinkedIn</span>
+            </a>
+
+            <!-- Botón de Instagram (Muro / Perfil) -->
+            <a href="https://www.instagram.com/tu.estrategiapro/" title="Ver Perfil de Instagram" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-white hover:bg-[#E1306C] bg-slate-100 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
+                <i class="fa-brands fa-instagram text-base md:text-lg"></i> 
+                <span class="hidden lg:inline font-bold text-sm">Perfil IG</span>
+            </a>
+
+            <!-- Botón Principal: Platica con nosotros (Lleva directo al Chat/DM) -->
+            <a href="https://ig.me/m/tu.estrategiapro" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white px-2.5 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-[11px] md:text-sm transition shadow-md flex items-center gap-1.5 md:gap-2 hover:-translate-y-0.5 whitespace-nowrap">
+                <i class="fa-regular fa-paper-plane text-base md:text-lg"></i> 
+                <span>Platicar</span>
             </a>
         </div>
     </nav>
@@ -505,17 +517,8 @@
                     <!-- ======================================================== -->
                     <div id="cat-redes" class="category-group hidden">
                         
-                        <!-- Ejemplo 1: Anuncios -->
-                        <div id="content-redes-anuncios-before" class="content-panel items-center justify-center bg-slate-200">
-                            <div class="bg-white p-4 max-w-sm rounded-lg shadow-lg text-center font-sans border border-gray-300">
-                                <div class="flex items-center gap-2 mb-2 text-sm font-bold"><div class="w-8 h-8 bg-gray-300 rounded-full"></div> tu_negocio</div>
-                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500 mb-2">Imagen de stock de un edificio</div>
-                                <p class="text-xs text-left mb-2">Somos tu mejor opción. Contáctanos.</p>
-                                <button class="w-full bg-blue-600 text-white font-bold py-1 rounded">Promocionar Publicación</button>
-                                <div class="mt-4 p-2 bg-red-100 text-red-600 text-xs font-bold rounded">
-                                    Resultados: 1,500 "Me gusta" (Todos de tus tías y bots). 0 Ventas. -$500 de tu bolsa.
-                                </div>
-                            </div>
+                        <div class="w-full flex justify-center gap-6 py-4 bg-white border-b border-slate-200 shadow-sm">
+                            <i class="fa-brands fa-facebook text-3xl text-blue-600"></i>
                         </div>
                         
                         <div id="content-redes-anuncios-after" class="content-panel bg-slate-50 items-center justify-center p-4">
@@ -664,7 +667,7 @@
                                 </div>
                                 <div class="w-full aspect-square bg-slate-900 flex flex-col items-start justify-center text-left p-8 text-white relative overflow-hidden">
                                     <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-600 rounded-full opacity-30 blur-2xl"></div>
-                                    <p class="text-xs text-brand-cyan font-bold uppercase tracking-widest mb-2 border-l-2 border-brand-cyan pl-2" style="border-color: #22d3ee; color: #22d3ee;">Caso de Éxito</p>
+                                    <p class="text-xs text-brand-cyan font-bold uppercase tracking-widest mb-2 border-l-2 border-brand-cyan pl-2">Caso de Éxito</p>
                                     <h2 class="text-3xl font-black mb-4 leading-tight">Cómo ayudamos a Empresa X a ahorrar $50k en 1 mes.</h2>
                                     <p class="text-sm text-slate-300 mb-6 flex items-center gap-2">Desliza para ver el método <i class="fa-solid fa-arrow-right"></i></p>
                                     <div class="absolute bottom-4 left-0 w-full flex justify-center gap-1"><div class="w-2 h-2 bg-white rounded-full"></div><div class="w-2 h-2 bg-slate-600 rounded-full"></div><div class="w-2 h-2 bg-slate-600 rounded-full"></div></div>
@@ -1019,7 +1022,7 @@
         };
 
         // ==========================================
-        // ARRANQUE DIRECTO SEGURO
+        // ARRANQUE DIRECTO SEGURO (Solución para iFrames y Clicdata)
         // ==========================================
         splashAnimation.init(() => {
             app.init();
