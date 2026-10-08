@@ -2,29 +2,1029 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Estrategia Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Estrategia Pro | Ayuda para Emprendedores</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
+                        brand: { blue: '#2563eb', green: '#10b981', purple: '#8b5cf6', red: '#ef4444', yellow: '#f59e0b' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], comic: ['Comic Sans MS', 'cursive'] },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            text-align: center;
-            padding-top: 15%;
-        }
-        h1 {
-            color: #004085;
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.2em;
-            color: #6c757d;
-        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f1f5f9; color: #0f172a; overflow: hidden; height: 100vh; width: 100vw; }
+        
+        .custom-scroll { overflow-y: auto; scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+
+        /* Vistas de la App */
+        #app-wrapper { position: relative; width: 100%; height: calc(100vh - 70px); margin-top: 70px; }
+        .app-view { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.3s; display: flex; flex-direction: column; }
+        .app-view.active { opacity: 1; pointer-events: auto; z-index: 10; }
+
+        /* Sub-pestañas */
+        .sub-tab-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #64748b; background: transparent; transition: all 0.2s; border: 1px solid transparent; }
+        .sub-tab-btn.active { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+
+        /* Toggle Button Antes/Después */
+        .toggle-switch { display: flex; background: #e2e8f0; border-radius: 12px; padding: 4px; gap: 4px; }
+        .toggle-btn { flex: 1; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 800; color: #64748b; cursor: pointer; transition: all 0.3s; text-align: center; border: 2px solid transparent; }
+        .toggle-btn.before-active { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2); }
+        .toggle-btn.after-active { background: #ffffff; color: #16a34a; border-color: #86efac; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); }
+
+        /* Contenido Dinámico */
+        .content-panel { display: none; width: 100%; height: 100%; padding: 20px; flex-direction: column; }
+        .content-panel.active { display: flex; }
+
+        /* Avatar Box */
+        #avatar-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; max-width: 320px; transition: opacity 0.3s, transform 0.3s; }
+        .speech-bubble { background: #ffffff; border: 2px solid #2563eb; border-radius: 16px; border-bottom-right-radius: 0; padding: 16px; font-size: 14px; font-weight: 600; color: #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.15); position: relative; line-height: 1.4; }
+        .speech-bubble::after { content: ''; position: absolute; bottom: -10px; right: -2px; border-width: 10px 10px 0 0; border-style: solid; border-color: #2563eb transparent transparent transparent; }
+        .avatar-img-box { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #ffffff; box-shadow: 0 8px 16px rgba(0,0,0,0.2); overflow: hidden; background: #cbd5e1; }
+        
+        /* Efectos Visuales Caos */
+        .messy-font { font-family: 'Comic Sans MS', cursive, sans-serif; }
+        .ticket-receipt { background: #fefce8; border: 1px dashed #d1d5db; padding: 15px; font-family: monospace; color: #374151; font-size: 12px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        
+        /* Overlay de Animación Inicial (Splash Screen - PS5 Style) */
+        #splash-screen { position: fixed; inset: 0; background-color: #020617; z-index: 999999; display: flex; align-items: center; justify-content: center; transition: opacity 1s ease-in-out; }
+        #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        #splash-logo { opacity: 0; transform: scale(0.8); filter: blur(10px); transition: all 2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        #splash-logo.show { opacity: 1; transform: scale(1); filter: blur(0px); }
+
+        /* Ajustes Avatar Responsivo */
+        #avatar-container { position: fixed; bottom: 15px; right: 15px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-width: 85vw; transition: opacity 0.3s, transform 0.3s; }
+        @media (min-width: 768px) { #avatar-container { bottom: 20px; right: 20px; max-width: 320px; gap: 10px; } }
+
+        /* Overlay de Carga Interna (Workspace) */
+        #intro-overlay { position: fixed; inset: 0; background-color: #0f172a; z-index: 99998; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1); }
+        .loader-bar { width: 200px; height: 6px; background: #334155; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+        .loader-fill { height: 100%; background: #2563eb; width: 0%; transition: width 1s ease-out; }
     </style>
 </head>
 <body>
-    <h1>Tu Estrategia Pro</h1>
-    <p>Sitio en construcción. Próximamente: Dashboards directivos para Pymes.</p>
+
+    <!-- ========================================== -->
+    <!-- NUEVO: SPLASH SCREEN CON PARTÍCULAS        -->
+    <!-- ========================================== -->
+    <div id="splash-screen">
+        <canvas id="particle-canvas"></canvas>
+        <div class="relative z-10 text-center">
+            <h1 id="splash-logo" class="text-5xl md:text-7xl font-black text-white tracking-tight drop-shadow-2xl">
+                Estrategia<span class="text-brand-blue">Pro</span>
+            </h1>
+        </div>
+    </div>
+
+    <!-- OVERLAY DE ANIMACIÓN (Efecto WOW para el Workspace) -->
+    <div id="intro-overlay">
+        <i class="fa-solid fa-microchip text-6xl text-brand-blue mb-6 animate-pulse"></i>
+        <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight">Iniciando Diagnóstico</h2>
+        <p class="text-slate-400 mt-2 font-medium">Cargando módulos de Estrategia Pro...</p>
+        <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+    </div>
+
+    <!-- NAVEGACIÓN ACTUALIZADA CON REDES SOCIALES -->
+    <nav class="fixed top-0 w-full h-[70px] bg-white border-b border-slate-200 z-50 flex items-center px-4 md:px-8 justify-between shadow-sm">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="app.setMainView('home')">
+            <div class="w-10 h-10 rounded-lg bg-brand-blue flex items-center justify-center text-white shadow-md">
+                <i class="fa-solid fa-rocket text-xl"></i>
+            </div>
+            <span class="font-black text-2xl text-slate-900 tracking-tight">Estrategia<span class="text-brand-blue">Pro</span></span>
+        </div>
+        
+        <!-- Botones de Redes Sociales -->
+        <div class="flex items-center gap-2 md:gap-3">
+            <!-- Botón de Instagram -->
+            <a href="https://www.instagram.com/tu.estrategiapro?srtk=aXhka25kdXVucnBy" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-sm transition shadow-md flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-brands fa-instagram text-lg md:text-xl"></i> 
+                <span class="hidden sm:inline">Instagram</span>
+            </a>
+            
+            <!-- Botón de LinkedIn -->
+            <a href="https://www.linkedin.com/company/tu-estratégia-pro/" target="_blank" rel="noopener noreferrer" class="bg-[#0A66C2] hover:bg-[#004182] text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-sm transition shadow-md flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-brands fa-linkedin text-lg md:text-xl"></i> 
+                <span class="hidden sm:inline">LinkedIn</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- El avatar inicia oculto para no estorbar la animación inicial -->
+    <div id="avatar-container" class="animate-float" style="opacity: 0; pointer-events: none;">
+        <div class="speech-bubble" id="avatar-text">
+            ¡Hola! Veo que tienes un negocio. ¿Estás ganando dinero de verdad o solo estás sobreviviendo? Dime qué te duele y te lo arreglo.
+        </div>
+        <div class="avatar-img-box">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Asesora de Negocios Latina" class="w-full h-full object-cover">
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-wrapper">
+
+        <!-- ========================================== -->
+        <!-- VISTA 1: HOME (EL PITCH DE VENTAS)         -->
+        <!-- ========================================== -->
+        <div id="view-home" class="app-view custom-scroll bg-slate-50">
+            <div class="max-w-5xl mx-auto px-6 py-12 md:py-20 w-full">
+                
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">¿Qué necesita tu negocio hoy?</h1>
+                    <p class="text-lg text-slate-600 font-medium max-w-2xl mx-auto">Deja de hacer todo tú mismo y de adivinar. Elige cuál es tu mayor problema actual y mira cómo te lo soluciono.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Carta 1: Dashboards -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-blue hover:-translate-y-2 transition cursor-pointer text-center" onclick="app.enterWorkspace('dashboards')">
+                        <div class="w-16 h-16 bg-blue-100 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-book-journal-whills"></i></div>
+                        <h2 class="text-xl font-black mb-3">"Tengo un caos en mi información"</h2>
+                        <p class="text-sm text-slate-600 mb-6 font-medium">Vendes pero no sabes cuánto ganas. Tus cuentas están en libretas, tickets y Excels rotos.</p>
+                        <button class="w-full bg-brand-blue text-white font-bold py-3 rounded-xl shadow-md">Yo te lo ordeno <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                    </div>
+
+                    <!-- Carta 2: Web -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-green hover:-translate-y-2 transition cursor-pointer text-center" onclick="app.enterWorkspace('web')">
+                        <div class="w-16 h-16 bg-green-100 text-brand-green rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-laptop-code"></i></div>
+                        <h2 class="text-xl font-black mb-3">"Necesito una página para mi negocio"</h2>
+                        <p class="text-sm text-slate-600 mb-6 font-medium">La gente te pide catálogo o no confían en ti porque solo tienes Facebook. Pierdes ventas por no verte formal.</p>
+                        <button class="w-full bg-brand-green text-white font-bold py-3 rounded-xl shadow-md">Yo tengo la solución <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                    </div>
+
+                    <!-- Carta 3: Redes -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-brand-purple hover:-translate-y-2 transition cursor-pointer text-center" onclick="app.enterWorkspace('redes')">
+                        <div class="w-16 h-16 bg-purple-100 text-brand-purple rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-mobile-screen"></i></div>
+                        <h2 class="text-xl font-black mb-3">"Quiero contenido para mis redes"</h2>
+                        <p class="text-sm text-slate-600 mb-6 font-medium">Pagas publicidad y nadie compra. Tus posts tienen 2 likes y no sabes qué subir para atraer clientes de verdad.</p>
+                        <button class="w-full bg-brand-purple text-white font-bold py-3 rounded-xl shadow-md">Yo te ayudo <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VISTA 2: EL WORKSPACE DE EJEMPLOS          -->
+        <!-- ========================================== -->
+        <div id="view-workspace" class="app-view bg-slate-200 p-2 md:p-4">
+            <div class="w-full h-full max-w-[1400px] mx-auto bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden border border-slate-300">
+                
+                <!-- WORKSPACE HEADER (Menú Principal) -->
+                <div class="bg-slate-900 text-white p-3 flex flex-wrap gap-2 md:gap-6 justify-center md:justify-start items-center">
+                    <button onclick="app.setMainView('home')" class="text-slate-400 hover:text-white mr-4"><i class="fa-solid fa-arrow-left"></i> Volver</button>
+                    <button onclick="app.setCategory('dashboards')" id="nav-cat-dashboards" class="font-bold px-4 py-2 rounded-lg transition hover:bg-slate-800">1. Ordenar Información (Dashboards)</button>
+                    <button onclick="app.setCategory('web')" id="nav-cat-web" class="font-bold px-4 py-2 rounded-lg transition hover:bg-slate-800">2. Páginas Web (Ventas)</button>
+                    <button onclick="app.setCategory('redes')" id="nav-cat-redes" class="font-bold px-4 py-2 rounded-lg transition hover:bg-slate-800">3. Contenido Redes (Marketing)</button>
+                </div>
+
+                <!-- SUB-MENU (Los 3 ejemplos de la categoría activa) -->
+                <div class="bg-slate-50 border-b border-slate-200 p-3 flex justify-center gap-2" id="sub-menu-container">
+                    <!-- Se llena dinámicamente con JS -->
+                </div>
+
+                <!-- CONTROLES (Antes y Después) -->
+                <div class="p-4 border-b border-slate-200 flex justify-center bg-white shadow-sm z-20">
+                    <div class="toggle-switch w-full max-w-md">
+                        <button onclick="app.setState('before')" id="btn-state-before" class="toggle-btn before-active"><i class="fa-solid fa-triangle-exclamation"></i> Tu Realidad (El Caos)</button>
+                        <button onclick="app.setState('after')" id="btn-state-after" class="toggle-btn"><i class="fa-solid fa-check-double"></i> Mi Solución (El Orden)</button>
+                    </div>
+                </div>
+
+                <!-- CONTENEDOR DE CONTENIDO (Donde ocurre la magia) -->
+                <div class="flex-1 bg-slate-100 relative custom-scroll">
+
+                    <!-- ======================================================== -->
+                    <!-- CATEGORÍA 1: DASHBOARDS (ORDEN) -->
+                    <!-- ======================================================== -->
+                    <div id="cat-dashboards" class="category-group hidden">
+                        
+                        <!-- Ejemplo 1: Ventas -->
+                        <div id="content-dashboards-ventas-before" class="content-panel items-center justify-center bg-[url('https://www.transparenttextures.com/patterns/notebook.png')] bg-yellow-50">
+                            <div class="bg-white p-6 rounded shadow-xl rotate-[-2deg] border-2 border-slate-300 w-full max-w-lg messy-font">
+                                <h3 class="text-xl font-bold border-b-2 border-black pb-2 mb-4 text-center">Cuaderno de Ventas - Octubre</h3>
+                                <ul class="space-y-4 text-blue-800">
+                                    <li>Lunes: Vino la sra. Lopez, dejó $500 de anticipo. Faltan $1500.</li>
+                                    <li>Martes: <strike>Venta de $200</strike> (Pidió devolución)</li>
+                                    <li class="text-red-600">Miércoles: ¡HAY QUE PAGAR LA LUZ! Tomé $800 de la caja.</li>
+                                    <li>Jueves: ??? ¿Alguien anotó las ventas de la tarde?</li>
+                                </ul>
+                                <p class="mt-6 text-sm text-red-600 font-bold bg-yellow-200 p-2 text-center">¡Es imposible saber si este mes ganaste o perdiste dinero!</p>
+                            </div>
+                        </div>
+
+                        <div id="content-dashboards-ventas-after" class="content-panel bg-slate-50">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-black text-xl text-slate-800">Panel Financiero en Tiempo Real</h3>
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm"><i class="fa-solid fa-circle-check"></i> Sincronizado</span>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-brand-blue relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Ingresos Brutos (Mes)</p>
+                                    <h3 class="text-2xl font-black text-slate-800">$124,500</h3>
+                                    <p class="text-[10px] text-green-500 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +15.2% vs mes anterior</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-brand-green relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Utilidad Neta Libre</p>
+                                    <h3 class="text-2xl font-black text-green-600">$48,200</h3>
+                                    <p class="text-[10px] text-green-600 font-bold mt-1"><i class="fa-solid fa-chart-pie"></i> Margen: 38.7%</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-brand-yellow relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Cuentas por Cobrar</p>
+                                    <h3 class="text-2xl font-black text-yellow-600">$12,500</h3>
+                                    <p class="text-[10px] text-red-500 font-bold mt-1"><i class="fa-solid fa-triangle-exclamation"></i> 3 facturas vencidas</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-brand-purple relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Ticket Promedio</p>
+                                    <h3 class="text-2xl font-black text-purple-700">$2,450</h3>
+                                    <p class="text-[10px] text-green-500 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +$350 de incremento</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm w-full h-[250px]">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-bold text-sm text-slate-800">Proyección de Flujo de Efectivo</h4>
+                                    <select class="text-xs border border-slate-200 rounded p-1 bg-slate-50"><option>Últimos 6 meses</option></select>
+                                </div>
+                                <canvas id="chart-d-ventas"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Ejemplo 2: Gastos -->
+                        <div id="content-dashboards-gastos-before" class="content-panel items-center justify-center">
+                            <div class="relative w-full max-w-2xl h-[400px]">
+                                <div class="absolute top-10 right-20 ticket-receipt rotate-[5deg] w-48">SUPERMERCADO<br>Fecha: 12/10<br>Total: $845.00<br><br>*(Ticket borroso, no se sabe de qué es)*</div>
+                                <div class="absolute bottom-10 left-10 ticket-receipt rotate-[-8deg] w-48 border-red-400">PAGO GASOLINA<br>Fecha: ???<br>Total: $1,200.00<br><br>*Falta Factura*</div>
+                                <div class="absolute top-32 left-32 bg-yellow-200 p-4 shadow-md rotate-[3deg] messy-font text-xl text-red-600 font-bold">"¿Dónde quedó el dinero de la semana?"</div>
+                            </div>
+                        </div>
+
+                        <div id="content-dashboards-gastos-after" class="content-panel bg-slate-50">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-black text-xl text-slate-800">Control de Egresos Inteligente</h3>
+                                <button class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-slate-700 transition"><i class="fa-solid fa-file-invoice"></i> Escanear Ticket</button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <h4 class="font-bold text-sm mb-4">Distribución de Gastos (Automática)</h4>
+                                    <div class="w-full h-[220px]"><canvas id="chart-d-gastos"></canvas></div>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+                                    <h4 class="font-bold text-sm mb-4">Flujo de Salida Reciente</h4>
+                                    <table class="w-full text-sm text-left">
+                                        <tr class="border-b bg-slate-50 text-slate-500 text-xs uppercase"><th class="p-2">Concepto</th><th class="p-2">Estado</th><th class="p-2 text-right">Monto</th></tr>
+                                        <tr class="border-b hover:bg-slate-50 transition">
+                                            <td class="p-2 font-medium">Gasolina Camioneta</td>
+                                            <td><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold"><i class="fa-solid fa-check"></i> Pagado</span></td>
+                                            <td class="text-right font-black text-slate-700">-$1,200</td>
+                                        </tr>
+                                        <tr class="border-b hover:bg-slate-50 transition">
+                                            <td class="p-2 font-medium">Pago de Luz Local</td>
+                                            <td><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold"><i class="fa-solid fa-check"></i> Pagado</span></td>
+                                            <td class="text-right font-black text-slate-700">-$845</td>
+                                        </tr>
+                                        <tr class="border-b hover:bg-slate-50 transition">
+                                            <td class="p-2 font-medium">Proveedor "Cajas SA"</td>
+                                            <td><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-[10px] font-bold"><i class="fa-regular fa-clock"></i> Pendiente</span></td>
+                                            <td class="text-right font-black text-red-600">-$3,500</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ejemplo 3: Inventario -->
+                        <div id="content-dashboards-inventario-before" class="content-panel items-center justify-center bg-green-900">
+                            <div class="border-4 border-gray-400 bg-green-800 p-8 rounded w-full max-w-xl text-white messy-font text-lg shadow-2xl relative">
+                                <div class="absolute bottom-2 right-4 text-gray-400 text-sm">Pizarrón del Almacén</div>
+                                <h3 class="font-bold text-2xl mb-4 underline">Faltantes (Avisar al jefe)</h3>
+                                <ul class="list-disc pl-6 space-y-2">
+                                    <li>Cajas chicas (Creo que quedan 5)</li>
+                                    <li>Cinta adhesiva <span class="text-yellow-300">- URGENTE, ya no hay</span></li>
+                                    <li>Producto A - ¿Ya llegó el pedido?</li>
+                                </ul>
+                                <div class="mt-6 p-3 bg-red-500 text-white font-bold text-center rounded transform rotate-2">¡VENDIMOS ALGO QUE YA NO TENÍAMOS EN STOCK! EL CLIENTE ESTÁ ENOJADO.</div>
+                            </div>
+                        </div>
+
+                        <div id="content-dashboards-inventario-after" class="content-panel bg-slate-50">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-black text-xl text-slate-800">Almacén y Logística</h3>
+                                <div class="text-xs text-slate-500 font-bold">Valor en Almacén: <span class="text-brand-blue text-lg">$85,400</span></div>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+                                <div class="lg:col-span-2 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <h4 class="font-bold text-sm mb-4">Rotación de Productos Estrella</h4>
+                                    <div class="w-full h-[220px]"><canvas id="chart-d-inventario"></canvas></div>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-md border-t-4 border-red-500 bg-gradient-to-b from-red-50 to-white">
+                                    <h4 class="font-black text-red-700 text-lg mb-2"><i class="fa-solid fa-triangle-exclamation animate-pulse"></i> Alertas Críticas</h4>
+                                    <p class="text-[11px] text-slate-600 mb-4 leading-tight">Stock bajo detectado por el algoritmo. Sugerencia de compra inmediata:</p>
+                                    
+                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-200 mb-3 flex flex-col gap-2">
+                                        <div class="flex justify-between items-center">
+                                            <p class="font-bold text-sm text-slate-800">Cinta Adhesiva Industrial</p>
+                                            <span class="bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded text-[10px]">2 unidades</span>
+                                        </div>
+                                        <button class="w-full bg-slate-900 text-white py-1.5 text-xs font-bold rounded hover:bg-slate-800 transition"><i class="fa-solid fa-paper-plane"></i> Generar Orden Automática</button>
+                                    </div>
+
+                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-200 flex flex-col gap-2">
+                                        <div class="flex justify-between items-center">
+                                            <p class="font-bold text-sm text-slate-800">Cajas Chicas Envío</p>
+                                            <span class="bg-yellow-100 text-yellow-700 font-bold px-2 py-0.5 rounded text-[10px]">5 unidades</span>
+                                        </div>
+                                        <button class="w-full bg-slate-900 text-white py-1.5 text-xs font-bold rounded hover:bg-slate-800 transition"><i class="fa-solid fa-paper-plane"></i> Generar Orden Automática</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================== -->
+                    <!-- CATEGORÍA 2: WEB (MAQUINAS DE VENTA) -->
+                    <!-- ======================================================== -->
+                    <div id="cat-web" class="category-group hidden">
+                        
+                        <!-- Ejemplo 1: Tienda Online -->
+                        <div id="content-web-tienda-before" class="content-panel items-center justify-center p-4">
+                            <div class="w-full max-w-xl bg-gray-200 border border-gray-400 rounded p-4 font-serif text-center shadow-lg">
+                                <marquee class="bg-yellow-300 text-red-600 font-bold mb-4">BIENVENIDO A MI TIENDA - CATÁLOGO 2020</marquee>
+                                <h1 class="text-blue-700 font-bold text-2xl underline mb-4">Productos Variados S.A.</h1>
+                                <div class="grid grid-cols-2 gap-4 text-sm text-left">
+                                    <div class="border border-gray-400 bg-white p-2">
+                                        <div class="w-full h-24 bg-gray-300 flex items-center justify-center mb-2 text-gray-500"><i class="fa-solid fa-image-slash"></i></div>
+                                        <p>Zapatos Modelo 1</p>
+                                        <p class="font-bold text-red-600">$500</p>
+                                        <p class="text-xs text-blue-600 underline cursor-pointer">Mandar correo para comprar</p>
+                                    </div>
+                                    <div class="border border-gray-400 bg-white p-2">
+                                        <div class="w-full h-24 bg-gray-300 flex items-center justify-center mb-2 text-gray-500">Foto_chica.jpg</div>
+                                        <p>Playera Azul</p>
+                                        <p class="font-bold text-red-600">$200</p>
+                                        <p class="text-xs text-blue-600 underline cursor-pointer">Mandar correo para comprar</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="content-web-tienda-after" class="content-panel p-0 bg-white items-center justify-center">
+                            <div class="w-full max-w-md h-[500px] border-[10px] border-slate-900 rounded-[30px] overflow-hidden relative shadow-2xl bg-slate-50 flex flex-col">
+                                <div class="bg-white p-4 flex justify-between items-center border-b border-slate-100">
+                                    <h1 class="font-black text-xl">TuMarca.</h1>
+                                    <i class="fa-solid fa-cart-shopping text-slate-800 relative cursor-pointer"><span class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span></i>
+                                </div>
+                                <div class="p-4 custom-scroll flex-1">
+                                    <div class="w-full h-32 bg-[url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')] bg-cover bg-center rounded-2xl mb-6 p-4 text-white flex flex-col justify-end relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                        <p class="text-xs font-bold uppercase tracking-widest relative z-10 text-brand-blue">Nueva Colección</p>
+                                        <h2 class="text-2xl font-black relative z-10">Llega con estilo.</h2>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 group cursor-pointer hover:shadow-md transition">
+                                            <div class="w-full h-28 bg-slate-100 rounded-lg mb-2 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Zapatos Rojos" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                                            </div>
+                                            <p class="font-bold text-sm text-slate-800 truncate">Air Max Premium</p>
+                                            <p class="font-black text-brand-blue mb-2">$899.00</p>
+                                            <button class="w-full bg-slate-900 text-white text-xs font-bold py-2 rounded-lg hover:bg-brand-blue transition shadow">Agregar <i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                        <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 group cursor-pointer hover:shadow-md transition">
+                                            <div class="w-full h-28 bg-slate-100 rounded-lg mb-2 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Playera Negra" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                                            </div>
+                                            <p class="font-bold text-sm text-slate-800 truncate">Playera Essential</p>
+                                            <p class="font-black text-brand-blue mb-2">$349.00</p>
+                                            <button class="w-full bg-slate-900 text-white text-xs font-bold py-2 rounded-lg hover:bg-brand-blue transition shadow">Agregar <i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-900 text-white p-3 flex justify-between items-center z-10">
+                                    <div><p class="text-xs text-slate-400">Total a pagar</p><p class="font-black text-lg">$1,248.00</p></div>
+                                    <button class="bg-brand-green px-6 py-2 rounded-xl font-bold text-sm hover:scale-105 transition shadow-lg flex items-center gap-2">Pagar <i class="fa-solid fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ejemplo 2: Landing de Captura -->
+                        <div id="content-web-landing-before" class="content-panel items-center justify-center bg-slate-200">
+                            <form class="bg-white p-6 border border-gray-400 w-full max-w-sm shadow-md font-sans text-sm">
+                                <h3 class="font-bold text-center mb-4">Formulario de Contacto</h3>
+                                <p class="mb-4 text-xs text-center">Llene TODOS los campos para que lo atendamos.</p>
+                                <label class="block mb-1">Nombre Completo:</label>
+                                <input type="text" class="w-full border border-gray-300 mb-3 p-1">
+                                <label class="block mb-1">Edad:</label>
+                                <input type="text" class="w-full border border-gray-300 mb-3 p-1">
+                                <label class="block mb-1">Motivo detallado:</label>
+                                <textarea class="w-full border border-gray-300 mb-4 p-1 h-20"></textarea>
+                                <button type="button" class="bg-gray-300 text-black border border-gray-500 w-full py-2 hover:bg-gray-400 transition">Enviar Correo</button>
+                            </form>
+                        </div>
+
+                        <div id="content-web-landing-after" class="content-panel bg-slate-900 text-white items-center justify-center">
+                            <div class="max-w-md w-full text-center">
+                                <div class="inline-block bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold mb-6 border border-blue-500/30">Asesoría Gratuita</div>
+                                <h1 class="text-3xl font-black mb-4 leading-tight">Duplica tus ventas en 30 días.</h1>
+                                <p class="text-slate-400 mb-8 text-sm">Déjanos tu WhatsApp y te enviaremos un diagnóstico en menos de 5 minutos. Sin compromisos.</p>
+                                
+                                <div class="bg-white/10 p-2 rounded-2xl border border-white/20 backdrop-blur-md flex gap-2">
+                                    <input type="tel" placeholder="Tu número de WhatsApp" class="flex-1 bg-transparent border-none text-white px-4 outline-none placeholder-slate-400 text-sm">
+                                    <button class="bg-brand-blue text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition">Quiero Ayuda</button>
+                                </div>
+                                <p class="text-[10px] text-slate-500 mt-4"><i class="fa-solid fa-lock"></i> Tu información es 100% segura y privada.</p>
+                            </div>
+                        </div>
+
+                        <!-- Ejemplo 3: Web Corporativa -->
+                        <div id="content-web-servicios-before" class="content-panel items-center justify-center bg-white">
+                            <div class="text-left font-sans p-6 max-w-2xl border border-dashed border-gray-300 shadow-sm">
+                                <h1 class="text-2xl font-bold mb-4">QUIENES SOMOS</h1>
+                                <p class="mb-4 text-sm text-gray-700 text-justify">Somos una empresa líder en el mercado con amplia experiencia brindando soluciones integrales a nuestros clientes. Nuestra misión es la excelencia y nuestra visión es ser los mejores del mundo mundial. Ofrecemos servicios de alta calidad con un equipo multidisciplinario comprometido con los valores corporativos.</p>
+                                <h2 class="text-lg font-bold mb-2">NUESTROS SERVICIOS</h2>
+                                <ul class="list-disc pl-6 text-sm text-gray-700">
+                                    <li>Servicio 1 (Muy bueno)</li>
+                                    <li>Servicio 2 (El mejor)</li>
+                                    <li>Servicio 3 (Garantizado)</li>
+                                </ul>
+                                <p class="mt-4 text-xs text-red-500 font-bold text-center">Mucho texto aburrido, el cliente se va en 3 segundos.</p>
+                            </div>
+                        </div>
+
+                        <div id="content-web-servicios-after" class="content-panel bg-slate-50">
+                            <div class="max-w-4xl mx-auto w-full h-full flex flex-col justify-center">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                                    <div>
+                                        <h1 class="text-4xl font-black text-slate-900 mb-4 leading-tight">Solucionamos tu problema, <span class="text-brand-blue">sin excusas.</span></h1>
+                                        <p class="text-slate-600 mb-8">No te vendemos humo. Te damos resultados medibles desde la primera semana. Mira lo que podemos hacer por ti.</p>
+                                        <div class="space-y-4">
+                                            <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                                <div class="w-12 h-12 bg-blue-100 text-brand-blue rounded-full flex items-center justify-center text-xl flex-shrink-0"><i class="fa-solid fa-bolt"></i></div>
+                                                <div><h4 class="font-bold text-slate-900">Servicio Rápido</h4><p class="text-xs text-slate-500">Lo tienes listo en 48 horas.</p></div>
+                                            </div>
+                                            <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                                                <div class="w-12 h-12 bg-green-100 text-brand-green rounded-full flex items-center justify-center text-xl flex-shrink-0"><i class="fa-solid fa-shield-halved"></i></div>
+                                                <div><h4 class="font-bold text-slate-900">Garantía Total</h4><p class="text-xs text-slate-500">Si no te gusta, no pagas.</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="relative hidden md:block">
+                                        <div class="w-full aspect-square bg-slate-200 rounded-3xl overflow-hidden relative shadow-2xl">
+                                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Trabajo Real" class="w-full h-full object-cover">
+                                            <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-white">
+                                                <p class="text-xs font-bold text-slate-500 uppercase">Testimonio Real</p>
+                                                <p class="font-bold text-slate-900 italic">"Me salvaron el negocio, son los mejores."</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ======================================================== -->
+                    <!-- CATEGORÍA 3: REDES (CONTENIDO Y ADS) -->
+                    <!-- ======================================================== -->
+                    <div id="cat-redes" class="category-group hidden">
+                        
+                        <!-- Ejemplo 1: Anuncios -->
+                        <div id="content-redes-anuncios-before" class="content-panel items-center justify-center bg-slate-200">
+                            <div class="bg-white p-4 max-w-sm rounded-lg shadow-lg text-center font-sans border border-gray-300">
+                                <div class="flex items-center gap-2 mb-2 text-sm font-bold"><div class="w-8 h-8 bg-gray-300 rounded-full"></div> tu_negocio</div>
+                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500 mb-2">Imagen de stock de un edificio</div>
+                                <p class="text-xs text-left mb-2">Somos tu mejor opción. Contáctanos.</p>
+                                <button class="w-full bg-blue-600 text-white font-bold py-1 rounded">Promocionar Publicación</button>
+                                <div class="mt-4 p-2 bg-red-100 text-red-600 text-xs font-bold rounded">
+                                    Resultados: 1,500 "Me gusta" (Todos de tus tías y bots). 0 Ventas. -$500 de tu bolsa.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="content-redes-anuncios-after" class="content-panel bg-slate-50 items-center justify-center p-4">
+                            <div class="bg-white w-full max-w-4xl rounded-2xl shadow-xl border border-slate-200 p-6 flex flex-col md:flex-row gap-8 items-center">
+                                
+                                <!-- Mockup de Anuncio de Instagram Realista -->
+                                <div class="w-full max-w-[300px] bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg flex-shrink-0 mx-auto">
+                                    <!-- Cabecera IG -->
+                                    <div class="p-3 flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full overflow-hidden border border-gray-200"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Logo" class="w-full h-full object-cover"></div>
+                                            <div class="leading-tight">
+                                                <p class="text-sm font-bold text-slate-900 flex items-center gap-1">tu_negocio <i class="fa-solid fa-circle-check text-[10px] text-blue-500"></i></p>
+                                                <p class="text-[10px] text-slate-500">Publicidad</p>
+                                            </div>
+                                        </div>
+                                        <i class="fa-solid fa-ellipsis text-gray-500"></i>
+                                    </div>
+                                    
+                                    <!-- Imagen del Anuncio y Botón CTA CTA -->
+                                    <div class="w-full aspect-square relative group">
+                                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
+                                        <!-- Botón de WhatsApp integrado al estilo Meta Ads -->
+                                        <div class="absolute bottom-0 left-0 w-full bg-blue-600 hover:bg-blue-700 transition cursor-pointer px-4 py-3 flex justify-between items-center text-white shadow-[0_-5px_15px_rgba(0,0,0,0.1)]">
+                                            <div>
+                                                <p class="text-[10px] opacity-80 uppercase tracking-wider mb-0.5">WhatsApp</p>
+                                                <p class="text-sm font-bold leading-none">Enviar mensaje</p>
+                                            </div>
+                                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Footer IG (Likes y Texto) -->
+                                    <div class="p-3">
+                                        <div class="flex gap-4 text-xl text-slate-800 mb-2"><i class="fa-regular fa-heart hover:text-gray-500 cursor-pointer"></i><i class="fa-regular fa-comment hover:text-gray-500 cursor-pointer"></i><i class="fa-regular fa-paper-plane hover:text-gray-500 cursor-pointer"></i></div>
+                                        <p class="text-sm font-bold mb-1 text-slate-900">1,245 Me gusta</p>
+                                        <p class="text-xs text-slate-800 leading-relaxed"><span class="font-bold text-sm">tu_negocio</span> Deja de perder clientes en redes sociales. Haz clic en "Enviar Mensaje" y te enseñamos cómo duplicar tus ventas hoy mismo. 🚀👇 #Ventas #Negocios</p>
+                                    </div>
+                                </div>
+
+                                <!-- Analíticas y Resultados del Anuncio (Para el cliente) -->
+                                <div class="flex-1 flex flex-col justify-center">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i class="fa-solid fa-bullseye text-2xl text-brand-blue"></i>
+                                        <h3 class="font-black text-2xl text-slate-900">Máquina de Mensajes</h3>
+                                    </div>
+                                    <p class="text-sm text-slate-500 mb-6">En lugar de pedir "Likes", creamos anuncios que mandan a clientes listos para comprar <strong>directo a tu WhatsApp</strong>.</p>
+                                    
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">Inversión (Semana)</p>
+                                            <p class="text-2xl font-black text-slate-800">$1,000 <span class="text-xs text-slate-500 font-normal">MXN</span></p>
+                                        </div>
+                                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                                            <p class="text-[10px] font-bold text-brand-blue uppercase mb-1">Chats Iniciados</p>
+                                            <p class="text-2xl font-black text-brand-blue">84 <span class="text-xs font-bold text-green-500"><i class="fa-solid fa-arrow-up"></i> Alto</span></p>
+                                        </div>
+                                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                            <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">Costo por Chat</p>
+                                            <p class="text-2xl font-black text-slate-800">$11.90 <span class="text-xs text-brand-green font-bold bg-green-100 px-1 rounded">Rentable</span></p>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-xl border border-green-200 shadow-inner relative overflow-hidden">
+                                            <div class="absolute -right-4 -bottom-4 opacity-10 text-brand-green text-6xl"><i class="fa-solid fa-sack-dollar"></i></div>
+                                            <p class="text-[10px] font-bold text-brand-green uppercase mb-1">Ventas Cerradas</p>
+                                            <p class="text-3xl font-black text-brand-green">12</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Ejemplo 2: Reels -->
+                        <div id="content-redes-reels-before" class="content-panel items-center justify-center bg-slate-200">
+                            <div class="w-[280px] h-[500px] border-[6px] border-gray-800 rounded-[30px] bg-gray-900 relative flex items-center justify-center text-center overflow-hidden shadow-2xl">
+                                <div class="absolute top-4 flex justify-center w-full gap-4 text-white text-xs font-bold opacity-80"><span class="border-b-2">Para ti</span></div>
+                                <div class="absolute right-3 bottom-24 flex flex-col gap-6 text-white text-xs items-center opacity-70">
+                                    <div class="flex flex-col items-center"><i class="fa-solid fa-heart text-2xl"></i> 12</div>
+                                    <div class="flex flex-col items-center"><i class="fa-solid fa-comment-dots text-2xl"></i> 0</div>
+                                    <div class="flex flex-col items-center"><i class="fa-solid fa-share text-2xl"></i> 0</div>
+                                </div>
+                                <div class="p-4 text-left w-full z-10 absolute bottom-4">
+                                    <p class="font-bold text-white text-sm mb-1">@tu_negocio</p>
+                                    <p class="text-xs text-gray-300 mb-2">Miren nuestros productos nuevos... #venta #productos</p>
+                                    <div class="flex items-center gap-2 text-xs text-gray-400"><i class="fa-solid fa-music"></i> Audio original aburrido</div>
+                                </div>
+                                <div class="z-0 px-4">
+                                    <p class="text-gray-400 text-xs italic mb-4">Video de 1 minuto mostrando un catálogo como si fuera diapositiva.</p>
+                                    <div class="bg-red-500 text-white font-bold p-2 text-xs rounded shadow">Retención: 5% (Hacen scroll)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="content-redes-reels-after" class="content-panel items-center justify-center bg-slate-900">
+                             <div class="w-[280px] h-[500px] border-[6px] border-slate-800 shadow-[0_0_40px_rgba(37,99,235,0.4)] rounded-[30px] bg-slate-900 relative flex items-center justify-center text-center overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-blue to-purple-800 opacity-40"></div>
+                                <div class="absolute top-4 flex justify-center w-full gap-4 text-white text-xs font-bold z-10"><span class="border-b-2">Para ti</span></div>
+                                <div class="absolute right-3 bottom-24 flex flex-col gap-6 text-white text-xs items-center z-10">
+                                    <div class="flex flex-col items-center"><i class="fa-solid fa-heart text-2xl text-red-500"></i> 4.5k</div>
+                                    <div class="flex flex-col items-center"><i class="fa-solid fa-comment-dots text-2xl"></i> 120</div>
+                                    <div class="flex flex-col items-center"><i class="fa-solid fa-share text-2xl"></i> 890</div>
+                                </div>
+                                <div class="p-4 text-left w-full z-10 absolute bottom-4">
+                                    <p class="font-bold text-white text-sm mb-1">@estrategiapro</p>
+                                    <p class="text-xs text-white mb-2">Aplica este método hoy mismo 🚀 #Negocios #Tips</p>
+                                    <div class="flex items-center gap-2 text-xs text-white"><i class="fa-solid fa-music"></i> Sonido en tendencia</div>
+                                </div>
+                                <div class="z-10 w-full text-left px-6">
+                                    <div class="bg-yellow-400 text-black font-black text-lg px-2 py-1 inline-block mb-2 transform -skew-x-6 uppercase shadow-lg">GANCHO VISUAL</div>
+                                    <h3 class="text-white font-black text-2xl leading-tight mb-4 text-shadow-md">"3 Errores que te hacen perder dinero..."</h3>
+                                    <div class="bg-green-500 text-white font-bold p-2 text-xs rounded shadow-lg inline-block">Vistas orgánicas: 125,000+</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ejemplo 3: Contenido Fijo -->
+                        <div id="content-redes-contenido-before" class="content-panel items-center justify-center bg-slate-200">
+                            <div class="bg-white w-full max-w-sm rounded-xl border border-gray-300 shadow-lg overflow-hidden font-sans">
+                                <div class="p-3 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 bg-gradient-to-tr from-yellow-400 to-fuchsia-600 rounded-full p-[2px]"><div class="w-full h-full bg-white rounded-full flex items-center justify-center"><i class="fa-solid fa-store text-xs text-gray-400"></i></div></div>
+                                        <p class="font-bold text-sm text-slate-900">tu_negocio</p>
+                                    </div>
+                                    <i class="fa-solid fa-ellipsis text-gray-500"></i>
+                                </div>
+                                <div class="w-full aspect-square bg-[#ffe4e1] flex flex-col items-center justify-center text-center p-4">
+                                    <h2 class="font-comic text-3xl text-pink-500 font-bold mb-4 shadow-sm">¡Feliz Lunes!</h2>
+                                    <p class="text-sm text-gray-700">"Empieza la semana con toda la actitud."</p>
+                                </div>
+                                <div class="p-3">
+                                    <div class="flex gap-4 text-xl text-slate-800 mb-2"><i class="fa-regular fa-heart"></i><i class="fa-regular fa-comment"></i><i class="fa-regular fa-paper-plane"></i></div>
+                                    <p class="text-xs text-gray-500 mt-2"><strong class="text-red-500">Error:</strong> Es bonito, pero esto NO le dice al cliente qué vendes. Cero autoridad, cero ventas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="content-redes-contenido-after" class="content-panel items-center justify-center bg-slate-50">
+                             <div class="bg-white w-full max-w-md rounded-xl shadow-2xl border border-slate-200 overflow-hidden font-sans">
+                                <div class="p-4 flex items-start gap-3 border-b border-slate-100">
+                                    <div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center text-slate-500 flex-shrink-0"><img src="https://i.pravatar.cc/150?img=11" class="w-full h-full rounded-full" alt="CEO"></div>
+                                    <div>
+                                        <p class="font-bold text-sm text-slate-900">Tu Negocio | Expertos en la Industria</p>
+                                        <p class="text-xs text-slate-500">Ayudamos a empresas a crecer • 1h • <i class="fa-solid fa-earth-americas"></i></p>
+                                        <p class="text-sm text-slate-800 mt-2">La semana pasada logramos un hito importante con nuestro cliente. Aquí te cuento el paso a paso exacto que usamos. 👇</p>
+                                    </div>
+                                </div>
+                                <div class="w-full aspect-square bg-slate-900 flex flex-col items-start justify-center text-left p-8 text-white relative overflow-hidden">
+                                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-600 rounded-full opacity-30 blur-2xl"></div>
+                                    <p class="text-xs text-brand-cyan font-bold uppercase tracking-widest mb-2 border-l-2 border-brand-cyan pl-2" style="border-color: #22d3ee; color: #22d3ee;">Caso de Éxito</p>
+                                    <h2 class="text-3xl font-black mb-4 leading-tight">Cómo ayudamos a Empresa X a ahorrar $50k en 1 mes.</h2>
+                                    <p class="text-sm text-slate-300 mb-6 flex items-center gap-2">Desliza para ver el método <i class="fa-solid fa-arrow-right"></i></p>
+                                    <div class="absolute bottom-4 left-0 w-full flex justify-center gap-1"><div class="w-2 h-2 bg-white rounded-full"></div><div class="w-2 h-2 bg-slate-600 rounded-full"></div><div class="w-2 h-2 bg-slate-600 rounded-full"></div></div>
+                                </div>
+                                <div class="p-3 bg-slate-50 border-t border-slate-200 flex justify-between text-slate-500 text-sm font-bold">
+                                    <div class="flex gap-4"><span class="hover:text-blue-600 cursor-pointer"><i class="fa-regular fa-thumbs-up"></i> Recomendar</span> <span class="hover:text-blue-600 cursor-pointer"><i class="fa-regular fa-comment"></i> Comentar</span></div>
+                                    <span class="hover:text-blue-600 cursor-pointer"><i class="fa-solid fa-retweet"></i> Compartir</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // SISTEMA DE ANIMACIÓN INICIAL (SPLASH SCREEN TIPO PS5)
+        // ==========================================
+        const splashAnimation = {
+            init: function(callback) {
+                const splashScreen = document.getElementById('splash-screen');
+                const canvas = document.getElementById('particle-canvas');
+                const ctx = canvas.getContext('2d');
+                const logo = document.getElementById('splash-logo');
+                
+                // Mostrar Logo suavemente con desenfoque (efecto cinemático)
+                setTimeout(() => { logo.classList.add('show'); }, 100);
+
+                // Ajuste responsivo seguro para cualquier dispositivo
+                const resizeCanvas = () => {
+                    canvas.width = window.innerWidth || document.documentElement.clientWidth;
+                    canvas.height = window.innerHeight || document.documentElement.clientHeight;
+                };
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas(); // Llamada inicial
+
+                let time = 0;
+                let isAnimating = true;
+
+                // Crear partículas lentas tipo orbes de luz
+                const dust = Array.from({length: 60}, () => ({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    color: ['#2563eb', '#8b5cf6', '#ffffff', '#10b981'][Math.floor(Math.random() * 4)]
+                }));
+
+                function animate() {
+                    if(!isAnimating) return;
+                    
+                    // Fondo ultra oscuro con estela suave (trail effect)
+                    ctx.fillStyle = 'rgba(2, 6, 23, 0.15)'; 
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.globalCompositeOperation = 'screen';
+                    
+                    // Ondas de energía fluidas superpuestas (Elegancia visual)
+                    const centerY = canvas.height / 2;
+                    for(let i = 0; i < 3; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, centerY);
+                        for(let x = 0; x <= canvas.width; x += 20) {
+                            // Matemáticas de ondas para crear el flujo orgánico
+                            const y = centerY + Math.sin(x * 0.003 + time + i) * 120 * Math.sin(time * 0.3 + i * 0.5);
+                            ctx.lineTo(x, y);
+                        }
+                        // Colores de tu marca semi-transparentes
+                        ctx.strokeStyle = i === 0 ? 'rgba(37, 99, 235, 0.15)' : (i === 1 ? 'rgba(139, 92, 246, 0.15)' : 'rgba(255, 255, 255, 0.05)');
+                        ctx.lineWidth = 2;
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = ctx.strokeStyle;
+                        ctx.stroke();
+                    }
+
+                    // Renderizar los orbes de luz flotantes
+                    dust.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        
+                        // Bucle de pantalla infinito
+                        if(p.x < 0) p.x = canvas.width;
+                        if(p.x > canvas.width) p.x = 0;
+                        if(p.y < 0) p.y = canvas.height;
+                        if(p.y > canvas.height) p.y = 0;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = p.color;
+                        ctx.fill();
+                    });
+                    
+                    ctx.globalCompositeOperation = 'source-over';
+                    time += 0.015; // Velocidad del flujo de la onda
+                    
+                    requestAnimationFrame(animate);
+                }
+
+                // Iniciar ciclo de dibujo
+                requestAnimationFrame(animate);
+
+                // Secuencia de salida suave (Aumentado a 3.5 segundos para disfrutar el efecto)
+                setTimeout(() => {
+                    splashScreen.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        isAnimating = false;
+                        splashScreen.style.display = 'none';
+                        if(callback) callback();
+                    }, 1000); 
+                }, 3500); 
+            }
+        };
+
+        // ==========================================
+        // ESTADO DE LA APP PRINCIPAL
+        // ==========================================
+        const state = {
+            view: '', // Inicia vacío para que el splash controle el inicio
+            category: 'dashboards',
+            subs: {
+                dashboards: 'ventas',
+                web: 'tienda',
+                redes: 'anuncios'
+            },
+            beforeAfter: 'before'
+        };
+
+        const categoriesData = {
+            dashboards: [
+                { id: 'ventas', name: 'Control de Ventas' },
+                { id: 'gastos', name: 'Control de Gastos' },
+                { id: 'inventario', name: 'Inventarios / Stock' }
+            ],
+            web: [
+                { id: 'tienda', name: 'Tienda Online' },
+                { id: 'landing', name: 'Captar Clientes (Landing)' },
+                { id: 'servicios', name: 'Web Corporativa' }
+            ],
+            redes: [
+                { id: 'anuncios', name: 'Anuncios (FB/IG)' },
+                { id: 'reels', name: 'Reels / TikTok' },
+                { id: 'contenido', name: 'Posts (LinkedIn/IG)' }
+            ]
+        };
+
+        const avatarCopy = {
+            home: "¡Hola! Veo que tienes un negocio. ¿Estás ganando dinero de verdad o solo estás sobreviviendo? <strong>Dime qué te duele y te lo arreglo.</strong>",
+            dashboards: {
+                ventas: {
+                    before: "❌ <strong>¡Mírate!</strong> Usando libretas y Excels rotos. Así es IMPOSIBLE saber si este mes ganaste dinero o si solo estás cambiando billetes. Es un peligro.",
+                    after: "✅ <strong>¡PUM! Entras a tu celular y ves esto.</strong> Tus ventas reales, ganancia libre al centavo y lo que te deben. Toma decisiones rápidas y deja de estresarte."
+                },
+                gastos: {
+                    before: "❌ Tienes los tickets del súper mezclados con los de la empresa en una caja de zapatos. <strong>'¿Dónde quedó el dinero?'</strong> te preguntas cada viernes.",
+                    after: "✅ Todo clasificado en automático. Sabes exactamente <strong>cuánto te cuesta operar</strong> y dónde puedes recortar para que te sobre más dinero a fin de mes."
+                },
+                inventario: {
+                    before: "❌ 'Creo que quedan 5 en bodega'... Le vendes a un cliente, te paga y resulta que ya no hay. <strong>Quedas súper mal</strong> y pierdes dinero.",
+                    after: "✅ El sistema inteligente te avisa antes de que se acabe. Sabes qué producto es el que más te deja dinero y <strong>cuál está acumulando polvo.</strong>"
+                }
+            },
+            web: {
+                tienda: {
+                    before: "❌ <strong>Esa página vieja espanta a la gente.</strong> Entran, creen que los vas a estafar o que ya cerraste el negocio y se van con tu competencia.",
+                    after: "✅ <strong>Una tienda online que da confianza inmediata.</strong> La gente entra, confía, pone su tarjeta a las 3 de la mañana y tú solo te encargas de enviar."
+                },
+                landing: {
+                    before: "❌ Mandas a la gente a un formulario de Google larguísimo y feo. <strong>Nadie te deja sus datos</strong> porque se ve súper amateur y desesperado.",
+                    after: "✅ <strong>Páginas diseñadas con psicología.</strong> Ofreces algo de valor, el cliente deja su WhatsApp contento y tú tienes un prospecto caliente listo para comprar."
+                },
+                servicios: {
+                    before: "❌ A nadie le importa tu 'Misión y Visión' de 5 párrafos. El cliente se aburre a los 3 segundos de leer eso y <strong>cierra la pestaña.</strong>",
+                    after: "✅ <strong>Vas directo al grano.</strong> Le dices qué problema resuelves, muestras garantías y testimonios. El cliente lee y dice: 'Toma mi dinero'."
+                }
+            },
+            redes: {
+                anuncios: {
+                    before: "❌ Gastar $500 pesos en el botón de 'Promocionar' para que le den Like tus tías NO es hacer marketing. <strong>Estás regalándole dinero a Facebook.</strong>",
+                    after: "✅ Campañas de ataque. Inviertes dinero y te regresan clientes. <strong>Tu WhatsApp no dejará de sonar</strong> con gente preguntando 'Dónde deposito'."
+                },
+                reels: {
+                    before: "❌ Subes videos aburridos mostrando tus productos como diapositivas con música genérica. <strong>Tienes 12 vistas</strong> y cero ventas. Qué triste.",
+                    after: "✅ Hooks (ganchos) visuales que captan la atención en los primeros 2 segundos. Contenido dinámico que <strong>educa y vende sin parecer comercial.</strong>"
+                },
+                contenido: {
+                    before: "❌ Subir una imagen de Piolín diciendo 'Feliz Lunes' en tu Instagram no sirve de nada. <strong>No demuestra que sabes de lo que hablas.</strong>",
+                    after: "✅ Casos de éxito reales y posts educativos profesionales. Cuando tu cliente lea esto dirá: <strong>'Ellos son los expertos, quiero contratarlos'.</strong>"
+                }
+            }
+        };
+
+        let chartInstances = {};
+
+        const app = {
+            init: function() {
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                Chart.defaults.color = '#475569';
+                
+                // Mostrar la vista Home y encender el Avatar al iniciar
+                this.setMainView('home');
+                const avatarContainer = document.getElementById('avatar-container');
+                avatarContainer.style.opacity = '1';
+                avatarContainer.style.pointerEvents = 'auto';
+            },
+
+            enterWorkspace: function(catId) {
+                const overlay = document.getElementById('intro-overlay');
+                overlay.style.transform = 'translateY(0)';
+                
+                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 100);
+
+                setTimeout(() => {
+                    this.setMainView('workspace');
+                    this.setCategory(catId);
+                    overlay.style.transform = 'translateY(-100%)';
+                    
+                    setTimeout(() => { 
+                        overlay.style.transform = 'translateY(100%)'; 
+                        document.getElementById('loader-fill').style.width = '0%';
+                    }, 600);
+                }, 1200);
+            },
+
+            setMainView: function(viewId) {
+                state.view = viewId;
+                document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
+                document.getElementById(`view-${viewId}`).classList.add('active');
+                
+                if(viewId === 'home') {
+                    this.updateAvatar(avatarCopy.home);
+                }
+            },
+
+            setCategory: function(catId) {
+                state.category = catId;
+                
+                ['dashboards', 'web', 'redes'].forEach(id => {
+                    const btn = document.getElementById(`nav-cat-${id}`);
+                    if(btn) {
+                        btn.classList.toggle('bg-slate-800', id === catId);
+                        btn.classList.toggle('text-white', id === catId);
+                    }
+                });
+
+                document.querySelectorAll('.category-group').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`cat-${catId}`).classList.remove('hidden');
+
+                const subMenuContainer = document.getElementById('sub-menu-container');
+                subMenuContainer.innerHTML = '';
+                categoriesData[catId].forEach(sub => {
+                    const btn = document.createElement('button');
+                    btn.className = `sub-tab-btn`;
+                    btn.innerText = sub.name;
+                    btn.onclick = () => this.setSub(sub.id);
+                    subMenuContainer.appendChild(btn);
+                });
+
+                this.setSub(categoriesData[catId][0].id);
+            },
+
+            setSub: function(subId) {
+                state.subs[state.category] = subId;
+                
+                const btns = document.getElementById('sub-menu-container').children;
+                for(let i=0; i<btns.length; i++) {
+                    btns[i].classList.toggle('active', categoriesData[state.category][i].id === subId);
+                }
+
+                this.setState('before'); 
+            },
+
+            setState: function(beforeAfter) {
+                state.beforeAfter = beforeAfter;
+                
+                document.getElementById('btn-state-before').classList.toggle('before-active', beforeAfter === 'before');
+                document.getElementById('btn-state-after').classList.toggle('after-active', beforeAfter === 'after');
+
+                this.renderContent();
+            },
+
+            renderContent: function() {
+                const cat = state.category;
+                const sub = state.subs[cat];
+                const ba = state.beforeAfter;
+                
+                document.querySelectorAll(`#cat-${cat} .content-panel`).forEach(el => el.classList.remove('active'));
+                
+                const targetId = `content-${cat}-${sub}-${ba}`;
+                const targetPanel = document.getElementById(targetId);
+                if(targetPanel) targetPanel.classList.add('active');
+
+                const speechText = avatarCopy[cat][sub][ba];
+                this.updateAvatar(speechText);
+
+                if(cat === 'dashboards' && ba === 'after') {
+                    setTimeout(() => this.drawCharts(sub), 50);
+                }
+            },
+
+            updateAvatar: function(text) {
+                const bubble = document.getElementById('avatar-text');
+                bubble.innerHTML = text;
+                
+                const avatarBox = document.getElementById('avatar-container');
+                avatarBox.style.transform = 'scale(1.05)';
+                setTimeout(() => { avatarBox.style.transform = 'scale(1)'; }, 200);
+            },
+
+            drawCharts: function(subId) {
+                const safeContext = (id) => {
+                    if(chartInstances[id]) {
+                        chartInstances[id].destroy(); 
+                    }
+                    const canvas = document.getElementById(id);
+                    return canvas ? canvas.getContext('2d') : null;
+                };
+
+                const commonOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } };
+
+                if(subId === 'ventas') {
+                    const ctx = safeContext('chart-d-ventas');
+                    if(ctx) chartInstances['chart-d-ventas'] = new Chart(ctx, {
+                        type: 'line',
+                        data: { labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'], datasets: [{ label: 'Ventas ($)', data: [1500, 2200, 1800, 3100, 4500, 4200], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true, tension: 0.3 }] },
+                        options: { ...commonOptions, scales: { y: { beginAtZero: true } } }
+                    });
+                }
+                else if(subId === 'gastos') {
+                    const ctx = safeContext('chart-d-gastos');
+                    if(ctx) chartInstances['chart-d-gastos'] = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: { labels: ['Mercancía', 'Nómina', 'Renta/Servicios', 'Publicidad'], datasets: [{ data: [45, 30, 15, 10], backgroundColor: ['#ef4444', '#f59e0b', '#64748b', '#3b82f6'], borderWidth: 0 }] },
+                        options: { ...commonOptions, cutout: '70%' }
+                    });
+                }
+                else if(subId === 'inventario') {
+                    const ctx = safeContext('chart-d-inventario');
+                    if(ctx) chartInstances['chart-d-inventario'] = new Chart(ctx, {
+                        type: 'bar',
+                        data: { labels: ['Prod A', 'Prod B', 'Prod C'], datasets: [{ label: 'Stock Actual', data: [85, 40, 12], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], borderRadius: 4 }] },
+                        options: { ...commonOptions, indexAxis: 'y', plugins: { legend: { display: false } } }
+                    });
+                }
+            }
+        };
+
+        // ==========================================
+        // ARRANQUE DIRECTO SEGURO
+        // ==========================================
+        splashAnimation.init(() => {
+            app.init();
+        });
+
+    </script>
 </body>
 </html>
