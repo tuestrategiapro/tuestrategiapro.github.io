@@ -34,10 +34,8 @@
 
     <style>
         * { box-sizing: border-box; }
-        /* Uso de 100dvh para evitar recortes por barras de navegadores móviles */
         body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f1f5f9; color: #0f172a; overflow: hidden; height: 100vh; height: 100dvh; width: 100vw; }
         
-        /* Ajuste de scroll con soporte táctil (iOS) */
         .custom-scroll { overflow-y: auto; scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; -webkit-overflow-scrolling: touch; }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
@@ -59,7 +57,7 @@
         .toggle-btn.before-active { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2); }
         .toggle-btn.after-active { background: #ffffff; color: #16a34a; border-color: #86efac; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); }
 
-        /* Contenido Dinámico (Modificado para que no corte el top en flexbox) */
+        /* Contenido Dinámico */
         .content-panel { display: none; width: 100%; min-height: 100%; height: max-content; padding: 15px; flex-direction: column; justify-content: flex-start; }
         @media (min-width: 768px) { .content-panel { padding: 20px; } }
         .content-panel.active { display: flex; }
@@ -94,17 +92,12 @@
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- NUEVO: SPLASH SCREEN CON PARTÍCULAS        -->
-    <!-- ========================================== -->
     <div id="splash-screen">
         <canvas id="particle-canvas"></canvas>
         <div class="relative z-10 text-center flex flex-col items-center justify-center px-4">
-            <!-- AQUÍ ESTÁ TU LOGO BANNER (Pantalla de carga inicial) -->
             <img id="splash-logo" src="https://i.ibb.co/dsPcsQYx/Tu-estrategia.jpg" alt="Estrategia Pro Banner" 
                  class="w-full max-w-[300px] md:max-w-[500px] rounded-2xl shadow-[0_0_50px_rgba(37,99,235,0.3)]"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <!-- Respaldo por si falla el link -->
             <h1 style="display:none;" id="splash-logo-fallback" class="text-5xl md:text-7xl font-black text-white tracking-tight drop-shadow-2xl opacity-0 transition-opacity duration-1000">
                 Estrategia<span class="text-brand-blue">Pro</span>
             </h1>
@@ -121,7 +114,6 @@
 
     <nav class="fixed top-0 w-full h-[70px] bg-white border-b border-slate-200 z-50 flex items-center px-3 md:px-8 justify-between shadow-sm">
         <div class="flex items-center gap-2 md:gap-3 cursor-pointer" onclick="app.setMainView('home')">
-            <!-- AQUÍ ESTÁ TU LOGO CIRCULAR (En el Menú) -->
             <div class="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shadow-md overflow-hidden bg-slate-100 flex-shrink-0 border-2 border-white">
                 <img src="https://i.ibb.co/Kp5kt6h1/Tu-estrategia-circular.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display:none;" class="w-full h-full bg-brand-blue items-center justify-center text-white"><i class="fa-solid fa-rocket"></i></div>
@@ -129,49 +121,52 @@
             <span class="font-black text-lg md:text-2xl text-slate-900 tracking-tight hidden sm:block">Estrategia<span class="text-brand-blue">Pro</span></span>
         </div>
         
-        <!-- Botones de Redes y Contacto (Súper optimizados para celular) -->
+        <!-- Botones de Redes y Contacto con Deep Links -->
         <div class="flex items-center gap-1.5 md:gap-3">
-            <!-- 1. Email -->
+            <!-- Costos / Precios (NUEVO ATAJO) -->
+            <button onclick="app.enterWorkspace('precios')" title="Ver Costos y Precios" class="text-brand-green hover:bg-brand-green hover:text-white bg-green-50 border border-green-200 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-solid fa-tags text-base md:text-lg"></i>
+                <span class="hidden lg:inline font-bold text-sm">Costos</span>
+            </button>
+            <!-- Email -->
             <a href="mailto:tu.estrategiapro@gmail.com" title="Enviar Email" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
                 <i class="fa-solid fa-envelope text-base md:text-lg"></i>
-                <span class="hidden xl:inline font-bold text-sm">tu.estrategiapro@gmail.com</span>
+                <span class="hidden lg:inline font-bold text-sm">Email</span>
             </a>
-            
-            <!-- 2. LinkedIn -->
-            <a href="https://www.linkedin.com/company/tu-estratégia-pro/" title="Ver LinkedIn" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-white hover:bg-[#0A66C2] bg-slate-100 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/company/tu-estratégia-pro/" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-white hover:bg-[#0A66C2] bg-slate-100 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
                 <i class="fa-brands fa-linkedin text-base md:text-lg"></i> 
                 <span class="hidden lg:inline font-bold text-sm">LinkedIn</span>
             </a>
-
-            <!-- 3. Perfil de Instagram -->
-            <a href="https://www.instagram.com/tu.estrategiapro/" title="Ver Perfil de Instagram" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-white hover:bg-[#E1306C] bg-slate-100 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
+            <!-- Perfil IG -->
+            <button onclick="app.openIG('profile')" title="Ver Perfil de Instagram" class="text-slate-500 hover:text-white hover:bg-[#E1306C] bg-slate-100 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2">
                 <i class="fa-brands fa-instagram text-base md:text-lg"></i> 
                 <span class="hidden lg:inline font-bold text-sm">Perfil IG</span>
-            </a>
-
-            <!-- 4. Botón de Llamado a la Acción Directo al Chat -->
-            <a href="https://ig.me/m/tu.estrategiapro" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-[11px] md:text-sm transition shadow-md flex items-center gap-1.5 md:gap-2 hover:-translate-y-0.5 whitespace-nowrap">
+            </button>
+            <!-- CTA Directo al Chat -->
+            <button onclick="app.openIG('chat')" class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-[11px] md:text-sm transition shadow-md flex items-center gap-1.5 md:gap-2 hover:-translate-y-0.5 whitespace-nowrap">
                 <i class="fa-regular fa-paper-plane text-base md:text-lg"></i> 
                 <span>Platicar</span>
-            </a>
+            </button>
         </div>
     </nav>
 
-    <!-- El avatar con funcionalidad de minimizar/cerrar -->
     <div id="avatar-container" class="animate-float" style="opacity: 0; pointer-events: none;">
         <div class="speech-bubble" id="avatar-bubble">
-            <!-- Botón Tacha (X) para cerrar el globo de texto -->
             <button onclick="app.closeAvatarText(event)" class="absolute -top-3 -left-3 md:-right-3 md:left-auto bg-red-500 hover:bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs md:text-sm shadow-xl border-2 border-white z-50 transition-transform hover:scale-110" title="Cerrar mensaje">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div id="avatar-text">
                 ¡Hola! Veo que tienes un negocio. ¿Estás ganando dinero de verdad o solo estás sobreviviendo? Dime qué te duele y te lo arreglo.
             </div>
+            <!-- NUEVO: Contenedor para las opciones del Chatbot -->
+            <div id="avatar-choices" class="mt-3 flex flex-col gap-1.5 hidden">
+                <!-- Los botones se insertan aquí con JS -->
+            </div>
         </div>
-        <!-- Contenedor de la foto del avatar. Al hacer clic se vuelve a abrir el globo. -->
         <div class="avatar-img-box cursor-pointer hover:scale-105 transition-transform" onclick="app.openAvatarText(event)" title="Abrir mensajes">
+            <!-- Regresamos a la asesora de negocios latina -->
             <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Asesora de Negocios Latina" class="w-full h-full object-cover">
-            <!-- Punto de notificación rojo (Aparece cuando hay mensaje y el globo está cerrado) -->
             <div id="avatar-dot" class="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white hidden animate-ping-slow"></div>
             <div id="avatar-dot-solid" class="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white hidden"></div>
         </div>
@@ -184,8 +179,7 @@
         <!-- VISTA 1: HOME (EL PITCH DE VENTAS)         -->
         <!-- ========================================== -->
         <div id="view-home" class="app-view custom-scroll bg-slate-50">
-            <!-- pb-48 y md:pb-32 aseguran que haya espacio al fondo para que el scroll libere todo -->
-            <div class="max-w-5xl mx-auto px-5 py-12 md:py-20 w-full pb-48 md:pb-32">
+            <div class="max-w-5xl mx-auto px-5 py-12 md:py-20 w-full pb-64 md:pb-48">
                 
                 <div class="text-center mb-10 md:mb-12 mt-4 md:mt-0">
                     <h1 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight">¿Qué necesita tu negocio hoy?</h1>
@@ -193,7 +187,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Carta 1: Dashboards -->
                     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-brand-blue hover:-translate-y-2 transition cursor-pointer text-center" onclick="app.enterWorkspace('dashboards')">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-100 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 text-xl md:text-2xl"><i class="fa-solid fa-book-journal-whills"></i></div>
                         <h2 class="text-lg md:text-xl font-black mb-3">"Tengo un caos en mi información"</h2>
@@ -201,7 +194,6 @@
                         <button class="w-full bg-brand-blue text-white font-bold py-3 rounded-xl shadow-md">Yo te lo ordeno <i class="fa-solid fa-arrow-right ml-1"></i></button>
                     </div>
 
-                    <!-- Carta 2: Web -->
                     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-brand-green hover:-translate-y-2 transition cursor-pointer text-center" onclick="app.enterWorkspace('web')">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-green-100 text-brand-green rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 text-xl md:text-2xl"><i class="fa-solid fa-laptop-code"></i></div>
                         <h2 class="text-lg md:text-xl font-black mb-3">"Necesito una página para mi negocio"</h2>
@@ -209,7 +201,6 @@
                         <button class="w-full bg-brand-green text-white font-bold py-3 rounded-xl shadow-md">Yo tengo la solución <i class="fa-solid fa-arrow-right ml-1"></i></button>
                     </div>
 
-                    <!-- Carta 3: Redes -->
                     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border-t-4 border-brand-purple hover:-translate-y-2 transition cursor-pointer text-center" onclick="app.enterWorkspace('redes')">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-purple-100 text-brand-purple rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 text-xl md:text-2xl"><i class="fa-solid fa-mobile-screen"></i></div>
                         <h2 class="text-lg md:text-xl font-black mb-3">"Quiero contenido para mis redes"</h2>
@@ -221,7 +212,7 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- VISTA 2: EL WORKSPACE DE EJEMPLOS          -->
+        <!-- VISTA 2: EL WORKSPACE (EJEMPLOS Y PRECIOS) -->
         <!-- ========================================== -->
         <div id="view-workspace" class="app-view bg-slate-200 p-0 md:p-4">
             <div class="w-full h-full max-w-[1400px] mx-auto bg-white md:rounded-2xl shadow-xl flex flex-col overflow-hidden md:border border-slate-300">
@@ -232,29 +223,127 @@
                     <button onclick="app.setCategory('dashboards')" id="nav-cat-dashboards" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-slate-800">1. Dashboards</button>
                     <button onclick="app.setCategory('web')" id="nav-cat-web" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-slate-800">2. Páginas Web</button>
                     <button onclick="app.setCategory('redes')" id="nav-cat-redes" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-slate-800">3. Redes Sociales</button>
+                    <button onclick="app.setCategory('precios')" id="nav-cat-precios" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-slate-800 text-brand-green border border-brand-green/30 bg-brand-green/10">4. Precios</button>
                 </div>
 
-                <!-- SUB-MENU (Los 3 ejemplos de la categoría activa) -->
-                <div class="bg-slate-50 border-b border-slate-200 p-2 md:p-3 flex justify-center gap-1 md:gap-2 flex-wrap" id="sub-menu-container">
-                    <!-- Se llena dinámicamente con JS -->
-                </div>
-
-                <!-- CONTROLES (Antes y Después) -->
-                <div class="p-3 md:p-4 border-b border-slate-200 flex justify-center bg-white shadow-sm z-20">
-                    <div class="toggle-switch w-full max-w-md">
-                        <button onclick="app.setState('before')" id="btn-state-before" class="toggle-btn before-active"><i class="fa-solid fa-triangle-exclamation"></i> <span>Tu Realidad (El Caos)</span></button>
-                        <button onclick="app.setState('after')" id="btn-state-after" class="toggle-btn"><i class="fa-solid fa-check-double"></i> <span>Mi Solución (El Orden)</span></button>
+                <!-- CONTROLES (Antes y Después) - Se ocultan en la vista de Precios -->
+                <div id="workspace-controls">
+                    <div class="bg-slate-50 border-b border-slate-200 p-2 md:p-3 flex justify-center gap-1 md:gap-2 flex-wrap" id="sub-menu-container">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                    <div class="p-3 md:p-4 border-b border-slate-200 flex justify-center bg-white shadow-sm z-20">
+                        <div class="toggle-switch w-full max-w-md">
+                            <button onclick="app.setState('before')" id="btn-state-before" class="toggle-btn before-active"><i class="fa-solid fa-triangle-exclamation"></i> <span>Tu Realidad (El Caos)</span></button>
+                            <button onclick="app.setState('after')" id="btn-state-after" class="toggle-btn"><i class="fa-solid fa-check-double"></i> <span>Mi Solución (El Orden)</span></button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- CONTENEDOR DE CONTENIDO (Aquí aplicamos min-h-0 para que Flexbox permita scroll) -->
+                <!-- CONTENEDOR DE CONTENIDO -->
                 <div class="flex-1 bg-slate-100 relative custom-scroll min-h-0 pb-20">
 
                     <!-- ======================================================== -->
-                    <!-- CATEGORÍA 1: DASHBOARDS (ORDEN) -->
+                    <!-- CATEGORÍA 4: PRECIOS (NUEVO) -->
                     <!-- ======================================================== -->
+                    <div id="cat-precios" class="category-group hidden">
+                        <div id="content-precios-planes-before" class="content-panel active bg-slate-50 items-center py-10 md:py-16">
+                            
+                            <div class="max-w-5xl w-full mx-auto px-2">
+                                <div class="text-center mb-10 md:mb-12">
+                                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">Soluciones e Inversión <span class="text-brand-blue">Transparente</span></h2>
+                                    <p class="text-slate-600 max-w-2xl mx-auto font-medium text-sm md:text-base">Precios base claros para proyectos ágiles. Cotizaciones formalizadas según el volumen de datos e infraestructura de tu negocio.</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
+                                    
+                                    <!-- Plan 1 -->
+                                    <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-6 flex flex-col hover:shadow-lg transition">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600"><i class="fa-solid fa-chart-simple"></i></div>
+                                            <h3 class="font-black text-xl text-slate-800">Dashboard Operativo</h3>
+                                        </div>
+                                        <p class="text-3xl font-black text-brand-blue mb-2"><span class="text-lg text-slate-500 font-bold">Desde</span> $4,000 <span class="text-sm font-normal text-slate-500">MXN</span></p>
+                                        <p class="text-xs text-slate-500 font-bold uppercase mb-4 tracking-wider">Pago único de implementación</p>
+                                        <p class="text-sm text-slate-700 mb-6 flex-1"><strong>Enfoque:</strong> Erradicación del desorden en hojas de cálculo y monitoreo de un proceso crítico del negocio.</p>
+                                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Integración de 1 archivo centralizado (Excel/Sheets/CSV).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Hasta 4 KPIs en tiempo real.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Filtros interactivos básicos.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Interfaz responsiva (Móvil y PC).</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">Cotizar Dashboard <i class="fa-brands fa-instagram text-brand-blue"></i></button>
+                                    </div>
+
+                                    <!-- Plan 2 (Recomendado) -->
+                                    <div class="bg-white rounded-2xl shadow-xl border-2 border-brand-blue p-6 flex flex-col relative transform md:-translate-y-4">
+                                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-brand-blue text-white px-4 py-1 rounded-full text-xs font-bold shadow-md uppercase tracking-wide">Recomendado - Dirección</div>
+                                        <div class="flex items-center gap-3 mb-4 mt-2">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue"><i class="fa-solid fa-chess-knight"></i></div>
+                                            <h3 class="font-black text-xl text-slate-800">Centro de Mando Integral</h3>
+                                        </div>
+                                        <p class="text-4xl font-black text-brand-blue mb-2"><span class="text-xl text-slate-500 font-bold">Desde</span> $9,500 <span class="text-sm font-normal text-slate-500">MXN</span></p>
+                                        <p class="text-xs text-slate-500 font-bold uppercase mb-4 tracking-wider">Pago único de implementación</p>
+                                        <p class="text-sm text-slate-700 mb-6 flex-1"><strong>Enfoque:</strong> Cabina de control directivo multisección para gobernar las áreas neurálgicas de la empresa en una sola pantalla.</p>
+                                        <ul class="space-y-3 text-sm text-slate-600 mb-8 font-medium">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Integración de 2 a 4 áreas operativas (Ventas, Inventario, Flujo).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Semáforos y alertas automáticas.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Tableros comparativos vs. metas.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Exportación para juntas directivas.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-brand-blue hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 hover:-translate-y-1">Solicitar Centro de Mando <i class="fa-brands fa-instagram"></i></button>
+                                    </div>
+
+                                    <!-- Plan 3 -->
+                                    <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-6 flex flex-col hover:shadow-lg transition">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-brand-green"><i class="fa-solid fa-laptop-code"></i></div>
+                                            <h3 class="font-black text-xl text-slate-800">Desarrollo Web UI/UX</h3>
+                                        </div>
+                                        <p class="text-3xl font-black text-brand-green mb-2"><span class="text-lg text-slate-500 font-bold">Desde</span> $5,000 <span class="text-sm font-normal text-slate-500">MXN</span></p>
+                                        <p class="text-xs text-slate-500 font-bold uppercase mb-4 tracking-wider">Pago único</p>
+                                        <p class="text-sm text-slate-700 mb-6 flex-1"><strong>Enfoque:</strong> Presencia corporativa moderna diseñada para generar autoridad y captar prospectos calificados B2B.</p>
+                                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Arquitectura web rápida y adaptable a celulares.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Secciones estratégicas (Propuesta, Catálogo, Contacto).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Botones a WhatsApp y formularios.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Optimización SEO local básica.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">Iniciar Proyecto Web <i class="fa-brands fa-instagram text-brand-green"></i></button>
+                                    </div>
+
+                                    <!-- Plan 4 -->
+                                    <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-6 flex flex-col hover:shadow-lg transition">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-brand-purple"><i class="fa-solid fa-bullhorn"></i></div>
+                                            <h3 class="font-black text-xl text-slate-800">Presencia B2B</h3>
+                                        </div>
+                                        <p class="text-3xl font-black text-brand-purple mb-2"><span class="text-lg text-slate-500 font-bold">Desde</span> $4,000 <span class="text-sm font-normal text-slate-500">MXN / mes</span></p>
+                                        <p class="text-xs text-slate-500 font-bold uppercase mb-4 tracking-wider">Póliza Mensual</p>
+                                        <p class="text-sm text-slate-700 mb-6 flex-1"><strong>Enfoque:</strong> Posicionamiento de marca y autoridad digital frente a tomadores de decisiones en LinkedIn e Instagram.</p>
+                                        <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Calendario estratégico (8 a 12 posts mensuales).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Redacción B2B y diseño de alta gama.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Optimización de perfiles (LinkedIn/IG).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Reporte mensual de métricas de crecimiento.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">Contratar Póliza B2B <i class="fa-brands fa-instagram text-brand-purple"></i></button>
+                                    </div>
+
+                                </div>
+
+                                <!-- Banner Footer: Desarrollos a la medida -->
+                                <div class="bg-slate-900 rounded-2xl p-6 md:p-10 text-center text-white shadow-xl relative overflow-hidden mt-4">
+                                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-blue rounded-full opacity-20 blur-3xl"></div>
+                                    <h3 class="text-2xl md:text-3xl font-black mb-3 relative z-10">¿Necesitas un "Traje a la Medida"?</h3>
+                                    <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto mb-6 relative z-10">Comunícate con nosotros. Si tu empresa requiere integraciones más grandes, desarrollo de software interno o algo muy específico, evaluamos tu caso y te hacemos un traje a la medida.</p>
+                                    <button onclick="app.openIG('chat')" class="bg-brand-blue text-white px-6 py-3.5 rounded-xl font-bold text-sm hover:scale-105 hover:bg-blue-600 transition shadow-lg relative z-10 inline-flex items-center gap-2"><i class="fa-regular fa-paper-plane text-lg"></i> Comunícate con nosotros</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="cat-dashboards" class="category-group hidden">
-                        
                         <!-- Ejemplo 1: Ventas -->
                         <div id="content-dashboards-ventas-before" class="content-panel items-center py-10 bg-[url('https://www.transparenttextures.com/patterns/notebook.png')] bg-yellow-50">
                             <div class="bg-white p-6 rounded shadow-xl rotate-[-2deg] border-2 border-slate-300 w-full max-w-lg messy-font mx-auto my-auto">
@@ -396,11 +485,7 @@
                         </div>
                     </div>
 
-                    <!-- ======================================================== -->
-                    <!-- CATEGORÍA 2: WEB (MAQUINAS DE VENTA) -->
-                    <!-- ======================================================== -->
                     <div id="cat-web" class="category-group hidden">
-                        
                         <!-- Ejemplo 1: Tienda Online -->
                         <div id="content-web-tienda-before" class="content-panel items-center py-10 px-2 md:px-4">
                             <div class="w-full max-w-xl bg-gray-200 border border-gray-400 rounded p-4 font-serif text-center shadow-lg mx-auto my-auto overflow-hidden">
@@ -537,19 +622,18 @@
 
                     </div>
 
-                    <!-- ======================================================== -->
-                    <!-- CATEGORÍA 3: REDES (CONTENIDO Y ADS) -->
-                    <!-- ======================================================== -->
                     <div id="cat-redes" class="category-group hidden">
-                        
                         <div class="w-full flex justify-center py-3 md:py-4 bg-white border-b border-slate-200 shadow-sm sticky top-0 z-10">
                             <i class="fa-brands fa-facebook text-2xl md:text-3xl text-blue-600"></i>
+                        </div>
+                        
+                        <div id="content-redes-anuncios-before" class="content-panel items-center py-6 md:py-10 bg-slate-50">
+                            <div class="text-center font-bold text-red-500 my-auto">Tu competencia está vendiendo, tú sigues dando "Like". <br> Cambia la vista a "Mi Solución".</div>
                         </div>
                         
                         <div id="content-redes-anuncios-after" class="content-panel items-center py-6 md:py-10 bg-slate-50">
                             <div class="bg-white w-full max-w-4xl rounded-2xl shadow-xl border border-slate-200 p-4 md:p-6 flex flex-col md:flex-row gap-6 md:gap-8 items-center mx-auto">
                                 
-                                <!-- Mockup de Anuncio de Instagram Realista -->
                                 <div class="w-full max-w-[280px] md:max-w-[300px] bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg flex-shrink-0 mx-auto">
                                     <div class="p-2.5 md:p-3 flex items-center justify-between">
                                         <div class="flex items-center gap-2">
@@ -580,7 +664,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Analíticas y Resultados -->
                                 <div class="flex-1 flex flex-col justify-center w-full">
                                     <div class="flex items-center gap-2 md:gap-3 mb-2">
                                         <i class="fa-solid fa-bullseye text-xl md:text-2xl text-brand-blue"></i>
@@ -719,7 +802,6 @@
                 const logo = document.getElementById('splash-logo');
                 const logoFallback = document.getElementById('splash-logo-fallback');
                 
-                // Mostrar Logo suavemente
                 setTimeout(() => { 
                     if(logo) logo.classList.add('show'); 
                     if(logoFallback) logoFallback.style.opacity = '1';
@@ -809,75 +891,39 @@
         const state = {
             view: '', 
             category: 'dashboards',
-            subs: {
-                dashboards: 'ventas',
-                web: 'tienda',
-                redes: 'anuncios'
-            },
+            subs: { dashboards: 'ventas', web: 'tienda', redes: 'anuncios', precios: 'planes' },
             beforeAfter: 'before',
-            avatarClosed: false // Controla si el usuario ocultó el globo de texto
+            avatarClosed: false 
         };
 
         const categoriesData = {
-            dashboards: [
-                { id: 'ventas', name: 'Ventas' },
-                { id: 'gastos', name: 'Gastos' },
-                { id: 'inventario', name: 'Stock' }
-            ],
-            web: [
-                { id: 'tienda', name: 'Tienda' },
-                { id: 'landing', name: 'Landing' },
-                { id: 'servicios', name: 'Corporativa' }
-            ],
-            redes: [
-                { id: 'anuncios', name: 'Ads' },
-                { id: 'reels', name: 'Reels' },
-                { id: 'contenido', name: 'Posts' }
-            ]
+            dashboards: [ { id: 'ventas', name: 'Ventas' }, { id: 'gastos', name: 'Gastos' }, { id: 'inventario', name: 'Stock' } ],
+            web: [ { id: 'tienda', name: 'Tienda' }, { id: 'landing', name: 'Landing' }, { id: 'servicios', name: 'Corporativa' } ],
+            redes: [ { id: 'anuncios', name: 'Ads' }, { id: 'reels', name: 'Reels' }, { id: 'contenido', name: 'Posts' } ],
+            precios: [ { id: 'planes', name: 'Planes' } ] // Dummy sub-tab interna
         };
 
         const avatarCopy = {
             home: "¡Hola! Veo que tienes un negocio. ¿Estás ganando dinero de verdad o solo estás sobreviviendo? <strong>Dime qué te duele y te lo arreglo.</strong>",
             dashboards: {
-                ventas: {
-                    before: "❌ <strong>¡Mírate!</strong> Usando libretas y Excels rotos. Así es IMPOSIBLE saber si este mes ganaste dinero o si solo estás cambiando billetes. Es un peligro.",
-                    after: "✅ <strong>¡PUM! Entras a tu celular y ves esto.</strong> Tus ventas reales, ganancia libre al centavo y lo que te deben. Toma decisiones rápidas y deja de estresarte."
-                },
-                gastos: {
-                    before: "❌ Tienes los tickets del súper mezclados con los de la empresa en una caja de zapatos. <strong>'¿Dónde quedó el dinero?'</strong> te preguntas cada viernes.",
-                    after: "✅ Todo clasificado en automático. Sabes exactamente <strong>cuánto te cuesta operar</strong> y dónde puedes recortar para que te sobre más dinero a fin de mes."
-                },
-                inventario: {
-                    before: "❌ 'Creo que quedan 5 en bodega'... Le vendes a un cliente, te paga y resulta que ya no hay. <strong>Quedas súper mal</strong> y pierdes dinero.",
-                    after: "✅ El sistema inteligente te avisa antes de que se acabe. Sabes qué producto es el que más te deja dinero y <strong>cuál está acumulando polvo.</strong>"
-                }
+                ventas: { before: "❌ <strong>¡Mírate!</strong> Usando libretas y Excels rotos. Así es IMPOSIBLE saber si este mes ganaste dinero o si solo estás cambiando billetes. Es un peligro.", after: "✅ <strong>¡PUM! Entras a tu celular y ves esto.</strong> Tus ventas reales, ganancia libre al centavo y lo que te deben. Toma decisiones rápidas y deja de estresarte." },
+                gastos: { before: "❌ Tienes los tickets del súper mezclados con los de la empresa en una caja de zapatos. <strong>'¿Dónde quedó el dinero?'</strong> te preguntas cada viernes.", after: "✅ Todo clasificado en automático. Sabes exactamente <strong>cuánto te cuesta operar</strong> y dónde puedes recortar para que te sobre más dinero a fin de mes." },
+                inventario: { before: "❌ 'Creo que quedan 5 en bodega'... Le vendes a un cliente, te paga y resulta que ya no hay. <strong>Quedas súper mal</strong> y pierdes dinero.", after: "✅ El sistema inteligente te avisa antes de que se acabe. Sabes qué producto es el que más te deja dinero y <strong>cuál está acumulando polvo.</strong>" }
             },
             web: {
-                tienda: {
-                    before: "❌ <strong>Esa página vieja espanta a la gente.</strong> Entran, creen que los vas a estafar o que ya cerraste el negocio y se van con tu competencia.",
-                    after: "✅ <strong>Una tienda online que da confianza inmediata.</strong> La gente entra, confía, pone su tarjeta a las 3 de la mañana y tú solo te encargas de enviar."
-                },
-                landing: {
-                    before: "❌ Mandas a la gente a un formulario de Google larguísimo y feo. <strong>Nadie te deja sus datos</strong> porque se ve súper amateur y desesperado.",
-                    after: "✅ <strong>Páginas diseñadas con psicología.</strong> Ofreces algo de valor, el cliente deja su WhatsApp contento y tú tienes un prospecto caliente listo para comprar."
-                },
-                servicios: {
-                    before: "❌ A nadie le importa tu 'Misión y Visión' de 5 párrafos. El cliente se aburre a los 3 segundos de leer eso y <strong>cierra la pestaña.</strong>",
-                    after: "✅ <strong>Vas directo al grano.</strong> Le dices qué problema resuelves, muestras garantías y testimonios. El cliente lee y dice: 'Toma mi dinero'."
-                }
+                tienda: { before: "❌ <strong>Esa página vieja espanta a la gente.</strong> Entran, creen que los vas a estafar o que ya cerraste el negocio y se van con tu competencia.", after: "✅ <strong>Una tienda online que da confianza inmediata.</strong> La gente entra, confía, pone su tarjeta a las 3 de la mañana y tú solo te encargas de enviar." },
+                landing: { before: "❌ Mandas a la gente a un formulario de Google larguísimo y feo. <strong>Nadie te deja sus datos</strong> porque se ve súper amateur y desesperado.", after: "✅ <strong>Páginas diseñadas con psicología.</strong> Ofreces algo de valor, el cliente deja su WhatsApp contento y tú tienes un prospecto caliente listo para comprar." },
+                servicios: { before: "❌ A nadie le importa tu 'Misión y Visión' de 5 párrafos. El cliente se aburre a los 3 segundos de leer eso y <strong>cierra la pestaña.</strong>", after: "✅ <strong>Vas directo al grano.</strong> Le dices qué problema resuelves, muestras garantías y testimonios. El cliente lee y dice: 'Toma mi dinero'." }
             },
             redes: {
-                anuncios: {
-                    before: "❌ Gastar en el botón de 'Promocionar' para que le den Like tus tías NO es hacer marketing. <strong>Estás regalándole dinero a Facebook.</strong>",
-                    after: "✅ Campañas de ataque. Inviertes dinero y te regresan clientes. <strong>Tu WhatsApp no dejará de sonar</strong> con gente preguntando 'Dónde deposito'."
-                },
-                reels: {
-                    before: "❌ Subes videos aburridos mostrando tus productos como diapositivas. <strong>Tienes 12 vistas</strong> y cero ventas. Qué triste.",
-                    after: "✅ Hooks (ganchos) visuales que captan la atención en los primeros 2 segundos. Contenido dinámico que <strong>educa y vende sin parecer comercial.</strong>"
-                },
-                contenido: {
-                    before: "❌ Subir una imagen diciendo 'Feliz Lunes' no sirve de nada. <strong>No demuestra que sabes de lo que hablas.</strong>",
-                    after: "✅ Casos de éxito reales y posts educativos. Cuando tu cliente lea esto dirá: <strong>'Ellos son los expertos, quiero contratarlos'.</strong>"
+                anuncios: { before: "❌ Gastar en el botón de 'Promocionar' para que le den Like tus tías NO es hacer marketing. <strong>Estás regalándole dinero a Facebook.</strong>", after: "✅ Campañas de ataque. Inviertes dinero y te regresan clientes. <strong>Tu WhatsApp no dejará de sonar</strong> con gente preguntando 'Dónde deposito'." },
+                reels: { before: "❌ Subes videos aburridos mostrando tus productos como diapositivas. <strong>Tienes 12 vistas</strong> y cero ventas. Qué triste.", after: "✅ Hooks (ganchos) visuales que captan la atención en los primeros 2 segundos. Contenido dinámico que <strong>educa y vende sin parecer comercial.</strong>" },
+                contenido: { before: "❌ Subir una imagen diciendo 'Feliz Lunes' no sirve de nada. <strong>No demuestra que sabes de lo que hablas.</strong>", after: "✅ Casos de éxito reales y posts educativos. Cuando tu cliente lea esto dirá: <strong>'Ellos son los expertos, quiero contratarlos'.</strong>" }
+            },
+            precios: {
+                planes: {
+                    before: "Aquí tienes la inversión sobre la mesa. <strong>Sin costos ocultos ni sorpresas.</strong> Revisa qué solución se ajusta a la urgencia actual de tu negocio y mándame un mensaje.",
+                    after: "Aquí tienes la inversión sobre la mesa. <strong>Sin costos ocultos ni sorpresas.</strong> Revisa qué solución se ajusta a la urgencia actual de tu negocio y mándame un mensaje."
                 }
             }
         };
@@ -895,7 +941,29 @@
                 avatarContainer.style.pointerEvents = 'auto';
             },
 
-            // Funciones de control del Avatar
+            // --- NUEVO: FUNCIÓN DE DEEP LINKING PARA INSTAGRAM ---
+            openIG: function(action) {
+                const username = 'tu.estrategiapro';
+                // Detectar si el usuario está en celular (iOS o Android)
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                
+                let appUrl = `instagram://user?username=${username}`; // Esquema nativo genérico
+                let webUrl = action === 'chat' ? `https://ig.me/m/${username}` : `https://instagram.com/${username}`;
+
+                if (isMobile) {
+                    // Intenta forzar la apertura de la app instalada
+                    window.location.href = appUrl;
+                    
+                    // Si el sistema no reconoce el esquema (no tiene la app) lo mandamos a la web tras 1 segundo
+                    setTimeout(function () {
+                        window.location.href = webUrl;
+                    }, 1000);
+                } else {
+                    // Si está en Computadora, abre la pestaña normal
+                    window.open(webUrl, '_blank');
+                }
+            },
+
             closeAvatarText: function(e) {
                 if(e) e.stopPropagation();
                 state.avatarClosed = true;
@@ -920,7 +988,6 @@
                 avatarBox.style.transform = 'scale(1.05)';
                 setTimeout(() => { avatarBox.style.transform = 'scale(1)'; }, 200);
 
-                // Si el avatar estaba cerrado y hay un nuevo mensaje, alertamos visualmente
                 if(state.avatarClosed) {
                     document.getElementById('avatar-dot').classList.remove('hidden');
                     document.getElementById('avatar-dot-solid').classList.remove('hidden');
@@ -951,33 +1018,60 @@
                 document.getElementById(`view-${viewId}`).classList.add('active');
                 
                 if(viewId === 'home') {
-                    this.updateAvatar(avatarCopy.home);
+                    // Chatbot: Opciones principales (Menú de Asistencia)
+                    const homeChoices = [
+                        { text: "📊 Tengo un caos financiero", action: () => this.enterWorkspace('dashboards') },
+                        { text: "🌐 Necesito una página web", action: () => this.enterWorkspace('web') },
+                        { text: "📱 Mis redes no venden", action: () => this.enterWorkspace('redes') },
+                        { text: "💰 ¿Cuánto cuestan sus servicios?", action: () => this.enterWorkspace('precios') },
+                        { text: "💬 Platicar con un experto", action: () => this.openIG('chat'), highlight: true }
+                    ];
+                    this.updateAvatar(avatarCopy.home, homeChoices);
                 }
             },
 
             setCategory: function(catId) {
                 state.category = catId;
                 
-                ['dashboards', 'web', 'redes'].forEach(id => {
+                // Actualizar menú superior
+                ['dashboards', 'web', 'redes', 'precios'].forEach(id => {
                     const btn = document.getElementById(`nav-cat-${id}`);
                     if(btn) {
                         btn.classList.toggle('bg-slate-800', id === catId);
                         btn.classList.toggle('text-white', id === catId);
+                        
+                        // Quitar borde verde si no estamos en Precios
+                        if(id === 'precios') {
+                            btn.classList.toggle('bg-brand-green/10', id !== catId);
+                            btn.classList.toggle('text-brand-green', id !== catId);
+                        }
                     }
                 });
 
+                // Controlar visibilidad del Toggle "Antes/Después" (Se oculta en Precios)
+                const controlsArea = document.getElementById('workspace-controls');
+                if(catId === 'precios') {
+                    controlsArea.style.display = 'none';
+                } else {
+                    controlsArea.style.display = 'block';
+                }
+
+                // Ocultar todas las categorías y mostrar la activa
                 document.querySelectorAll('.category-group').forEach(el => el.classList.add('hidden'));
                 document.getElementById(`cat-${catId}`).classList.remove('hidden');
 
-                const subMenuContainer = document.getElementById('sub-menu-container');
-                subMenuContainer.innerHTML = '';
-                categoriesData[catId].forEach(sub => {
-                    const btn = document.createElement('button');
-                    btn.className = `sub-tab-btn`;
-                    btn.innerText = sub.name;
-                    btn.onclick = () => this.setSub(sub.id);
-                    subMenuContainer.appendChild(btn);
-                });
+                // Si no es precios, llenar el sub-menú (pestañas)
+                if(catId !== 'precios') {
+                    const subMenuContainer = document.getElementById('sub-menu-container');
+                    subMenuContainer.innerHTML = '';
+                    categoriesData[catId].forEach(sub => {
+                        const btn = document.createElement('button');
+                        btn.className = `sub-tab-btn`;
+                        btn.innerText = sub.name;
+                        btn.onclick = () => this.setSub(sub.id);
+                        subMenuContainer.appendChild(btn);
+                    });
+                }
 
                 this.setSub(categoriesData[catId][0].id);
             },
@@ -985,19 +1079,25 @@
             setSub: function(subId) {
                 state.subs[state.category] = subId;
                 
-                const btns = document.getElementById('sub-menu-container').children;
-                for(let i=0; i<btns.length; i++) {
-                    btns[i].classList.toggle('active', categoriesData[state.category][i].id === subId);
+                if(state.category !== 'precios') {
+                    const btns = document.getElementById('sub-menu-container').children;
+                    for(let i=0; i<btns.length; i++) {
+                        btns[i].classList.toggle('active', categoriesData[state.category][i].id === subId);
+                    }
+                    this.setState('before'); 
+                } else {
+                    // Para precios siempre renderiza el "before" (única vista)
+                    this.setState('before');
                 }
-
-                this.setState('before'); 
             },
 
             setState: function(beforeAfter) {
                 state.beforeAfter = beforeAfter;
                 
-                document.getElementById('btn-state-before').classList.toggle('before-active', beforeAfter === 'before');
-                document.getElementById('btn-state-after').classList.toggle('after-active', beforeAfter === 'after');
+                if(state.category !== 'precios') {
+                    document.getElementById('btn-state-before').classList.toggle('before-active', beforeAfter === 'before');
+                    document.getElementById('btn-state-after').classList.toggle('after-active', beforeAfter === 'after');
+                }
 
                 this.renderContent();
             },
@@ -1014,18 +1114,71 @@
                 if(targetPanel) targetPanel.classList.add('active');
 
                 const speechText = avatarCopy[cat][sub][ba];
-                this.updateAvatar(speechText);
+                
+                // Chatbot: Opciones contextuales dependiendo de dónde esté el usuario
+                let contextChoices = [];
+                
+                if(cat === 'precios') {
+                    contextChoices = [
+                        { text: "💬 Cotizar mi proyecto", action: () => this.openIG('chat'), highlight: true },
+                        { text: "↩️ Regresar al menú", action: () => this.setMainView('home') }
+                    ];
+                } else if(ba === 'before') {
+                    contextChoices = [
+                        { text: "✅ Ver cómo lo solucionas", action: () => this.setState('after'), highlight: true }
+                    ];
+                } else {
+                    contextChoices = [
+                        { text: "💬 Me interesa esto", action: () => this.openIG('chat'), highlight: true },
+                        { text: "↩️ Ver otras soluciones", action: () => this.setMainView('home') }
+                    ];
+                }
+
+                this.updateAvatar(speechText, contextChoices);
 
                 if(cat === 'dashboards' && ba === 'after') {
                     setTimeout(() => this.drawCharts(sub), 50);
                 }
             },
 
+            updateAvatar: function(text, choices = []) {
+                const bubble = document.getElementById('avatar-text');
+                bubble.innerHTML = text;
+                
+                // NUEVO: Renderizar botones del Chatbot
+                const choicesContainer = document.getElementById('avatar-choices');
+                choicesContainer.innerHTML = ''; // Limpiar botones anteriores
+                
+                if (choices && choices.length > 0) {
+                    choicesContainer.classList.remove('hidden');
+                    choices.forEach(choice => {
+                        const btn = document.createElement('button');
+                        // Estilos diferentes si es un botón resaltado (Llamado a la acción) o normal
+                        btn.className = `w-full text-left text-[11px] md:text-[13px] font-bold py-2 px-3 rounded-lg transition-all border ${choice.highlight ? 'bg-brand-blue text-white border-brand-blue shadow-md hover:bg-blue-600' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-200'}`;
+                        btn.innerHTML = choice.text;
+                        btn.onclick = (e) => {
+                            e.stopPropagation(); // Evita que se cierre el avatar por error
+                            if(choice.action) choice.action();
+                        };
+                        choicesContainer.appendChild(btn);
+                    });
+                } else {
+                    choicesContainer.classList.add('hidden');
+                }
+                
+                const avatarBox = document.getElementById('avatar-container');
+                avatarBox.style.transform = 'scale(1.05)';
+                setTimeout(() => { avatarBox.style.transform = 'scale(1)'; }, 200);
+
+                if(state.avatarClosed) {
+                    document.getElementById('avatar-dot').classList.remove('hidden');
+                    document.getElementById('avatar-dot-solid').classList.remove('hidden');
+                }
+            },
+
             drawCharts: function(subId) {
                 const safeContext = (id) => {
-                    if(chartInstances[id]) {
-                        chartInstances[id].destroy(); 
-                    }
+                    if(chartInstances[id]) { chartInstances[id].destroy(); }
                     const canvas = document.getElementById(id);
                     return canvas ? canvas.getContext('2d') : null;
                 };
@@ -1034,34 +1187,19 @@
 
                 if(subId === 'ventas') {
                     const ctx = safeContext('chart-d-ventas');
-                    if(ctx) chartInstances['chart-d-ventas'] = new Chart(ctx, {
-                        type: 'line',
-                        data: { labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'], datasets: [{ label: 'Ventas ($)', data: [1500, 2200, 1800, 3100, 4500, 4200], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true, tension: 0.3 }] },
-                        options: { ...commonOptions, scales: { y: { beginAtZero: true } } }
-                    });
+                    if(ctx) chartInstances['chart-d-ventas'] = new Chart(ctx, { type: 'line', data: { labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'], datasets: [{ label: 'Ventas ($)', data: [1500, 2200, 1800, 3100, 4500, 4200], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true, tension: 0.3 }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } });
                 }
                 else if(subId === 'gastos') {
                     const ctx = safeContext('chart-d-gastos');
-                    if(ctx) chartInstances['chart-d-gastos'] = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: { labels: ['Mercancía', 'Nómina', 'Servicios', 'Marketing'], datasets: [{ data: [45, 30, 15, 10], backgroundColor: ['#ef4444', '#f59e0b', '#64748b', '#3b82f6'], borderWidth: 0 }] },
-                        options: { ...commonOptions, cutout: '65%' }
-                    });
+                    if(ctx) chartInstances['chart-d-gastos'] = new Chart(ctx, { type: 'doughnut', data: { labels: ['Mercancía', 'Nómina', 'Servicios', 'Marketing'], datasets: [{ data: [45, 30, 15, 10], backgroundColor: ['#ef4444', '#f59e0b', '#64748b', '#3b82f6'], borderWidth: 0 }] }, options: { ...commonOptions, cutout: '65%' } });
                 }
                 else if(subId === 'inventario') {
                     const ctx = safeContext('chart-d-inventario');
-                    if(ctx) chartInstances['chart-d-inventario'] = new Chart(ctx, {
-                        type: 'bar',
-                        data: { labels: ['Prod A', 'Prod B', 'Prod C'], datasets: [{ label: 'Stock Actual', data: [85, 40, 12], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], borderRadius: 4 }] },
-                        options: { ...commonOptions, indexAxis: 'y', plugins: { legend: { display: false } } }
-                    });
+                    if(ctx) chartInstances['chart-d-inventario'] = new Chart(ctx, { type: 'bar', data: { labels: ['Prod A', 'Prod B', 'Prod C'], datasets: [{ label: 'Stock Actual', data: [85, 40, 12], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], borderRadius: 4 }] }, options: { ...commonOptions, indexAxis: 'y', plugins: { legend: { display: false } } } });
                 }
             }
         };
 
-        // ==========================================
-        // ARRANQUE DIRECTO
-        // ==========================================
         splashAnimation.init(() => {
             app.init();
         });
