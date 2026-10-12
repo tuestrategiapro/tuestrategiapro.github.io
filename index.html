@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Estrategia Pro | Ayuda para Emprendedores</title>
+    <title>Estrategia Pro | Agencia de Negocios</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,13 +11,11 @@
             theme: {
                 extend: {
                     colors: {
-                        slate: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#020617' },
-                        brand: { blue: '#2563eb', green: '#10b981', purple: '#8b5cf6', red: '#ef4444', yellow: '#f59e0b', cyan: '#06b6d4' }
+                        brand: { blue: '#2563eb', green: '#10b981', purple: '#8b5cf6', cyan: '#06b6d4', yellow: '#f59e0b' }
                     },
                     fontFamily: { sans: ['Inter', 'sans-serif'], comic: ['Comic Sans MS', 'cursive'] },
                     animation: {
                         'float': 'float 4s ease-in-out infinite',
-                        'bounce-slow': 'bounce 3s infinite',
                         'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
                         'blob': 'blob 15s infinite alternate',
                     },
@@ -41,77 +39,54 @@
 
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f1f5f9; color: #0f172a; overflow: hidden; height: 100vh; height: 100dvh; width: 100vw; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f8fafc; color: #0f172a; overflow: hidden; height: 100vh; height: 100dvh; width: 100vw; }
         
         .custom-scroll { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(148, 163, 184, 0.5) transparent; -webkit-overflow-scrolling: touch; }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: rgba(148, 163, 184, 0.6); border-radius: 10px; }
 
-        /* Vistas de la App */
         #app-wrapper { position: relative; width: 100%; height: calc(100vh - 70px); height: calc(100dvh - 70px); margin-top: 70px; }
         .app-view { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.4s ease-in-out; display: flex; flex-direction: column; }
         .app-view.active { opacity: 1; pointer-events: auto; z-index: 10; }
 
-        /* Cristal Claro (Tarjetas y Menús) */
+        /* Cristal Claro (Glasmorfismo Premium) */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-top: 1px solid rgba(255, 255, 255, 0.8); /* Brillo de luz superior */
-            border-left: 1px solid rgba(255, 255, 255, 0.8); /* Brillo de luz lateral */
+            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-top: 1px solid rgba(255, 255, 255, 0.8); border-left: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
         }
         
-        /* Cristal Oscuro (Banner Final y Reales) */
+        /* Cristal Oscuro */
         .glass-panel-dark {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         }
 
-        /* Sub-pestañas en el Workspace */
         .sub-tab-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; color: #64748b; background: transparent; transition: all 0.2s; border: 1px solid transparent; }
         @media (min-width: 768px) { .sub-tab-btn { padding: 8px 16px; font-size: 13px; } }
         .sub-tab-btn.active { background: rgba(255, 255, 255, 0.7); color: #2563eb; border-color: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
-        /* Toggle Button Antes/Después */
         .toggle-switch { display: flex; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); border-radius: 12px; padding: 4px; gap: 4px; border: 1px solid rgba(255,255,255,0.6); }
         .toggle-btn { flex: 1; padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; color: #64748b; cursor: pointer; transition: all 0.3s; text-align: center; border: 2px solid transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; gap: 2px;}
         @media (min-width: 768px) { .toggle-btn { padding: 10px 20px; font-size: 14px; flex-direction: row; gap: 6px; } }
         .toggle-btn.before-active { background: rgba(254, 226, 226, 0.85); color: #b91c1c; border-color: #fca5a5; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2); }
         .toggle-btn.after-active { background: rgba(255, 255, 255, 0.95); color: #16a34a; border-color: #86efac; box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2); }
 
-        /* Contenido Dinámico */
         .content-panel { display: none; width: 100%; min-height: 100%; height: max-content; padding: 15px; flex-direction: column; justify-content: flex-start; }
         @media (min-width: 768px) { .content-panel { padding: 20px; } }
         .content-panel.active { display: flex; }
 
+        /* Controles Avatar Chatbot */
         #avatar-container { position: fixed; bottom: 15px; right: 15px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-width: 90vw; transition: opacity 0.3s, transform 0.3s; }
         @media (min-width: 768px) { #avatar-container { bottom: 20px; right: 20px; max-width: 320px; gap: 10px; } }
         
         .speech-bubble { 
-            background: rgba(255, 255, 255, 0.75); 
-            backdrop-filter: blur(25px); 
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.9); 
-            border-radius: 16px; 
-            border-bottom-right-radius: 0; 
-            padding: 16px; 
-            font-size: 13px; 
-            font-weight: 600; 
-            color: #1e293b; 
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2); 
-            position: relative; 
-            line-height: 1.4; 
-            transform-origin: bottom right; 
-            animation: bubble-in 0.3s ease-out forwards; 
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 16px; border-bottom-right-radius: 0; padding: 16px; 
+            font-size: 13px; font-weight: 600; color: #1e293b; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2); position: relative; line-height: 1.4; 
+            transform-origin: bottom right; animation: bubble-in 0.3s ease-out forwards; 
         }
-        @media (min-width: 768px) { .speech-bubble { font-size: 14px; } }
         .speech-bubble::after { content: ''; position: absolute; bottom: -10px; right: 0px; border-width: 10px 10px 0 0; border-style: solid; border-color: rgba(255, 255, 255, 0.85) transparent transparent transparent; }
         
         .avatar-img-box { width: 65px; height: 65px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.9); box-shadow: 0 8px 20px rgba(0,0,0,0.15); overflow: hidden; background: rgba(255,255,255,0.5); position: relative; }
@@ -119,9 +94,7 @@
         
         @keyframes bubble-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
-        .messy-font { font-family: 'Comic Sans MS', cursive, sans-serif; }
-        .ticket-receipt { background: rgba(254, 252, 232, 0.9); border: 1px dashed #d1d5db; padding: 15px; font-family: monospace; color: #374151; font-size: 12px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
-        
+        /* Loader y Splash */
         #splash-screen { position: fixed; inset: 0; background-color: #020617; z-index: 999999; display: flex; align-items: center; justify-content: center; transition: opacity 1s ease-in-out; }
         #particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         #splash-logo { opacity: 0; transform: scale(0.8); filter: blur(10px); transition: all 2s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -132,13 +105,12 @@
         .loader-fill { height: 100%; background: #2563eb; width: 0%; transition: width 1s ease-out; }
         
         .animation-delay-2000 { animation-delay: 2s; }
-    <div class="animation-delay-4000 { animation-delay: 4s; }
+        .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
 <body>
 
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-[-1] bg-[#f8fafc]">
-        <!-- Orbes súper vibrantes sin filtros oscuros para que el cristal los refracte claramente -->
         <div class="absolute top-[-15%] left-[-10%] w-[60vw] h-[60vw] bg-blue-500/60 rounded-full filter blur-[100px] md:blur-[140px] animate-blob"></div>
         <div class="absolute top-[15%] right-[-10%] w-[50vw] h-[50vw] bg-purple-500/60 rounded-full filter blur-[100px] md:blur-[140px] animate-blob animation-delay-2000"></div>
         <div class="absolute bottom-[-15%] left-[10%] w-[60vw] h-[60vw] bg-emerald-400/60 rounded-full filter blur-[100px] md:blur-[140px] animate-blob animation-delay-4000"></div>
@@ -158,54 +130,40 @@
     </div>
 
     <div id="intro-overlay">
-        <i class="fa-solid fa-microchip text-6xl text-brand-blue mb-6 animate-pulse drop-shadow-lg"></i>
-        <h2 class="text-2xl md:text-4xl font-black text-white tracking-tight text-center px-4 drop-shadow-md">Iniciando Diagnóstico</h2>
-        <p class="text-slate-200 mt-2 font-medium text-sm md:text-base text-center">Cargando módulos de Estrategia Pro...</p>
+        <i class="fa-solid fa-microchip text-6xl text-brand-blue mb-6 animate-pulse"></i>
+        <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight text-center">Iniciando Diagnóstico</h2>
+        <p class="text-slate-300 mt-2 font-medium text-center">Cargando módulos de Estrategia Pro...</p>
         <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
     </div>
 
-    <!-- Se aplica .glass-panel para hacerla de cristal esmerilado translúcido -->
     <nav class="fixed top-0 w-full h-[70px] glass-panel z-50 flex items-center px-3 md:px-8 justify-between">
         <div class="flex items-center gap-2 md:gap-3 cursor-pointer group" onclick="app.setMainView('home')">
             <div class="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shadow-md overflow-hidden bg-white/80 border border-white flex-shrink-0 transition-transform group-hover:scale-105">
-                <!-- Logo Circular -->
                 <img src="https://i.ibb.co/Kp5kt6h1/Tu-estrategia-circular.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div style="display:none;" class="w-full h-full bg-brand-blue items-center justify-center text-white"><i class="fa-solid fa-rocket"></i></div>
             </div>
             <span class="font-black text-lg md:text-2xl text-slate-900 tracking-tight hidden sm:block">Estrategia<span class="text-brand-blue">Pro</span></span>
         </div>
         
-        <!-- Botones Redes Sociales y Acción -->
         <div class="flex items-center gap-1.5 md:gap-3">
-            <!-- Costos -->
             <button onclick="app.enterWorkspace('precios')" title="Ver Costos" class="text-brand-green hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
                 <i class="fa-solid fa-tags text-base md:text-lg"></i>
                 <span class="hidden lg:inline font-bold text-sm">Costos</span>
             </button>
-            <!-- Email -->
-            <a href="mailto:tu.estrategiapro@gmail.com" title="Enviar Email" class="text-slate-700 hover:text-slate-900 hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
-                <i class="fa-solid fa-envelope text-base md:text-lg"></i>
-                <span class="hidden lg:inline font-bold text-sm">Email</span>
-            </a>
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/company/tu-estratégia-pro/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="text-slate-700 hover:text-[#0A66C2] hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
-                <i class="fa-brands fa-linkedin text-base md:text-lg"></i> 
-                <span class="hidden lg:inline font-bold text-sm">LinkedIn</span>
-            </a>
-            <!-- Threads NUEVO -->
-            <a href="https://www.threads.net/@tu.estrategiapro" target="_blank" rel="noopener noreferrer" title="Threads" class="text-slate-800 hover:text-black hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
-                <i class="fa-brands fa-threads text-base md:text-lg"></i> 
-                <span class="hidden lg:inline font-bold text-sm">Threads</span>
-            </a>
-            <!-- Perfil IG -->
-            <button onclick="app.openIG('profile')" title="Perfil Instagram" class="text-slate-700 hover:text-[#E1306C] hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
-                <i class="fa-brands fa-instagram text-base md:text-lg"></i> 
-                <span class="hidden lg:inline font-bold text-sm">Perfil IG</span>
+            <button onclick="window.location.href='mailto:tu.estrategiapro@gmail.com'" title="Enviar Email" class="text-slate-700 hover:text-slate-900 hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-solid fa-envelope text-base md:text-lg"></i><span class="hidden lg:inline font-bold text-sm">Email</span>
             </button>
-            <!-- Chat IG (Principal) -->
+            <button onclick="window.open('https://www.linkedin.com/company/tu-estratégia-pro/', '_blank')" title="LinkedIn" class="text-slate-700 hover:text-[#0A66C2] hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-brands fa-linkedin text-base md:text-lg"></i><span class="hidden lg:inline font-bold text-sm">LinkedIn</span>
+            </button>
+            <button onclick="window.open('https://www.threads.net/@tu.estrategiapro', '_blank')" title="Threads" class="text-slate-800 hover:text-black hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-brands fa-threads text-base md:text-lg"></i><span class="hidden lg:inline font-bold text-sm">Threads</span>
+            </button>
+            <button onclick="app.openIG('profile')" title="Perfil Instagram" class="text-slate-700 hover:text-[#E1306C] hover:bg-white/80 bg-white/30 backdrop-blur-sm border border-white/60 px-2.5 py-2 md:px-3 md:py-2.5 rounded-lg transition shadow-sm flex items-center gap-2 hover:-translate-y-0.5">
+                <i class="fa-brands fa-instagram text-base md:text-lg"></i><span class="hidden lg:inline font-bold text-sm">Perfil IG</span>
+            </button>
             <button onclick="app.openIG('chat')" class="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-90 text-white px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold text-[11px] md:text-sm shadow-md flex items-center gap-1.5 md:gap-2 hover:-translate-y-0.5 whitespace-nowrap transition-transform border border-white/20">
-                <i class="fa-regular fa-paper-plane text-base md:text-lg drop-shadow-sm"></i> 
-                <span class="drop-shadow-sm">Platicar</span>
+                <i class="fa-regular fa-paper-plane text-base md:text-lg drop-shadow-sm"></i><span class="drop-shadow-sm">Platicar</span>
             </button>
         </div>
     </nav>
@@ -216,10 +174,8 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div id="avatar-text"></div>
-            <!-- Opciones del Chatbot -->
             <div id="avatar-choices" class="mt-3 flex flex-col gap-1.5 hidden"></div>
         </div>
-        <!-- Imagen de Asesora Latina -->
         <div class="avatar-img-box cursor-pointer hover:scale-105 transition-transform glass-panel" onclick="app.openAvatarText(event)" title="Abrir asistente">
             <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Asesora" class="w-full h-full object-cover rounded-full">
             <div id="avatar-dot" class="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white hidden animate-ping-slow"></div>
@@ -227,19 +183,17 @@
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
     <div id="app-wrapper">
-
+        
+        <!-- ================= VISTA HOME ================= -->
         <div id="view-home" class="app-view custom-scroll">
             <div class="max-w-5xl mx-auto px-5 py-12 md:py-20 w-full pb-64 md:pb-48 relative z-10">
-                
                 <div class="text-center mb-10 md:mb-12 mt-4 md:mt-0">
                     <h1 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight">¿Qué necesita tu negocio hoy?</h1>
                     <p class="text-base md:text-lg text-slate-700 font-medium max-w-2xl mx-auto px-2">Deja de hacer todo tú mismo y de adivinar. Elige cuál es tu mayor problema actual y mira cómo te lo soluciono.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Tarjetas transparentes con Glassmorphism -->
                     <div class="glass-panel p-6 md:p-8 rounded-3xl hover:-translate-y-2 transition cursor-pointer text-center relative overflow-hidden group" onclick="app.enterWorkspace('dashboards')">
                         <div class="absolute top-0 left-0 w-full h-1 bg-brand-blue opacity-80"></div>
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-100/70 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 text-xl md:text-2xl shadow-sm border border-blue-200"><i class="fa-solid fa-book-journal-whills"></i></div>
@@ -267,327 +221,108 @@
             </div>
         </div>
 
+        <!-- ================= VISTA WORKSPACE (PANEL INTERNO) ================= -->
         <div id="view-workspace" class="app-view p-0 md:p-4">
-            <!-- Contenedor Principal Glasmorfismo -->
             <div class="w-full h-full max-w-[1400px] mx-auto glass-panel md:rounded-3xl flex flex-col overflow-hidden">
-                
-                <!-- WORKSPACE HEADER (Menú Principal en Cristal Oscuro) -->
-                <div class="glass-panel-dark text-white p-3 flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start items-center border-b-0">
+                <div class="glass-panel-dark text-white p-3 flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start items-center border-b-0 z-20">
                     <button onclick="app.setMainView('home')" class="text-slate-300 hover:text-white mr-2 text-sm md:text-base transition-colors"><i class="fa-solid fa-arrow-left"></i> Volver</button>
                     <button onclick="app.setCategory('dashboards')" id="nav-cat-dashboards" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-white/20 border border-transparent">1. Dashboards</button>
                     <button onclick="app.setCategory('web')" id="nav-cat-web" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-white/20 border border-transparent">2. Páginas Web</button>
-                    <button onclick="app.setCategory('redes')" id="nav-cat-redes" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-white/20 border border-transparent">3. Redes Sociales</button>
+                    <button onclick="app.setCategory('redes')" id="nav-cat-redes" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-white/20 border border-transparent">3. Contenido & Ads</button>
                     <button onclick="app.setCategory('precios')" id="nav-cat-precios" class="font-bold text-[11px] md:text-sm px-3 py-2 rounded-lg transition hover:bg-brand-green/30 text-brand-green border border-brand-green/50 bg-brand-green/20">4. Precios</button>
                 </div>
 
-                <!-- CONTROLES (Antes y Después en Cristal) -->
-                <div id="workspace-controls">
-                    <div class="bg-white/20 backdrop-blur-md border-b border-white/40 p-2 md:p-3 flex justify-center gap-1 md:gap-2 flex-wrap" id="sub-menu-container">
-                        <!-- Se llena dinámicamente -->
-                    </div>
-                    <div class="p-3 md:p-4 border-b border-white/40 flex justify-center bg-white/10 backdrop-blur-lg shadow-sm z-20">
+                <div id="workspace-controls" class="z-20">
+                    <div class="bg-white/20 backdrop-blur-md border-b border-white/40 p-2 md:p-3 flex justify-center gap-1 md:gap-2 flex-wrap" id="sub-menu-container"></div>
+                    <div class="p-3 md:p-4 border-b border-white/40 flex justify-center bg-white/10 backdrop-blur-lg shadow-sm">
                         <div class="toggle-switch w-full max-w-md">
-                            <button onclick="app.setState('before')" id="btn-state-before" class="toggle-btn before-active"><i class="fa-solid fa-triangle-exclamation"></i> <span>Tu Realidad (El Caos)</span></button>
-                            <button onclick="app.setState('after')" id="btn-state-after" class="toggle-btn"><i class="fa-solid fa-check-double"></i> <span>Mi Solución (El Orden)</span></button>
+                            <button onclick="app.setState('before')" id="btn-state-before" class="toggle-btn before-active"><i class="fa-solid fa-triangle-exclamation"></i> <span>Tu Realidad (Caos)</span></button>
+                            <button onclick="app.setState('after')" id="btn-state-after" class="toggle-btn"><i class="fa-solid fa-check-double"></i> <span>Mi Solución (Orden)</span></button>
                         </div>
                     </div>
                 </div>
 
-                <!-- CONTENEDOR DE CONTENIDO PRINCIPAL -->
-                <!-- Sin fondos sólidos para dejar ver el Glasmorfismo -->
-                <div class="flex-1 relative custom-scroll min-h-0 pb-24 bg-transparent">
-
-                    <div id="cat-precios" class="category-group hidden">
-                        <div id="content-precios-planes-before" class="content-panel active items-center py-10 md:py-16">
-                            
-                            <div class="max-w-5xl w-full mx-auto px-2">
-                                <div class="text-center mb-10 md:mb-12">
-                                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight drop-shadow-sm">Soluciones e Inversión <span class="text-brand-blue">Transparente</span></h2>
-                                    <p class="text-slate-800 max-w-2xl mx-auto font-medium text-sm md:text-base">Precios base claros para proyectos ágiles. Cotizaciones formalizadas según el volumen de datos e infraestructura de tu negocio.</p>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
-                                    <!-- Plan 1 -->
-                                    <div class="glass-panel rounded-3xl p-6 flex flex-col hover:-translate-y-1 transition-transform border border-white">
-                                        <div class="flex items-center gap-3 mb-4">
-                                            <div class="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center text-slate-700 shadow-sm"><i class="fa-solid fa-chart-simple"></i></div>
-                                            <h3 class="font-black text-xl text-slate-900">Dashboard Operativo</h3>
-                                        </div>
-                                        <p class="text-3xl font-black text-brand-blue mb-2"><span class="text-lg text-slate-700 font-bold">Desde</span> $4,000 <span class="text-sm font-normal text-slate-600">MXN</span></p>
-                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/50 inline-block px-2 py-1 rounded">Pago único de implementación</p>
-                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Erradicación del desorden en hojas de cálculo y monitoreo de un proceso crítico del negocio.</p>
-                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Integración de 1 archivo centralizado (Excel/Sheets/CSV).</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Hasta 4 KPIs en tiempo real.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Filtros interactivos básicos.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Interfaz responsiva (Móvil y PC).</li>
-                                        </ul>
-                                        <button onclick="app.openIG('chat')" class="w-full bg-white/80 hover:bg-white text-slate-900 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 border border-white shadow-sm">Cotizar Dashboard <i class="fa-brands fa-instagram text-brand-blue"></i></button>
-                                    </div>
-
-                                    <!-- Plan 2 (Recomendado) -->
-                                    <div class="glass-panel rounded-3xl p-6 flex flex-col relative transform md:-translate-y-4 border-2 border-brand-blue/50 bg-white/40 shadow-xl">
-                                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-brand-blue text-white px-4 py-1.5 rounded-full text-[10px] font-bold shadow-md uppercase tracking-widest border border-blue-400">Recomendado - Dirección</div>
-                                        <div class="flex items-center gap-3 mb-4 mt-2">
-                                            <div class="w-10 h-10 bg-brand-blue text-white rounded-full flex items-center justify-center shadow-sm"><i class="fa-solid fa-chess-knight"></i></div>
-                                            <div>
-                                                <h3 class="font-black text-xl text-slate-900 leading-none">Centro de Mando Integral</h3>
-                                                <span class="text-[10px] font-bold text-brand-blue uppercase tracking-widest mt-1 block">Mapa Estratégico</span>
-                                            </div>
-                                        </div>
-                                        <p class="text-4xl font-black text-brand-blue mb-2 drop-shadow-sm"><span class="text-xl text-slate-700 font-bold">Desde</span> $9,500 <span class="text-sm font-normal text-slate-600">MXN</span></p>
-                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/50 inline-block px-2 py-1 rounded">Pago único de implementación</p>
-                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Cabina de control directivo multisección para gobernar las áreas neurálgicas de la empresa en una sola pantalla.</p>
-                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Integración de 2 a 4 áreas operativas (Ventas, Inventario, Flujo).</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Semáforos y alertas automáticas.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Tableros comparativos vs. metas.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Exportación para juntas directivas.</li>
-                                        </ul>
-                                        <button onclick="app.openIG('chat')" class="w-full bg-brand-blue hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 hover:-translate-y-1">Solicitar Centro de Mando <i class="fa-brands fa-instagram"></i></button>
-                                    </div>
-
-                                    <!-- Plan 3: Web -->
-                                    <div class="glass-panel rounded-3xl p-6 flex flex-col hover:-translate-y-1 transition-transform border border-white">
-                                        <div class="flex items-center gap-3 mb-4">
-                                            <div class="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center text-brand-green shadow-sm"><i class="fa-solid fa-laptop-code"></i></div>
-                                            <h3 class="font-black text-xl text-slate-900 leading-tight">Desarrollo de páginas web UI/UX</h3>
-                                        </div>
-                                        <p class="text-3xl font-black text-brand-green mb-2"><span class="text-lg text-slate-700 font-bold">Desde</span> $5,000 <span class="text-sm font-normal text-slate-600">MXN</span></p>
-                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/50 inline-block px-2 py-1 rounded">Pago único</p>
-                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Presencia corporativa moderna diseñada para generar confianza, autoridad y captar prospectos que buscan tus servicios.</p>
-                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Arquitectura rápida y adaptable a celulares.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Secciones estratégicas (Propuesta, Catálogo, Contacto).</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Botones directos a tu WhatsApp, redes sociales y formularios.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Configuración básica para que la gente te encuentre en Google fácilmente al buscar tu servicio.</li>
-                                        </ul>
-                                        <button onclick="app.openIG('chat')" class="w-full bg-white/80 hover:bg-white text-slate-900 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 border border-white shadow-sm">Iniciar Proyecto Web <i class="fa-brands fa-instagram text-brand-green"></i></button>
-                                    </div>
-
-                                    <!-- Plan 4: Video Reciclado -->
-                                    <div class="glass-panel rounded-3xl p-6 flex flex-col hover:-translate-y-1 transition-transform border border-white">
-                                        <div class="flex items-center gap-3 mb-4">
-                                            <div class="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center text-brand-cyan shadow-sm"><i class="fa-solid fa-clapperboard"></i></div>
-                                            <h3 class="font-black text-xl text-slate-900 leading-tight">Edición Inteligente (1 Video = Varios)</h3>
-                                        </div>
-                                        <p class="text-3xl font-black text-brand-cyan mb-2"><span class="text-lg text-slate-700 font-bold">Desde</span> $3,500 <span class="text-sm font-normal text-slate-600">MXN</span></p>
-                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/50 inline-block px-2 py-1 rounded">Material crudo de hasta 20 min</p>
-                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Graba un solo video con tu celular y nosotros lo cortamos, adaptamos y subtitulamos para sacar varias piezas listas para todas tus redes.</p>
-                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> 1 Video Principal (Formato horizontal para YouTube/LinkedIn).</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> 2 a 3 Clips cortos y llamativos para Instagram Reels / TikTok.</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> Textos grandes en pantalla (para captar a los que ven sin sonido).</li>
-                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> Le quitamos el ruido al audio, mejoramos el color y ponemos tu logo.</li>
-                                        </ul>
-                                        <button onclick="app.openIG('chat')" class="w-full bg-white/80 hover:bg-white text-slate-900 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 border border-white shadow-sm">Cotizar Edición <i class="fa-brands fa-instagram text-brand-cyan"></i></button>
-                                    </div>
-
-                                </div> <!-- Cierra el grid principal -->
-
-                                <!-- SECCIÓN REDES SOCIALES (EL SERVICIO ESTRELLA) -->
-                                <div class="mt-16 mb-12 relative w-full">
-                                    <!-- Halo de luz difuminada de fondo para destacar la sección -->
-                                    <div class="absolute inset-0 bg-gradient-to-b from-brand-purple/20 to-transparent rounded-3xl blur-2xl -z-10 transform scale-105"></div>
-                                    
-                                    <div class="text-center mb-10 relative z-10">
-                                        <div class="inline-flex items-center justify-center gap-2 bg-brand-purple/10 border border-brand-purple/30 text-brand-purple px-6 py-2 rounded-full font-black text-sm md:text-base shadow-sm mb-4 backdrop-blur-md">
-                                            <i class="fa-solid fa-fire animate-pulse text-red-500"></i> Servicio Estrella: Delegación de Redes
-                                        </div>
-                                        <h3 class="text-2xl md:text-4xl font-black text-slate-900 mb-4 drop-shadow-sm leading-tight">Tu vitrina digital en <span class="text-brand-purple">piloto automático.</span></h3>
-                                        <p class="text-slate-700 max-w-2xl mx-auto font-medium text-sm md:text-base">Tú atiende tu negocio, nosotros nos encargamos de proyectar tu autoridad para generar confianza en tus futuros clientes, sin que tengas que mover un solo dedo.</p>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
-                                        
-                                        <!-- RS Propuesta 1 -->
-                                        <div class="glass-panel bg-white/50 rounded-3xl p-6 flex flex-col border border-white/80 hover:-translate-y-2 transition-transform shadow-lg">
-                                            <h3 class="font-black text-xl text-slate-900 mb-1">Nivel 1: Sembrado Institucional</h3>
-                                            <p class="text-xs text-slate-600 mb-4 h-12">Ideal para curar un perfil vacío y establecer una presencia profesional sólida.</p>
-                                            
-                                            <div class="bg-white/60 backdrop-blur-sm p-4 rounded-xl mb-4 border border-white shadow-sm">
-                                                <p class="text-xs text-slate-500 line-through text-center mb-1">Valor en Agencia: $5,000 MXN</p>
-                                                <p class="text-2xl font-black text-brand-purple text-center">$4,000 <span class="text-sm font-normal text-slate-600">/ mes</span></p>
-                                                <div class="mt-3 bg-purple-100/80 border border-purple-200 text-brand-purple text-[10px] md:text-xs font-bold text-center py-1.5 px-2 rounded-lg">
-                                                    Facilidades: 2 pagos quincenales de $2,000
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flex-1">
-                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-regular fa-eye text-brand-purple"></i> Lo que se ve (8 Piezas):</p>
-                                                <ul class="space-y-2 text-xs text-slate-800 mb-4">
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>LinkedIn:</strong> 3 Carruseles documentando información de tu negocio.</li>
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>IG / FB:</strong> 2 Videos Cortos (10s) corporativos + 3 Gráficos Premium.</li>
-                                                </ul>
-                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-solid fa-gears text-brand-purple"></i> Lo que NO se ve (El Motor):</p>
-                                                <ul class="space-y-2 text-xs text-slate-800 mb-6">
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>Grid Fundacional:</strong> Llenado inicial de perfiles.</li>
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>Copywriting:</strong> Traducción de tu información a textos persuasivos que venden.</li>
-                                                </ul>
-                                            </div>
-                                            <button onclick="app.openIG('chat')" class="w-full bg-white hover:bg-slate-50 text-brand-purple font-bold py-3.5 rounded-xl transition border border-purple-200 shadow-sm flex items-center justify-center gap-2">Delegar Redes <i class="fa-brands fa-instagram"></i></button>
-                                        </div>
-
-                                        <!-- RS Propuesta 2 -->
-                                        <div class="glass-panel rounded-3xl p-6 flex flex-col border-2 border-brand-purple/60 bg-white/70 shadow-2xl relative transform lg:-translate-y-4 z-20">
-                                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-brand-purple to-purple-500 text-white px-6 py-1.5 rounded-full text-[11px] font-black shadow-lg uppercase tracking-wider whitespace-nowrap border border-purple-300">El Recomendado</div>
-                                            
-                                            <h3 class="font-black text-xl text-slate-900 mb-1 mt-2">Nivel 2: Captación Activa</h3>
-                                            <p class="text-xs text-slate-700 mb-4 h-12 font-medium">Motor de prospección inteligente para atraer clientes hacia tu empresa.</p>
-                                            
-                                            <div class="bg-white/90 backdrop-blur-md p-4 rounded-xl mb-4 border border-purple-100 shadow-md">
-                                                <p class="text-xs text-slate-500 line-through text-center mb-1">Valor en Agencia: $8,500 MXN</p>
-                                                <p class="text-3xl font-black text-brand-purple text-center">$6,000 <span class="text-sm font-normal text-slate-600">/ mes</span></p>
-                                                <div class="mt-3 bg-purple-100 border border-purple-200 text-brand-purple text-[10px] md:text-xs font-black text-center py-1.5 px-2 rounded-lg shadow-inner">
-                                                    Facilidades: 2 pagos quincenales de $3,000
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flex-1">
-                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-regular fa-eye text-brand-purple"></i> Lo que se ve (12 Piezas):</p>
-                                                <ul class="space-y-2 text-xs text-slate-800 mb-4">
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>LinkedIn:</strong> 4 Carruseles técnicos + 1 Artículo de Autoridad.</li>
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>IG / FB:</strong> 4 Videos Cortos (10s) de alto impacto + 3 Gráficos.</li>
-                                                </ul>
-                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-solid fa-gears text-brand-purple"></i> El Motor B2B:</p>
-                                                <ul class="space-y-2 text-xs text-slate-800 mb-6">
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-star text-brand-yellow mt-0.5 animate-pulse"></i> <strong>Inteligencia de Cuentas:</strong> Mapeo e invitaciones estratégicas a directivos clave (sin spam) para aparecer en su inicio.</li>
-                                                    <li class="flex items-start gap-2 text-slate-600 font-bold"><i class="fa-solid fa-plus mt-0.5 text-slate-400"></i> Todo lo incluido en el Nivel 1.</li>
-                                                </ul>
-                                            </div>
-                                            <button onclick="app.openIG('chat')" class="w-full bg-brand-purple hover:bg-purple-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">Captar Clientes <i class="fa-brands fa-instagram"></i></button>
-                                        </div>
-
-                                        <!-- RS Propuesta 3 -->
-                                        <div class="glass-panel bg-white/50 rounded-3xl p-6 flex flex-col border border-white/80 hover:-translate-y-2 transition-transform shadow-lg">
-                                            <h3 class="font-black text-xl text-slate-900 mb-1">Nivel 3: Liderazgo</h3>
-                                            <p class="text-xs text-slate-600 mb-4 h-12">Infraestructura comercial completa y máxima visibilidad en tu sector.</p>
-                                            
-                                            <div class="bg-white/60 backdrop-blur-sm p-4 rounded-xl mb-4 border border-white shadow-sm">
-                                                <p class="text-xs text-slate-500 line-through text-center mb-1">Valor en Agencia: $12,000 MXN</p>
-                                                <p class="text-2xl font-black text-brand-purple text-center">$9,000 <span class="text-sm font-normal text-slate-600">/ mes</span></p>
-                                                <div class="mt-3 bg-purple-100/80 border border-purple-200 text-brand-purple text-[10px] md:text-xs font-bold text-center py-1.5 px-2 rounded-lg">
-                                                    Facilidades: 2 pagos quincenales de $4,500
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="flex-1">
-                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-regular fa-eye text-brand-purple"></i> Lo que se ve:</p>
-                                                <ul class="space-y-2 text-xs text-slate-800 mb-4">
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>LinkedIn:</strong> 5 Carruseles + 2 Artículos de Opinión.</li>
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>IG / FB:</strong> 5 Videos Cortos + 4 Gráficos Premium.</li>
-                                                    <li class="flex items-start gap-2 bg-yellow-100/80 border border-yellow-200 p-2 rounded-lg font-bold"><i class="fa-solid fa-podcast text-brand-purple mt-0.5"></i> 2 "Cápsulas de Audio" (Podcast de 3 min sobre temas clave de tu sector).</li>
-                                                </ul>
-                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-solid fa-gears text-brand-purple"></i> Lo que NO se ve:</p>
-                                                <ul class="space-y-2 text-xs text-slate-800 mb-6">
-                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>Intervención Estratégica:</strong> Presencia activa en comentarios de líderes de tu industria.</li>
-                                                    <li class="flex items-start gap-2 text-slate-600 font-bold"><i class="fa-solid fa-plus mt-0.5 text-slate-400"></i> Todo el motor del Nivel 2.</li>
-                                                </ul>
-                                            </div>
-                                            <button onclick="app.openIG('chat')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-md flex items-center justify-center gap-2">Dominar el Mercado <i class="fa-brands fa-instagram text-brand-purple"></i></button>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Banner Footer: Desarrollos a la medida (Glasmorfismo Oscuro) -->
-                                <div class="glass-panel-dark rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden mt-4">
-                                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-blue rounded-full opacity-50 blur-3xl"></div>
-                                    <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-purple-500 rounded-full opacity-40 blur-3xl"></div>
-                                    <h3 class="text-2xl md:text-4xl font-black mb-4 relative z-10 drop-shadow-md">¿Necesitas un "Traje a la Medida"?</h3>
-                                    <p class="text-slate-200 text-sm md:text-lg max-w-3xl mx-auto mb-8 relative z-10 font-medium">Si tu empresa requiere integración con bases de datos, sistemas internos o algo muy específico, evaluamos tu caso sin costo y diseñamos una solución personalizada.</p>
-                                    <button onclick="app.openIG('chat')" class="bg-brand-blue text-white px-8 py-4 rounded-xl font-bold text-sm md:text-base hover:scale-105 hover:bg-blue-600 transition shadow-[0_0_20px_rgba(37,99,235,0.4)] relative z-10 inline-flex items-center gap-2 border border-blue-400/50"><i class="fa-regular fa-paper-plane text-xl"></i> Comunícate con nosotros</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="cat-dashboards" class="category-group hidden">
+                <!-- Contenedor SCROLLABLE Interno -->
+                <div class="flex-1 relative custom-scroll min-h-0 pb-24 bg-transparent z-10">
+                    
+                    <!-- ================= CATEGORÍA 1: DASHBOARDS ================= -->
+                    <div id="cat-dashboards" class="category-group hidden flex-col h-full w-full">
+                        
                         <!-- Ventas -->
-                        <div id="content-dashboards-ventas-before" class="content-panel items-center py-10 bg-yellow-50/20 backdrop-blur-sm">
-                            <div class="bg-white/95 backdrop-blur p-6 rounded shadow-xl rotate-[-2deg] border-2 border-slate-300 w-full max-w-lg messy-font mx-auto my-auto">
-                                <h3 class="text-lg md:text-xl font-bold border-b-2 border-black pb-2 mb-4 text-center">Cuaderno de Ventas - Octubre</h3>
-                                <ul class="space-y-4 text-blue-800 text-sm md:text-base">
+                        <div id="content-dashboards-ventas-before" class="content-panel items-center justify-center p-4">
+                            <div class="glass-panel p-6 rounded shadow-xl rotate-[-2deg] border-2 border-slate-300 w-full max-w-lg bg-yellow-50/90 font-comic text-slate-800 my-auto">
+                                <h3 class="text-xl font-bold border-b-2 border-slate-800 pb-2 mb-4 text-center">Cuaderno de Ventas - Octubre</h3>
+                                <ul class="space-y-4 text-blue-900">
                                     <li>Lunes: Vino la sra. Lopez, dejó $500 de anticipo. Faltan $1500.</li>
                                     <li>Martes: <strike>Venta de $200</strike> (Pidió devolución)</li>
-                                    <li class="text-red-600">Miércoles: ¡HAY QUE PAGAR LA LUZ! Tomé $800 de la caja.</li>
+                                    <li class="text-red-600 font-bold">Miércoles: ¡HAY QUE PAGAR LA LUZ! Tomé $800 de la caja.</li>
                                     <li>Jueves: ??? ¿Alguien anotó las ventas de la tarde?</li>
                                 </ul>
-                                <p class="mt-6 text-xs md:text-sm text-red-700 font-bold bg-yellow-300/80 p-2 text-center rounded">¡Es imposible saber si este mes ganaste o perdiste dinero!</p>
+                                <p class="mt-6 text-sm text-red-700 font-bold bg-yellow-200/80 p-2 text-center border border-red-200 rounded">¡Es imposible saber si este mes ganaste o perdiste dinero!</p>
                             </div>
                         </div>
 
-                        <div id="content-dashboards-ventas-after" class="content-panel">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
-                                <h3 class="font-black text-lg md:text-xl text-slate-900 drop-shadow-sm">Panel Financiero en Tiempo Real</h3>
-                                <span class="bg-green-100/90 backdrop-blur border border-green-200 text-green-700 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-2 shadow-sm"><i class="fa-solid fa-circle-check"></i> Sincronizado</span>
+                        <div id="content-dashboards-ventas-after" class="content-panel py-6 md:py-10 px-4 max-w-5xl mx-auto w-full">
+                            <div class="flex justify-between items-center mb-6 bg-white/40 p-3 rounded-xl backdrop-blur-sm border border-white">
+                                <h3 class="font-black text-xl text-slate-900">Panel Financiero en Tiempo Real</h3>
+                                <span class="bg-brand-green text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm"><i class="fa-solid fa-circle-check"></i> Sincronizado</span>
                             </div>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-                                <div class="glass-panel p-3 md:p-4 rounded-xl border-l-4 border-brand-blue">
-                                    <p class="text-[9px] md:text-[10px] text-slate-700 font-bold uppercase mb-1">Ingresos Brutos</p>
-                                    <h3 class="text-xl md:text-2xl font-black text-slate-900">$124,500</h3>
-                                    <p class="text-[9px] md:text-[10px] text-green-700 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +15.2% vs mes</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                <div class="glass-panel bg-white/70 p-4 rounded-xl shadow-sm border-l-4 border-l-brand-blue relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-600 font-bold uppercase mb-1">Ingresos Brutos</p>
+                                    <h3 class="text-2xl font-black text-slate-900">$124,500</h3>
+                                    <p class="text-[10px] text-brand-green font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +15.2% vs mes anterior</p>
                                 </div>
-                                <div class="glass-panel p-3 md:p-4 rounded-xl border-l-4 border-brand-green">
-                                    <p class="text-[9px] md:text-[10px] text-slate-700 font-bold uppercase mb-1">Utilidad Neta Libre</p>
-                                    <h3 class="text-xl md:text-2xl font-black text-green-700">$48,200</h3>
-                                    <p class="text-[9px] md:text-[10px] text-green-800 font-bold mt-1"><i class="fa-solid fa-chart-pie"></i> Margen: 38.7%</p>
+                                <div class="glass-panel bg-white/70 p-4 rounded-xl shadow-sm border-l-4 border-l-brand-green relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-600 font-bold uppercase mb-1">Utilidad Neta Libre</p>
+                                    <h3 class="text-2xl font-black text-brand-green">$48,200</h3>
+                                    <p class="text-[10px] text-brand-green font-bold mt-1"><i class="fa-solid fa-chart-pie"></i> Margen: 38.7%</p>
                                 </div>
-                                <div class="glass-panel p-3 md:p-4 rounded-xl border-l-4 border-brand-yellow">
-                                    <p class="text-[9px] md:text-[10px] text-slate-700 font-bold uppercase mb-1">Por Cobrar</p>
-                                    <h3 class="text-xl md:text-2xl font-black text-yellow-600">$12,500</h3>
-                                    <p class="text-[9px] md:text-[10px] text-red-600 font-bold mt-1"><i class="fa-solid fa-triangle-exclamation"></i> 3 vencidas</p>
+                                <div class="glass-panel bg-white/70 p-4 rounded-xl shadow-sm border-l-4 border-l-brand-yellow relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-600 font-bold uppercase mb-1">Cuentas por Cobrar</p>
+                                    <h3 class="text-2xl font-black text-brand-yellow">$12,500</h3>
+                                    <p class="text-[10px] text-red-500 font-bold mt-1"><i class="fa-solid fa-triangle-exclamation"></i> 3 facturas vencidas</p>
                                 </div>
-                                <div class="glass-panel p-3 md:p-4 rounded-xl border-l-4 border-brand-purple">
-                                    <p class="text-[9px] md:text-[10px] text-slate-700 font-bold uppercase mb-1">Ticket Promedio</p>
-                                    <h3 class="text-xl md:text-2xl font-black text-purple-700">$2,450</h3>
-                                    <p class="text-[9px] md:text-[10px] text-green-700 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +$350 extra</p>
+                                <div class="glass-panel bg-white/70 p-4 rounded-xl shadow-sm border-l-4 border-l-brand-purple relative overflow-hidden">
+                                    <p class="text-[10px] text-slate-600 font-bold uppercase mb-1">Ticket Promedio</p>
+                                    <h3 class="text-2xl font-black text-brand-purple">$2,450</h3>
+                                    <p class="text-[10px] text-brand-green font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +$350 de incremento</p>
                                 </div>
-                            </div>
-                            <div class="glass-panel p-3 md:p-4 rounded-xl w-full h-[250px] md:h-[300px]">
-                                <div class="flex justify-between items-center mb-2">
-                                    <h4 class="font-bold text-xs md:text-sm text-slate-900">Proyección de Flujo</h4>
-                                </div>
-                                <canvas id="chart-d-ventas"></canvas>
                             </div>
                         </div>
 
                         <!-- Gastos -->
-                        <div id="content-dashboards-gastos-before" class="content-panel items-center py-10">
-                            <div class="relative w-full max-w-2xl h-[350px] md:h-[400px] my-auto mx-auto overflow-hidden">
-                                <div class="absolute top-4 right-4 md:top-10 md:right-20 ticket-receipt rotate-[5deg] w-40 md:w-48 bg-yellow-50/95 backdrop-blur">SUPERMERCADO<br>Fecha: 12/10<br>Total: $845.00<br><br>*(Borroso)*</div>
-                                <div class="absolute bottom-4 left-4 md:bottom-10 md:left-10 ticket-receipt rotate-[-8deg] w-40 md:w-48 border-red-400 bg-white/95 backdrop-blur">GASOLINA<br>Fecha: ???<br>Total: $1,200.00<br><br>*Falta Factura*</div>
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-300/95 backdrop-blur-md p-3 md:p-4 shadow-xl rotate-[3deg] messy-font text-base md:text-xl text-red-700 font-bold z-10 w-64 text-center rounded">"¿Dónde quedó el dinero de la semana?"</div>
+                        <div id="content-dashboards-gastos-before" class="content-panel items-center justify-center p-4">
+                            <div class="relative w-full max-w-2xl h-[400px] my-auto">
+                                <div class="absolute top-10 right-10 md:right-20 bg-yellow-50 border border-dashed border-gray-400 p-4 font-mono text-xs shadow-md rotate-[5deg] w-48 text-slate-800">SUPERMERCADO<br>Fecha: 12/10<br>Total: $845.00<br><br>*(Ticket borroso, no se sabe de qué es)*</div>
+                                <div class="absolute bottom-10 left-4 md:left-10 bg-yellow-50 border border-dashed border-red-400 p-4 font-mono text-xs shadow-md rotate-[-8deg] w-48 text-slate-800">PAGO GASOLINA<br>Fecha: ???<br>Total: $1,200.00<br><br>*Falta Factura*</div>
+                                <div class="absolute top-32 left-1/2 transform -translate-x-1/2 bg-yellow-200/90 backdrop-blur p-4 shadow-xl rotate-[3deg] font-comic text-lg md:text-xl text-red-600 font-bold border border-yellow-400 text-center w-64 rounded-lg">"¿Dónde quedó el dinero de la semana?"</div>
                             </div>
                         </div>
 
-                        <div id="content-dashboards-gastos-after" class="content-panel">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
-                                <h3 class="font-black text-lg md:text-xl text-slate-900 drop-shadow-sm">Control de Egresos Inteligente</h3>
+                        <div id="content-dashboards-gastos-after" class="content-panel py-6 md:py-10 px-4 max-w-5xl mx-auto w-full">
+                             <div class="flex justify-between items-center mb-6 bg-white/40 p-3 rounded-xl backdrop-blur-sm border border-white">
+                                <h3 class="font-black text-xl text-slate-900">Control de Egresos Inteligente</h3>
+                                <button class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-slate-700 transition"><i class="fa-solid fa-file-invoice"></i> Escanear Ticket</button>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                <div class="glass-panel p-4 rounded-xl">
-                                    <h4 class="font-bold text-xs md:text-sm mb-4 text-slate-900">Distribución de Gastos</h4>
-                                    <div class="w-full h-[200px] md:h-[220px]"><canvas id="chart-d-gastos"></canvas></div>
-                                </div>
-                                <div class="glass-panel p-4 rounded-xl overflow-x-auto flex flex-col">
-                                    <h4 class="font-bold text-xs md:text-sm mb-4 text-slate-900">Flujo de Salida Reciente</h4>
-                                    <table class="w-full text-[10px] md:text-sm text-left whitespace-nowrap">
-                                        <tr class="border-b border-white/60 text-slate-700 uppercase"><th class="p-2">Concepto</th><th class="p-2">Estado</th><th class="p-2 text-right">Monto</th></tr>
-                                        <tr class="border-b border-white/40 hover:bg-white/50 transition">
-                                            <td class="p-2 font-medium text-slate-900">Gasolina Camioneta</td>
-                                            <td><span class="bg-green-100/90 text-green-800 px-2 py-1 rounded font-bold"><i class="fa-solid fa-check"></i> Pagado</span></td>
-                                            <td class="text-right font-black text-slate-900">-$1,200</td>
+                            <div class="glass-panel bg-white/70 p-4 rounded-xl shadow-sm border border-white">
+                                <h4 class="font-bold text-sm mb-4 text-slate-900">Flujo de Salida Reciente</h4>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-left whitespace-nowrap">
+                                        <tr class="border-b border-slate-300 bg-white/50 text-slate-600 text-xs uppercase"><th class="p-3 rounded-tl-lg">Concepto</th><th class="p-3">Estado</th><th class="p-3 text-right rounded-tr-lg">Monto</th></tr>
+                                        <tr class="border-b border-slate-200 hover:bg-white/50 transition">
+                                            <td class="p-3 font-medium text-slate-800">Gasolina Camioneta</td>
+                                            <td><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold border border-green-200"><i class="fa-solid fa-check"></i> Pagado</span></td>
+                                            <td class="text-right font-black text-slate-800">-$1,200</td>
                                         </tr>
-                                        <tr class="border-b border-white/40 hover:bg-white/50 transition">
-                                            <td class="p-2 font-medium text-slate-900">Pago de Luz Local</td>
-                                            <td><span class="bg-green-100/90 text-green-800 px-2 py-1 rounded font-bold"><i class="fa-solid fa-check"></i> Pagado</span></td>
-                                            <td class="text-right font-black text-slate-900">-$845</td>
+                                        <tr class="border-b border-slate-200 hover:bg-white/50 transition">
+                                            <td class="p-3 font-medium text-slate-800">Pago de Luz Local</td>
+                                            <td><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold border border-green-200"><i class="fa-solid fa-check"></i> Pagado</span></td>
+                                            <td class="text-right font-black text-slate-800">-$845</td>
                                         </tr>
-                                        <tr class="hover:bg-white/50 transition">
-                                            <td class="p-2 font-medium text-slate-900">Proveedor "Cajas SA"</td>
-                                            <td><span class="bg-yellow-100/90 text-yellow-800 px-2 py-1 rounded font-bold"><i class="fa-regular fa-clock"></i> Pdte.</span></td>
+                                        <tr class="border-b border-slate-200 hover:bg-white/50 transition">
+                                            <td class="p-3 font-medium text-slate-800">Proveedor "Cajas SA"</td>
+                                            <td><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-[10px] font-bold border border-yellow-200"><i class="fa-regular fa-clock"></i> Pendiente</span></td>
                                             <td class="text-right font-black text-red-600">-$3,500</td>
                                         </tr>
                                     </table>
@@ -596,47 +331,76 @@
                         </div>
 
                         <!-- Inventario -->
-                        <div id="content-dashboards-inventario-before" class="content-panel items-center py-10 bg-emerald-900/60 backdrop-blur-md rounded-2xl mx-2">
-                            <div class="border-4 border-gray-400 bg-emerald-800/95 backdrop-blur p-6 md:p-8 rounded w-full max-w-xl text-white messy-font text-base md:text-lg shadow-2xl relative mx-auto my-auto">
-                                <h3 class="font-bold text-xl md:text-2xl mb-4 underline">Faltantes (Avisar al jefe)</h3>
-                                <ul class="list-disc pl-5 md:pl-6 space-y-2">
-                                    <li>Cajas chicas (Quedan 5)</li>
-                                    <li>Cinta adhesiva <span class="text-yellow-300">- URGENTE, ya no hay</span></li>
+                        <div id="content-dashboards-inventario-before" class="content-panel items-center justify-center p-4">
+                            <div class="border-[6px] border-slate-700 bg-emerald-900 p-6 md:p-8 rounded-xl w-full max-w-xl text-white font-comic text-sm md:text-lg shadow-2xl relative my-auto">
+                                <div class="absolute bottom-2 right-4 text-emerald-700/50 text-xs">Pizarrón del Almacén</div>
+                                <h3 class="font-bold text-xl md:text-2xl mb-4 underline text-emerald-100">Faltantes (Avisar al jefe)</h3>
+                                <ul class="list-disc pl-6 space-y-3 text-emerald-50">
+                                    <li>Cajas chicas (Creo que quedan 5)</li>
+                                    <li>Cinta adhesiva <span class="text-yellow-300 font-bold">- URGENTE, ya no hay</span></li>
+                                    <li>Producto A - ¿Ya llegó el pedido?</li>
                                 </ul>
-                                <div class="mt-6 p-2 md:p-3 bg-red-500/90 text-white font-bold text-center rounded transform rotate-2 text-xs md:text-sm shadow-lg">¡VENDIMOS ALGO QUE YA NO TENÍAMOS!</div>
+                                <div class="mt-8 p-3 bg-red-500 text-white font-bold text-center rounded transform rotate-2 shadow-lg border border-red-400">¡VENDIMOS ALGO QUE YA NO TENÍAMOS EN STOCK! EL CLIENTE ESTÁ ENOJADO.</div>
                             </div>
                         </div>
 
-                        <div id="content-dashboards-inventario-after" class="content-panel">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-black text-lg md:text-xl text-slate-900 drop-shadow-sm">Almacén y Logística</h3>
+                        <div id="content-dashboards-inventario-after" class="content-panel py-6 md:py-10 px-4 max-w-5xl mx-auto w-full">
+                            <div class="flex justify-between items-center mb-6 bg-white/40 p-3 rounded-xl backdrop-blur-sm border border-white">
+                                <h3 class="font-black text-xl text-slate-900">Almacén y Logística</h3>
+                                <div class="text-xs text-slate-700 font-bold bg-white/60 px-3 py-1.5 rounded-lg shadow-sm">Valor Stock: <span class="text-brand-blue text-base ml-1">$85,400</span></div>
                             </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                                <div class="lg:col-span-2 glass-panel p-4 rounded-xl">
-                                    <h4 class="font-bold text-xs md:text-sm mb-4 text-slate-900">Rotación de Productos</h4>
-                                    <div class="w-full h-[200px] md:h-[220px]"><canvas id="chart-d-inventario"></canvas></div>
-                                </div>
-                                <div class="glass-panel p-4 rounded-xl border-t-4 border-t-red-500/80 bg-white/40">
-                                    <h4 class="font-black text-red-700 text-base md:text-lg mb-2"><i class="fa-solid fa-triangle-exclamation animate-pulse"></i> Alertas Críticas</h4>
-                                    <div class="bg-white/80 border border-white/80 p-3 rounded-lg shadow-sm mb-3 flex flex-col gap-2">
-                                        <div class="flex justify-between items-center">
-                                            <p class="font-bold text-xs md:text-sm text-slate-900">Cinta Adhesiva</p>
-                                            <span class="bg-red-100 text-red-700 font-bold px-1.5 md:px-2 py-0.5 rounded text-[9px] md:text-[10px]">2 uds</span>
+                            <div class="glass-panel bg-gradient-to-b from-red-50/90 to-white/90 p-5 md:p-6 rounded-2xl shadow-lg border-t-4 border-red-500">
+                                <h4 class="font-black text-red-700 text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation animate-pulse"></i> Alertas Críticas</h4>
+                                <p class="text-xs text-slate-700 mb-5 font-medium">Stock bajo detectado por el algoritmo. Sugerencia de compra inmediata:</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-3 hover:shadow-md transition">
+                                        <div class="flex justify-between items-start">
+                                            <div><p class="font-bold text-sm text-slate-900">Cinta Adhesiva Industrial</p><p class="text-[10px] text-slate-500">Prov: Empaques Mex</p></div>
+                                            <span class="bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded text-[10px] border border-red-200">2 unidades</span>
                                         </div>
+                                        <button class="w-full bg-slate-900 text-white py-2 text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow"><i class="fa-solid fa-paper-plane mr-1"></i> Orden Automática</button>
                                     </div>
-                                    <div class="bg-white/80 border border-white/80 p-3 rounded-lg shadow-sm flex flex-col gap-2">
-                                        <div class="flex justify-between items-center">
-                                            <p class="font-bold text-xs md:text-sm text-slate-900">Cajas Chicas</p>
-                                            <span class="bg-yellow-100 text-yellow-700 font-bold px-1.5 md:px-2 py-0.5 rounded text-[9px] md:text-[10px]">5 uds</span>
+                                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-3 hover:shadow-md transition">
+                                        <div class="flex justify-between items-start">
+                                            <div><p class="font-bold text-sm text-slate-900">Cajas Chicas Envío</p><p class="text-[10px] text-slate-500">Prov: Cartones SA</p></div>
+                                            <span class="bg-yellow-100 text-yellow-700 font-bold px-2 py-0.5 rounded text-[10px] border border-yellow-200">5 unidades</span>
                                         </div>
+                                        <button class="w-full bg-slate-900 text-white py-2 text-xs font-bold rounded-lg hover:bg-slate-800 transition shadow"><i class="fa-solid fa-paper-plane mr-1"></i> Orden Automática</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 🌟 Simulador Interactivo (Iframe seguro vía Textarea) -->
+                        <div id="content-dashboards-demo-before" class="content-panel items-center justify-center">
+                            <div class="glass-panel p-8 md:p-12 text-center w-full max-w-2xl mx-auto my-auto rounded-3xl shadow-xl bg-white/50 border border-white">
+                                <i class="fa-solid fa-wand-magic-sparkles text-5xl text-brand-blue mb-4 animate-bounce"></i>
+                                <h3 class="text-2xl md:text-3xl font-black text-slate-800 mb-4 tracking-tight">Activa "Mi Solución" para ver la Magia</h3>
+                                <p class="text-sm md:text-base text-slate-600 mb-8 font-medium">Haz clic en el botón superior derecho para cargar el sistema interactivo completo y pruébalo tú mismo.</p>
+                                <button onclick="app.setState('after')" class="bg-gradient-to-r from-brand-blue to-indigo-600 text-white px-8 py-3.5 rounded-xl font-black text-sm md:text-base shadow-[0_10px_25px_rgba(37,99,235,0.4)] transition hover:scale-105 flex items-center justify-center mx-auto gap-2">Abrir Simulador Ahora <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div id="content-dashboards-demo-after" class="content-panel flex-col w-full h-full max-w-[1200px] mx-auto py-2 md:py-4">
+                            <div class="flex justify-center gap-2 md:gap-4 mb-4 z-20">
+                                <button id="btn-device-laptop" onclick="app.setDevice('laptop')" class="bg-brand-blue text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all shadow-sm border border-blue-600"><i class="fa-solid fa-laptop"></i> Ver en Computadora</button>
+                                <button id="btn-device-mobile" onclick="app.setDevice('mobile')" class="glass-panel bg-white/60 text-slate-700 px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 transition-all hover:bg-white/90 hover:text-slate-900 border border-white"><i class="fa-solid fa-mobile-screen"></i> Ver en Celular</button>
+                            </div>
+                            <div class="flex-1 w-full flex items-center justify-center relative p-1 md:p-4 perspective-1000 h-full min-h-[600px]">
+                                <div id="device-frame" class="transition-all duration-700 ease-in-out w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] border-[8px] md:border-[16px] border-slate-800 rounded-xl md:rounded-2xl bg-black relative shadow-[0_20px_50px_rgba(0,0,0,0.3)] mx-auto flex-shrink-0 z-10">
+                                    <iframe id="demo-iframe" class="w-full h-full bg-white rounded-md md:rounded-lg overflow-hidden border-none pointer-events-auto"></iframe>
+                                </div>
+                                <div id="laptop-base" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[110%] max-w-6xl h-4 md:h-6 bg-slate-300 rounded-b-2xl shadow-xl flex justify-center z-0 hidden">
+                                    <div class="w-20 md:w-32 h-2 md:h-3 bg-slate-400 rounded-b-md mt-0"></div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
+                    <!-- ================= CATEGORÍA 2: WEB ================= -->
                     <div id="cat-web" class="category-group hidden">
-                        
                         <!-- Tienda -->
                         <div id="content-web-tienda-before" class="content-panel items-center py-10 px-2 md:px-4">
                             <div class="w-full max-w-xl bg-gray-200/90 backdrop-blur-md border border-gray-400 rounded p-4 font-serif text-center shadow-lg mx-auto my-auto overflow-hidden">
@@ -658,7 +422,6 @@
                         </div>
 
                         <div id="content-web-tienda-after" class="content-panel items-center py-6 md:py-10">
-                            <!-- Celular de Tienda (Mini-App) con Glasmorfismo -->
                             <div class="w-full max-w-md h-[480px] md:h-[500px] border-[6px] md:border-[10px] border-slate-900/90 backdrop-blur-xl rounded-[24px] md:rounded-[30px] overflow-hidden relative shadow-2xl glass-panel flex flex-col mx-auto bg-white/30">
                                 <div class="bg-white/60 p-3 md:p-4 flex justify-between items-center border-b border-white/50 flex-shrink-0 backdrop-blur-md">
                                     <h1 class="font-black text-lg md:text-xl text-slate-900">TuMarca.</h1>
@@ -690,7 +453,7 @@
 
                         <!-- Landing -->
                         <div id="content-web-landing-before" class="content-panel items-center py-10">
-                            <form class="glass-panel p-5 md:p-6 w-full max-w-sm shadow-lg font-sans text-xs md:text-sm mx-auto my-auto rounded-2xl bg-white/80">
+                            <form class="glass-panel p-5 md:p-6 w-full max-w-sm shadow-lg font-sans text-xs md:text-sm mx-auto my-auto rounded-2xl bg-white/80 border border-white">
                                 <h3 class="font-bold text-center mb-4 text-slate-900">Formulario Aburrido</h3>
                                 <input type="text" placeholder="Nombre" class="w-full border border-gray-300 bg-white/70 mb-3 p-2 rounded">
                                 <textarea placeholder="Motivo" class="w-full border border-gray-300 bg-white/70 mb-4 p-2 h-16 rounded"></textarea>
@@ -703,7 +466,6 @@
                                 <div class="inline-block bg-blue-500/30 text-blue-300 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold mb-4 border border-blue-400/30 backdrop-blur-sm">Asesoría Gratuita</div>
                                 <h1 class="text-2xl md:text-3xl font-black mb-3 md:mb-4 leading-tight text-white drop-shadow-lg">Duplica tus ventas en 30 días.</h1>
                                 <p class="text-slate-200 mb-6 text-xs md:text-sm font-medium">Déjanos tu WhatsApp y te enviaremos un diagnóstico en 5 minutos.</p>
-                                
                                 <div class="bg-white/20 p-1.5 md:p-2 rounded-xl border border-white/40 backdrop-blur-lg flex gap-2 shadow-inner">
                                     <input type="tel" placeholder="Tu WhatsApp" class="flex-1 bg-transparent border-none text-white px-3 md:px-4 outline-none placeholder-slate-200 text-xs md:text-sm font-medium">
                                     <button class="bg-brand-blue text-white px-4 py-2.5 md:px-6 md:py-3 rounded-lg font-bold text-xs md:text-sm shadow-[0_0_15px_rgba(37,99,235,0.5)]">Quiero Ayuda</button>
@@ -715,8 +477,8 @@
                         <div id="content-web-servicios-before" class="content-panel items-center py-10">
                             <div class="text-left font-sans p-5 md:p-6 w-full max-w-2xl border-2 border-dashed border-gray-400 glass-panel bg-white/90 shadow-md mx-auto my-auto rounded-xl">
                                 <h1 class="text-xl md:text-2xl font-bold mb-4 text-slate-900">QUIENES SOMOS</h1>
-                                <p class="mb-4 text-xs md:text-sm text-slate-800 text-justify">Somos una empresa líder con amplia experiencia. Nuestra misión es la excelencia.</p>
-                                <p class="mt-6 text-[10px] md:text-xs text-red-600 font-bold text-center bg-red-100/80 p-2 rounded">Mucho texto aburrido, el cliente se va.</p>
+                                <p class="mb-4 text-xs md:text-sm text-slate-800 text-justify">Somos una empresa líder con amplia experiencia. Nuestra misión es la excelencia y nuestra visión ser los mejores. Contamos con un equipo multidisciplinario experto.</p>
+                                <p class="mt-6 text-[10px] md:text-xs text-red-600 font-bold text-center bg-red-100/80 p-2 rounded">Mucho texto aburrido, el cliente cierra la pestaña en 3 segundos.</p>
                             </div>
                         </div>
 
@@ -725,8 +487,9 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
                                     <div>
                                         <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-3 md:mb-4 leading-tight drop-shadow-sm">Solucionamos tu problema, <span class="text-brand-blue block md:inline">sin excusas.</span></h1>
-                                        <div class="space-y-3 md:space-y-4 mt-6">
-                                            <div class="flex items-center gap-3 md:gap-4 glass-panel bg-white/60 p-3 md:p-4 rounded-xl">
+                                        <p class="text-slate-700 text-sm mb-6">No te vendemos humo. Te damos resultados medibles desde la primera semana.</p>
+                                        <div class="space-y-3 md:space-y-4">
+                                            <div class="flex items-center gap-3 md:gap-4 glass-panel bg-white/60 p-3 md:p-4 rounded-xl border border-white">
                                                 <div class="w-10 h-10 md:w-12 md:h-12 bg-white/80 text-brand-blue rounded-full flex items-center justify-center text-lg md:text-xl shadow-sm"><i class="fa-solid fa-bolt"></i></div>
                                                 <div><h4 class="font-bold text-sm md:text-base text-slate-900">Servicio Rápido</h4></div>
                                             </div>
@@ -740,9 +503,9 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
+                    <!-- ================= CATEGORÍA 3: REDES ================= -->
                     <div id="cat-redes" class="category-group hidden">
                         <div class="w-full flex justify-center py-3 glass-panel bg-white/50 border-b border-white/60 shadow-sm sticky top-0 z-10 backdrop-blur-xl">
                             <i class="fa-brands fa-facebook text-2xl md:text-3xl text-blue-600 drop-shadow-sm"></i>
@@ -754,7 +517,7 @@
                         </div>
                         
                         <div id="content-redes-anuncios-after" class="content-panel items-center py-6 md:py-10">
-                            <div class="glass-panel bg-white/40 w-full max-w-4xl rounded-3xl p-4 md:p-6 flex flex-col md:flex-row gap-6 md:gap-8 items-center mx-auto shadow-xl">
+                            <div class="glass-panel bg-white/40 w-full max-w-4xl rounded-3xl p-4 md:p-6 flex flex-col md:flex-row gap-6 md:gap-8 items-center mx-auto shadow-xl border border-white">
                                 <div class="w-full max-w-[280px] bg-white/90 backdrop-blur border border-white rounded-xl overflow-hidden shadow-lg flex-shrink-0 mx-auto">
                                     <div class="p-2 flex items-center justify-between">
                                         <div class="flex items-center gap-2">
@@ -775,9 +538,9 @@
                                         <h3 class="font-black text-xl md:text-2xl text-slate-900 drop-shadow-sm">Máquina de Mensajes</h3>
                                     </div>
                                     <div class="grid grid-cols-2 gap-3 md:gap-4 mb-2">
-                                        <div class="glass-panel bg-white/70 p-3 rounded-xl"><p class="text-[9px] font-bold text-slate-600 uppercase mb-1">Inversión</p><p class="text-lg font-black text-slate-900">$1,000</p></div>
-                                        <div class="glass-panel bg-blue-50/80 p-3 rounded-xl border-blue-200"><p class="text-[9px] font-bold text-brand-blue uppercase mb-1">Chats</p><p class="text-lg font-black text-brand-blue">84</p></div>
-                                        <div class="glass-panel bg-green-50/80 p-3 rounded-xl border-green-200"><p class="text-[9px] font-bold text-brand-green uppercase mb-1">Ventas</p><p class="text-2xl font-black text-brand-green">12</p></div>
+                                        <div class="glass-panel bg-white/70 p-3 rounded-xl border border-white"><p class="text-[9px] font-bold text-slate-600 uppercase mb-1">Inversión</p><p class="text-lg font-black text-slate-900">$1,000</p></div>
+                                        <div class="glass-panel bg-blue-50/80 p-3 rounded-xl border border-blue-200"><p class="text-[9px] font-bold text-brand-blue uppercase mb-1">Chats</p><p class="text-lg font-black text-brand-blue">84</p></div>
+                                        <div class="glass-panel bg-green-50/80 p-3 rounded-xl border border-green-200"><p class="text-[9px] font-bold text-brand-green uppercase mb-1">Ventas</p><p class="text-2xl font-black text-brand-green">12</p></div>
                                     </div>
                                 </div>
                             </div>
@@ -787,8 +550,8 @@
                         <div id="content-redes-reels-before" class="content-panel items-center py-10">
                             <div class="w-[260px] h-[460px] border-[6px] border-gray-800/80 backdrop-blur-md rounded-[24px] bg-gray-900/90 relative flex items-center justify-center text-center overflow-hidden shadow-2xl mx-auto my-auto flex-shrink-0">
                                 <div class="z-0 px-4">
-                                    <p class="text-gray-400 text-xs italic mb-4">Video aburrido.</p>
-                                    <div class="bg-red-500/90 text-white font-bold p-1.5 text-[10px] rounded shadow">Retención: 5%</div>
+                                    <p class="text-gray-400 text-xs italic mb-4">Video de 1 min mostrando productos como diapositivas.</p>
+                                    <div class="bg-red-500/90 text-white font-bold p-1.5 text-[10px] rounded shadow border border-red-400">Retención: 5% (Hacen scroll)</div>
                                 </div>
                             </div>
                         </div>
@@ -806,7 +569,7 @@
 
                         <!-- Contenido -->
                         <div id="content-redes-contenido-before" class="content-panel items-center py-10">
-                            <div class="glass-panel bg-white/80 w-full max-w-sm rounded-xl shadow-lg overflow-hidden font-sans mx-auto my-auto">
+                            <div class="glass-panel bg-white/80 w-full max-w-sm rounded-xl border border-white shadow-lg overflow-hidden font-sans mx-auto my-auto">
                                 <div class="w-full aspect-square bg-[#ffe4e1]/80 flex flex-col items-center justify-center text-center p-4">
                                     <h2 class="font-comic text-2xl text-pink-600 font-bold mb-3 drop-shadow-sm">¡Feliz Lunes!</h2>
                                 </div>
@@ -814,11 +577,202 @@
                         </div>
 
                         <div id="content-redes-contenido-after" class="content-panel items-center py-10">
-                             <div class="glass-panel bg-white/60 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden font-sans mx-auto my-auto">
+                             <div class="glass-panel bg-white/60 w-full max-w-md rounded-2xl shadow-2xl border border-white overflow-hidden font-sans mx-auto my-auto">
                                 <div class="w-full aspect-square glass-panel-dark flex flex-col items-start justify-center text-left p-6 text-white relative border-none rounded-none">
                                     <p class="text-[10px] text-brand-cyan font-bold uppercase tracking-widest mb-2 border-l-2 border-brand-cyan pl-2 shadow-sm">Caso de Éxito</p>
                                     <h2 class="text-xl font-black mb-3 leading-tight drop-shadow-md">Cómo ayudamos a Empresa X a ahorrar $50k.</h2>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= CATEGORÍA 4: PRECIOS ================= -->
+                    <div id="cat-precios" class="category-group hidden">
+                        <div id="content-precios-planes-before" class="content-panel active items-center py-10 md:py-16">
+                            
+                            <div class="max-w-5xl w-full mx-auto px-2">
+                                <div class="text-center mb-10 md:mb-12">
+                                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight drop-shadow-sm">Soluciones e Inversión <span class="text-brand-blue">Transparente</span></h2>
+                                    <p class="text-slate-800 max-w-2xl mx-auto font-medium text-sm md:text-base">Precios base claros para proyectos ágiles. Cotizaciones formalizadas según el volumen de datos e infraestructura de tu negocio.</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
+                                    <!-- Plan 1 -->
+                                    <div class="glass-panel bg-white/60 rounded-3xl p-6 flex flex-col hover:-translate-y-1 transition-transform border border-white shadow-lg">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-slate-700 shadow-sm border border-slate-100"><i class="fa-solid fa-chart-simple"></i></div>
+                                            <h3 class="font-black text-xl text-slate-900">Dashboard Operativo Esencial</h3>
+                                        </div>
+                                        <p class="text-3xl font-black text-brand-blue mb-2"><span class="text-lg text-slate-700 font-bold">Desde</span> $4,000 <span class="text-sm font-normal text-slate-600">MXN</span></p>
+                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/60 inline-block px-2 py-1 rounded border border-white">Pago único de implementación</p>
+                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Erradicación del desorden en hojas de cálculo y monitoreo de un proceso crítico del negocio.</p>
+                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Integración de 1 archivo centralizado.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Hasta 4 KPIs en tiempo real.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Filtros interactivos básicos.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-white/90 hover:bg-white text-slate-900 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 border border-slate-200 shadow-sm">Cotizar Dashboard Esencial <i class="fa-brands fa-instagram text-brand-blue"></i></button>
+                                    </div>
+
+                                    <!-- Plan 2 -->
+                                    <div class="glass-panel bg-white/80 rounded-3xl p-6 flex flex-col relative transform md:-translate-y-4 border-2 border-brand-blue/50 shadow-xl">
+                                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-brand-blue text-white px-4 py-1.5 rounded-full text-[10px] font-bold shadow-md uppercase tracking-widest border border-blue-400 whitespace-nowrap">Recomendado - Dirección</div>
+                                        <div class="flex items-center gap-3 mb-4 mt-2">
+                                            <div class="w-10 h-10 bg-brand-blue text-white rounded-full flex items-center justify-center shadow-sm"><i class="fa-solid fa-chess-knight"></i></div>
+                                            <div>
+                                                <h3 class="font-black text-xl text-slate-900 leading-none">Centro de Mando Integral</h3>
+                                                <span class="text-[10px] font-bold text-brand-blue uppercase tracking-widest mt-1 block">Mapa Estratégico</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-4xl font-black text-brand-blue mb-2 drop-shadow-sm"><span class="text-xl text-slate-700 font-bold">Desde</span> $9,500 <span class="text-sm font-normal text-slate-600">MXN</span></p>
+                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/60 inline-block px-2 py-1 rounded border border-white">Pago único de implementación</p>
+                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Cabina de control directivo multisección para gobernar las áreas neurálgicas de la empresa en una sola pantalla.</p>
+                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Integración de 2 a 4 áreas operativas.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Semáforos y alertas automáticas.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-blue mt-1"></i> Tableros comparativos vs. metas.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-brand-blue hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 hover:-translate-y-1">Solicitar Centro de Mando <i class="fa-brands fa-instagram"></i></button>
+                                    </div>
+
+                                    <!-- Plan 3 -->
+                                    <div class="glass-panel bg-white/60 rounded-3xl p-6 flex flex-col hover:-translate-y-1 transition-transform border border-white shadow-lg">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-brand-green shadow-sm border border-slate-100"><i class="fa-solid fa-laptop-code"></i></div>
+                                            <h3 class="font-black text-xl text-slate-900 leading-tight">Desarrollo de páginas web UI/UX</h3>
+                                        </div>
+                                        <p class="text-3xl font-black text-brand-green mb-2"><span class="text-lg text-slate-700 font-bold">Desde</span> $5,000 <span class="text-sm font-normal text-slate-600">MXN</span></p>
+                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/60 inline-block px-2 py-1 rounded border border-white">Pago único</p>
+                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Presencia corporativa moderna diseñada para generar confianza y autoridad.</p>
+                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Secciones estratégicas claras.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Botones directos a redes sociales.</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-green mt-1"></i> Configuración para que la gente te encuentre en Google.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-white/90 hover:bg-white text-slate-900 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 border border-slate-200 shadow-sm">Iniciar Proyecto Web <i class="fa-brands fa-instagram text-brand-green"></i></button>
+                                    </div>
+
+                                    <!-- Plan 4 (Video) -->
+                                    <div class="glass-panel bg-white/60 rounded-3xl p-6 flex flex-col hover:-translate-y-1 transition-transform border border-white shadow-lg">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-brand-cyan shadow-sm border border-slate-100"><i class="fa-solid fa-clapperboard"></i></div>
+                                            <h3 class="font-black text-xl text-slate-900 leading-tight">Edición Inteligente (1 Video = Varios)</h3>
+                                        </div>
+                                        <p class="text-3xl font-black text-brand-cyan mb-2"><span class="text-lg text-slate-700 font-bold">Desde</span> $3,500 <span class="text-sm font-normal text-slate-600">MXN</span></p>
+                                        <p class="text-[10px] text-slate-600 font-bold uppercase mb-4 tracking-wider bg-white/60 inline-block px-2 py-1 rounded border border-white">Material crudo de hasta 20 min</p>
+                                        <p class="text-sm text-slate-800 mb-6 flex-1"><strong>Enfoque:</strong> Graba un solo video con tu celular y nosotros lo cortamos y adaptamos para sacar varias piezas listas para todas tus redes.</p>
+                                        <ul class="space-y-3 text-sm text-slate-800 mb-8 font-medium">
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> 1 Video Principal (Formato horizontal).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> 2 a 3 Clips cortos (Instagram Reels / TikTok).</li>
+                                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-cyan mt-1"></i> Textos grandes en pantalla.</li>
+                                        </ul>
+                                        <button onclick="app.openIG('chat')" class="w-full bg-white/90 hover:bg-white text-slate-900 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 border border-slate-200 shadow-sm">Cotizar Edición <i class="fa-brands fa-instagram text-brand-cyan"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- REDES SOCIALES VIP -->
+                                <div class="mt-16 mb-12 relative w-full">
+                                    <div class="absolute inset-0 bg-gradient-to-b from-brand-purple/20 to-transparent rounded-3xl blur-2xl -z-10 transform scale-105"></div>
+                                    <div class="text-center mb-10 relative z-10">
+                                        <div class="inline-flex items-center justify-center gap-2 bg-brand-purple/10 border border-brand-purple/30 text-brand-purple px-6 py-2 rounded-full font-black text-sm md:text-base shadow-sm mb-4 backdrop-blur-md">
+                                            <i class="fa-solid fa-fire animate-pulse text-red-500"></i> Servicio Estrella: Manejo de Redes Sociales
+                                        </div>
+                                        <h3 class="text-2xl md:text-4xl font-black text-slate-900 mb-4 drop-shadow-sm leading-tight">Tú atiende tu negocio, nosotros nos encargamos <span class="text-brand-purple block md:inline">del resto.</span></h3>
+                                        <p class="text-slate-700 max-w-2xl mx-auto font-medium text-sm md:text-base">Manejamos tus perfiles para proyectar tu autoridad y generar confianza genuina en tus futuros clientes.</p>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
+                                        
+                                        <!-- RS Nivel 1 -->
+                                        <div class="glass-panel bg-white/60 rounded-3xl p-6 flex flex-col border border-white hover:-translate-y-2 transition-transform shadow-lg">
+                                            <h3 class="font-black text-xl text-slate-900 mb-1">Propuesta 1: Sembrado Institucional</h3>
+                                            <p class="text-xs text-slate-600 mb-4 h-12 font-medium">Ideal para curar el perfil vacío y establecer una vitrina profesional sólida.</p>
+                                            <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl mb-4 border border-white shadow-sm">
+                                                <p class="text-xs text-slate-500 line-through text-center mb-1">Valor en Agencia: $5,000 MXN</p>
+                                                <p class="text-2xl font-black text-brand-purple text-center">$4,000 <span class="text-sm font-normal text-slate-600">/ mes</span></p>
+                                                <div class="mt-3 bg-purple-100/80 border border-purple-200 text-brand-purple text-[10px] md:text-xs font-bold text-center py-1.5 px-2 rounded-lg">Facilidades: 2 pagos de $2,000</div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-regular fa-eye text-brand-purple"></i> Lo que se ve (8 Piezas):</p>
+                                                <ul class="space-y-2 text-xs text-slate-800 mb-4">
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>LinkedIn:</strong> 3 Carruseles documentando casos de éxito o procesos.</li>
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>IG / FB:</strong> 2 Videos Cortos (10s) corporativos + 3 Gráficos Premium.</li>
+                                                </ul>
+                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-solid fa-gears text-brand-purple"></i> Lo que NO se ve:</p>
+                                                <ul class="space-y-2 text-xs text-slate-800 mb-6">
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> Llenado inicial de perfiles.</li>
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> Traducción de la información de tu negocio a textos persuasivos.</li>
+                                                </ul>
+                                            </div>
+                                            <button onclick="app.openIG('chat')" class="w-full bg-white/90 hover:bg-white text-brand-purple font-bold py-3.5 rounded-xl transition border border-purple-200 shadow-sm flex items-center justify-center gap-2">Delegar Redes <i class="fa-brands fa-instagram"></i></button>
+                                        </div>
+
+                                        <!-- RS Nivel 2 (Recomendado) -->
+                                        <div class="glass-panel rounded-3xl p-6 flex flex-col border-2 border-brand-purple/60 bg-white/80 shadow-2xl relative transform lg:-translate-y-4 z-20">
+                                            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-brand-purple to-purple-500 text-white px-6 py-1.5 rounded-full text-[11px] font-black shadow-lg uppercase tracking-wider whitespace-nowrap border border-purple-300">El Recomendado</div>
+                                            <h3 class="font-black text-xl text-slate-900 mb-1 mt-2">Propuesta 2: Captación Activa</h3>
+                                            <p class="text-xs text-slate-700 mb-4 h-12 font-medium">Motor de prospección inteligente para atraer ejecutivos y clientes.</p>
+                                            <div class="bg-white/90 backdrop-blur-md p-4 rounded-xl mb-4 border border-purple-100 shadow-md">
+                                                <p class="text-xs text-slate-500 line-through text-center mb-1">Valor en Agencia: $8,500 MXN</p>
+                                                <p class="text-3xl font-black text-brand-purple text-center">$6,000 <span class="text-sm font-normal text-slate-600">/ mes</span></p>
+                                                <div class="mt-3 bg-purple-100 border border-purple-200 text-brand-purple text-[10px] font-black text-center py-1.5 px-2 rounded-lg shadow-inner">Facilidades: 2 pagos de $3,000</div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-regular fa-eye text-brand-purple"></i> Lo que se ve (12 Piezas):</p>
+                                                <ul class="space-y-2 text-xs text-slate-800 mb-4">
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>LinkedIn:</strong> 4 Carruseles técnicos + 1 Artículo de Autoridad.</li>
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>IG / FB:</strong> 4 Videos Cortos (10s) de alto impacto + 3 Gráficos.</li>
+                                                </ul>
+                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-solid fa-gears text-brand-purple"></i> El Motor Estratégico:</p>
+                                                <ul class="space-y-2 text-xs text-slate-800 mb-6">
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-star text-brand-yellow mt-0.5 animate-pulse"></i> <strong>Inteligencia de Contactos:</strong> Mapeo e invitaciones estratégicas a directivos clave (sin spam).</li>
+                                                    <li class="flex items-start gap-2 text-slate-600 font-bold"><i class="fa-solid fa-plus mt-0.5 text-slate-400"></i> Todo lo de la Propuesta 1.</li>
+                                                </ul>
+                                            </div>
+                                            <button onclick="app.openIG('chat')" class="w-full bg-brand-purple hover:bg-purple-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">Captar Clientes <i class="fa-brands fa-instagram"></i></button>
+                                        </div>
+
+                                        <!-- RS Nivel 3 -->
+                                        <div class="glass-panel bg-white/60 rounded-3xl p-6 flex flex-col border border-white hover:-translate-y-2 transition-transform shadow-lg">
+                                            <h3 class="font-black text-xl text-slate-900 mb-1">Propuesta 3: Liderazgo</h3>
+                                            <p class="text-xs text-slate-600 mb-4 h-12 font-medium">La infraestructura comercial completa y máxima visibilidad en tu sector.</p>
+                                            <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl mb-4 border border-white shadow-sm">
+                                                <p class="text-xs text-slate-500 line-through text-center mb-1">Valor en Agencia: $12,000 MXN</p>
+                                                <p class="text-2xl font-black text-brand-purple text-center">$9,000 <span class="text-sm font-normal text-slate-600">/ mes</span></p>
+                                                <div class="mt-3 bg-purple-100/80 border border-purple-200 text-brand-purple text-[10px] md:text-xs font-bold text-center py-1.5 px-2 rounded-lg">Facilidades: 2 pagos de $4,500</div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-regular fa-eye text-brand-purple"></i> Lo que se ve:</p>
+                                                <ul class="space-y-2 text-xs text-slate-800 mb-4">
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>LinkedIn:</strong> 5 Carruseles + 2 Artículos de Opinión.</li>
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>IG / FB:</strong> 5 Videos Cortos + 4 Gráficos Premium.</li>
+                                                    <li class="flex items-start gap-2 bg-yellow-100/80 border border-yellow-200 p-2 rounded-lg font-bold"><i class="fa-solid fa-podcast text-brand-purple mt-0.5"></i> 2 "Cápsulas de Audio" (Podcast resumiendo temas clave de tu sector).</li>
+                                                </ul>
+                                                <p class="font-bold text-slate-900 text-sm mb-2"><i class="fa-solid fa-gears text-brand-purple"></i> Lo que NO se ve:</p>
+                                                <ul class="space-y-2 text-xs text-slate-800 mb-6">
+                                                    <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-0.5"></i> <strong>Intervención Estratégica:</strong> Presencia activa en comentarios de líderes de tu industria.</li>
+                                                    <li class="flex items-start gap-2 text-slate-600 font-bold"><i class="fa-solid fa-plus mt-0.5 text-slate-400"></i> Todo el motor de la Propuesta 2.</li>
+                                                </ul>
+                                            </div>
+                                            <button onclick="app.openIG('chat')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-md flex items-center justify-center gap-2">Dominar el Mercado <i class="fa-brands fa-instagram text-brand-purple"></i></button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Banner CTA Final -->
+                                <div class="glass-panel-dark rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden mt-4 shadow-2xl">
+                                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-blue rounded-full opacity-50 blur-3xl"></div>
+                                    <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-purple-500 rounded-full opacity-40 blur-3xl"></div>
+                                    
+                                    <h3 class="text-2xl md:text-4xl font-black mb-4 relative z-10 drop-shadow-md">¿Necesitas un "Traje a la Medida"?</h3>
+                                    <p class="text-slate-200 text-sm md:text-lg max-w-3xl mx-auto mb-8 relative z-10 font-medium">Si tu empresa requiere integración directa con bases de datos SQL, sistemas ERP locales o algo muy específico, evaluamos tu arquitectura técnica sin costo.</p>
+                                    
+                                    <button onclick="app.openIG('chat')" class="bg-brand-blue text-white px-8 py-4 rounded-xl font-bold text-sm md:text-base hover:scale-105 hover:bg-blue-600 transition shadow-[0_0_20px_rgba(37,99,235,0.4)] relative z-10 inline-flex items-center gap-2 border border-blue-400/50">
+                                        <i class="fa-brands fa-instagram text-xl"></i> Comunícate con nosotros
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -827,12 +781,676 @@
         </div>
     </div>
 
+    <!-- Este Textarea evita cualquier conflicto de scripts con la pagina principal -->
+    <textarea id="demo-template" style="display:none;">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Zapatería - Dashboard Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(120deg, #f1f5f9 0%, #e2e8f0 100%);
+            background-attachment: fixed;
+            margin: 0;
+            overflow-x: hidden;
+            color: #1e293b;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border-radius: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        #excel-wrapper {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: #fff; z-index: 40; overflow: auto;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .excel-table {
+            border-collapse: collapse; width: 350%; font-size: 11px;
+            font-family: 'Courier New', Courier, monospace; background: #fff;
+        }
+        .excel-table th, .excel-table td {
+            border: 1px solid #cbd5e1; padding: 2px 4px; white-space: nowrap;
+        }
+        .excel-table th { background-color: #f1f5f9; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #64748b; }
+        .cell-error { background-color: #fca5a5; color: #991b1b; font-weight: bold; }
+        .cell-warn { background-color: #fef08a; }
+
+        .magic-btn-container {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 50; width: 90%; max-width: 450px;
+        }
+        .magic-btn {
+            background: linear-gradient(135deg, #0f172a, #334155);
+            box-shadow: 0 15px 30px -5px rgba(15, 23, 42, 0.5);
+            width: 100%; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        #ai-chatbot {
+            position: fixed; bottom: 20px; right: 20px; z-index: 60;
+            display: flex; flex-direction: column; align-items: flex-end;
+        }
+
+        #chat-window {
+            width: 360px; max-height: 550px; height: 75vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0,0,0,0.05);
+            display: none; flex-direction: column; overflow: hidden;
+            margin-bottom: 20px;
+            transform-origin: bottom right; animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+        .chat-header {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .avatar-img {
+            width: 45px; height: 45px; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .floating-avatar {
+            width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 3px solid white;
+            transition: transform 0.3s ease;
+        }
+
+        .chat-messages {
+            flex-grow: 1; overflow-y: auto; padding: 15px;
+            display: flex; flex-direction: column; gap: 12px;
+            background-color: #f8fafc;
+        }
+
+        .chat-bubble { padding: 12px 16px; border-radius: 16px; font-size: 0.95rem; max-width: 85%; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .bot-bubble { background-color: #ffffff; color: #334155; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #e2e8f0; }
+        .user-bubble { background-color: #334155; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        
+        .chat-input-area {
+            padding: 15px; border-top: 1px solid #e2e8f0; background: white;
+            display: flex; gap: 10px; align-items: center;
+        }
+
+        .chat-input {
+            flex-grow: 1; border: 1px solid #cbd5e1; border-radius: 20px;
+            padding: 10px 15px; font-size: 0.9rem; outline: none; transition: border 0.3s;
+        }
+        
+        .send-btn {
+            background: #0f172a; color: white; border: none; border-radius: 50%;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        
+        .chat-options { padding: 0 15px 15px 15px; background: white; display: flex; flex-wrap: wrap; gap: 8px; }
+        .chat-option-btn {
+            background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+            padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; font-weight: 500;
+        }
+        
+        .typing-indicator {
+            display: inline-flex; align-items: center; gap: 4px; padding: 12px 16px;
+            background: #ffffff; border-radius: 16px; border-bottom-left-radius: 4px; border: 1px solid #e2e8f0;
+            align-self: flex-start;
+        }
+        .typing-dot { width: 6px; height: 6px; border-radius: 50%; background-color: #94a3b8; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 10px; }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <div id="excel-wrapper">
+        <div class="bg-red-600 text-white text-[10px] sm:text-sm px-2 sm:px-4 py-2 font-bold sticky top-0 z-20 shadow-md flex justify-between items-center gap-2">
+            <span class="truncate">⚠️ INVENTARIO_FINAL_v3.xlsx - [Solo lectura]</span>
+            <span class="animate-pulse whitespace-nowrap">Calculando...</span>
+        </div>
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th>Cod_Barras</th><th>Modelo</th><th>Marca</th><th>Color</th><th>Talla</th><th>Costo_Prov</th><th>Precio_Pub</th><th>Pares_Fisicos</th><th>Pares_Sistema</th><th>Diferencia</th><th>Status</th><th>Proveedor</th><th>Dias_Inventario</th><th>Descuento</th><th>Error_Sincronizacion</th>
+                </tr>
+            </thead>
+            <tbody id="excel-body">
+                <!-- Se llena por JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="btn-transformar" class="magic-btn-container">
+        <button onclick="transformToPro()" class="magic-btn text-white font-bold py-3 px-4 sm:py-4 sm:px-6 rounded-2xl flex items-center gap-2 sm:gap-3 text-sm sm:text-xl transition-transform hover:scale-105">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <span>Aplicar Estrategia Pro</span>
+        </button>
+    </div>
+
+    <div id="dashboard-wrapper" class="hidden min-h-screen pb-24">
+        
+        <!-- Header -->
+        <header class="glass-header sticky top-0 z-30 px-3 sm:px-4 py-3 sm:py-4 shadow-sm">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-3 sm:gap-4">
+                <div class="flex items-center gap-3 w-full lg:w-auto">
+                    <!-- Icono Profesional -->
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-slate-800 rounded-xl flex items-center justify-center text-white shadow-lg shrink-0">
+                        <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg sm:text-2xl font-extrabold text-slate-800 tracking-tight leading-none">Zapatería Centro</h1>
+                        <p class="text-[10px] sm:text-sm text-slate-500 font-medium mt-0.5">Panel de Control Ejecutivo</p>
+                    </div>
+                </div>
+
+                <!-- Selector de Periodos Extendido -->
+                <div class="flex bg-slate-200/60 p-1 rounded-xl w-full lg:w-auto overflow-x-auto scrollbar-hide">
+                    <button onclick="changePeriod('mes_anterior', this)" class="period-btn flex-none px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-slate-600 font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">Mes Anterior</button>
+                    <button onclick="changePeriod('hoy', this)" class="period-btn flex-none px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-slate-600 font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">Hoy</button>
+                    <button onclick="changePeriod('mes', this)" class="period-btn flex-none px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-white shadow-sm text-indigo-600 font-bold transition-all text-xs sm:text-sm whitespace-nowrap">Este Mes</button>
+                    <button onclick="changePeriod('ytd', this)" class="period-btn flex-none px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-slate-600 font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">Año</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 sm:mt-8 space-y-4 sm:space-y-8">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                
+                <!-- KPI 1: Ventas -->
+                <div class="glass-card p-4 sm:p-6 animate-fade-in delay-100 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wider">Lo que hemos vendido</p>
+                            <div class="p-1.5 sm:p-2 bg-indigo-50 rounded-lg text-indigo-600">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 mb-3 sm:mb-4">
+                            $<span id="kpi-sales" class="num-animate" data-val="425000">0</span>
+                        </h2>
+                    </div>
+                    <div class="bg-slate-50 rounded-xl p-2 sm:p-3 border border-slate-100">
+                        <div class="flex justify-between text-xs sm:text-sm mb-1.5 font-semibold">
+                            <span class="text-slate-600" id="kpi-sales-target">Meta: $500,000</span>
+                            <span class="text-indigo-600" id="kpi-sales-pct">85% logrado</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-1.5 sm:h-2">
+                            <div class="bg-indigo-500 h-1.5 sm:h-2 rounded-full transition-all duration-1000 w-0" id="bar-sales"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI 2: Ganancia -->
+                <div class="glass-card p-4 sm:p-6 animate-fade-in delay-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wider">Lo que nos queda libre</p>
+                            <div class="p-1.5 sm:p-2 bg-emerald-50 rounded-lg text-emerald-600">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-2 mb-2">
+                            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-600">
+                                <span id="kpi-margin" class="num-animate" data-val="35">0</span>%
+                            </h2>
+                            <span class="text-xs sm:text-sm text-slate-500 font-medium">ganancia</span>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-emerald-700 font-bold bg-emerald-50 inline-flex items-center gap-1.5 sm:gap-2 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-emerald-100 mt-2 sm:mt-4">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Negocio sano y creciendo.
+                    </p>
+                </div>
+
+                <!-- KPI 3: Dinero Atorado -->
+                <div class="glass-card p-4 sm:p-6 animate-fade-in delay-300 border-t-4 border-t-rose-500 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-xs sm:text-sm font-bold text-rose-600 uppercase tracking-wider">Dinero Atorado</p>
+                            <div class="p-1.5 sm:p-2 bg-rose-50 rounded-lg text-rose-600">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 mb-1 sm:mb-2">
+                            $<span id="kpi-debt" class="num-animate" data-val="85000">0</span>
+                        </h2>
+                    </div>
+                    <div class="mt-2 sm:mt-4">
+                        <p class="text-[11px] sm:text-sm text-slate-600 font-medium leading-tight">
+                            Equivale a <strong class="text-rose-600">120 pares</strong> sin moverse hace 6 meses.
+                        </p>
+                        <button class="text-xs sm:text-sm text-indigo-600 font-bold mt-1.5 sm:mt-2 hover:underline flex items-center gap-1">
+                            Ver mercancía <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-4 sm:gap-8">
+                
+                <!-- Plan vs Real -->
+                <div class="glass-card p-4 sm:p-6 animate-fade-in delay-300 w-full lg:w-1/2 flex flex-col min-h-[280px] sm:min-h-[350px]">
+                    <div class="mb-3 sm:mb-4">
+                        <h3 class="text-base sm:text-lg font-extrabold text-slate-800 leading-tight">¿Estamos cumpliendo la meta?</h3>
+                        <p class="text-[11px] sm:text-sm text-slate-500 mt-1">Lo que planeamos vender vs Lo que realmente vendimos.</p>
+                    </div>
+                    <div class="relative flex-grow w-full h-full min-h-[180px]">
+                        <canvas id="planVsRealChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Donas -->
+                <div class="glass-card p-4 sm:p-6 animate-fade-in delay-300 w-full lg:w-1/2 flex flex-col min-h-[280px] sm:min-h-[350px]">
+                    <div class="mb-3 sm:mb-4">
+                        <h3 class="text-base sm:text-lg font-extrabold text-slate-800 leading-tight">Radiografía de tu Zapatería</h3>
+                        <p class="text-[11px] sm:text-sm text-slate-500 mt-1">Lo que da dinero vs Lo que estorba en bodega.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 flex-grow">
+                        <!-- Dona Buena -->
+                        <div class="flex flex-col items-center bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-100">
+                            <h4 class="font-bold text-slate-700 text-xs sm:text-sm mb-2 sm:mb-3 flex items-center gap-1">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Lo que más se vende
+                            </h4>
+                            <div class="relative w-full h-32 sm:h-40">
+                                <canvas id="topProductsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Dona Mala -->
+                        <div class="flex flex-col items-center bg-rose-50/30 rounded-xl p-3 sm:p-4 border border-rose-100">
+                            <h4 class="font-bold text-slate-700 text-xs sm:text-sm mb-2 sm:mb-3 flex items-center gap-1">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Lo que menos se vende
+                            </h4>
+                            <div class="relative w-full h-32 sm:h-40">
+                                <canvas id="worstProductsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card overflow-hidden animate-fade-in delay-300">
+                <div class="p-4 sm:p-6 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-extrabold text-slate-800 flex items-center gap-2 leading-tight">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            ¡Estás perdiendo ventas!
+                        </h3>
+                        <p class="text-slate-500 text-[11px] sm:text-sm mt-1">Modelos que se venden diario, pero ya NO tienes los números que la gente pide.</p>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-left whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-white text-slate-400 text-[10px] sm:text-xs uppercase tracking-wider border-b border-slate-100">
+                                <th class="p-3 sm:p-5 font-semibold">Modelo Estrella</th>
+                                <th class="p-3 sm:p-5 font-semibold text-center">Tallas agotadas</th>
+                                <th class="p-3 sm:p-5 font-semibold text-right">Decisión Rápida</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-3 sm:p-5">
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-500 shrink-0">
+                                            <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs sm:text-sm">Tenis Urbano Blanco</p>
+                                            <p class="text-[10px] sm:text-xs text-emerald-600 font-semibold">Vendes 5 pares diarios</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 sm:p-5 text-center">
+                                    <div class="flex justify-center gap-1 sm:gap-2">
+                                        <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-rose-100 text-rose-700 font-bold rounded sm:rounded-lg text-[10px] sm:text-sm"># 26</span>
+                                        <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-rose-100 text-rose-700 font-bold rounded sm:rounded-lg text-[10px] sm:text-sm"># 27.5</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 sm:p-5 text-right">
+                                    <button class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-sm transition-colors shadow-sm">
+                                        Pedir a proveedor
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-3 sm:p-5">
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 shrink-0">
+                                            <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-xs sm:text-sm">Bota Industrial Piel</p>
+                                            <p class="text-[10px] sm:text-xs text-emerald-600 font-semibold">Excelente margen</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3 sm:p-5 text-center">
+                                    <div class="flex justify-center gap-1 sm:gap-2">
+                                        <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-amber-100 text-amber-700 font-bold rounded sm:rounded-lg text-[10px] sm:text-sm"># 28</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 sm:p-5 text-right">
+                                    <button class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-sm transition-colors">
+                                        Revisar bodega
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <div id="ai-chatbot" class="hidden">
+        <div id="chat-window">
+            <div class="chat-header">
+                <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Sofía" class="avatar-img">
+                    <div>
+                        <h3 class="font-bold text-lg leading-tight">Sofía</h3>
+                        <p class="text-xs text-slate-300 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> En línea
+                        </p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-white/70 hover:text-white p-2 transition-colors">X</button>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-bubble bot-bubble">
+                    ¡Hola! Soy Sofía. Analicé el sistema y veo que este mes vamos muy bien en ventas de tenis, pero tenemos zapatos de fiesta atorados. ¿En qué te ayudo hoy?
+                </div>
+            </div>
+
+            <div class="chat-options" id="chat-quick-options">
+                <button onclick="sendQuickMessage('¿Cuánto dinero tengo atorado?')" class="chat-option-btn">¿Dinero atorado?</button>
+                <button onclick="sendQuickMessage('¿Qué tallas me urgen?')" class="chat-option-btn">¿Qué tallas me urgen?</button>
+                <button onclick="sendQuickMessage('Resumen rápido')" class="chat-option-btn">Resumen rápido</button>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Pregúntale a Sofía..." onkeypress="handleKeyPress(event)">
+                <button onclick="handleSendClick()" class="send-btn">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <button id="chat-toggle-btn" onclick="toggleChat()" class="relative hover:scale-105 transition-transform group">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Sofía" class="floating-avatar">
+            <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+        </button>
+    </div>
+
+    <script>
+        function generateChaos() {
+            const tbody = document.getElementById('excel-body');
+            let html = '';
+            const modelos = ['Tenis_Urb', 'BOTA_IND', 'Zap_Niño', 'Zapatilla_F', 'MOCASIN_C', 'Snd_Pla'];
+            const marcas = ['Nike(copia?)', 'Pirma', 'Flexi', 'SinMarca', '#N/A'];
+            
+            for(let i = 0; i < 150; i++) {
+                const isErr = Math.random() < 0.15;
+                const rPares = Math.floor(Math.random() * 50);
+                const rPrec = (Math.random() * 1200 + 300).toFixed(2);
+                
+                html += `<tr class="hover:bg-slate-50">
+                    <td>${Math.floor(Math.random() * 9999999999)}</td>
+                    <td class="${isErr ? 'cell-error' : ''}">${isErr ? '#VALUE!' : modelos[Math.floor(Math.random() * modelos.length)]}</td>
+                    <td>${marcas[Math.floor(Math.random() * marcas.length)]}</td>
+                    <td>${Math.random() > 0.5 ? 'Negro' : 'Blanco/Azul'}</td>
+                    <td class="${Math.random() > 0.8 ? 'cell-warn' : ''}">${Math.random() > 0.8 ? '' : Math.floor(Math.random() * 10 + 22)}</td>
+                    <td>$${(rPrec * 0.5).toFixed(2)}</td>
+                    <td>$${rPrec}</td>
+                    <td>${isErr ? '#REF!' : rPares}</td>
+                    <td>${isErr ? 'Error SQL' : rPares + Math.floor(Math.random() * 5 - 2)}</td>
+                    <td class="${isErr ? 'cell-error font-bold' : ''}">${isErr ? 'DESCUADRE' : '0'}</td>
+                    <td>${Math.random() > 0.8 ? 'BAJA' : 'ACTIVO'}</td>
+                    <td>PROV_${Math.floor(Math.random() * 5)}</td>
+                    <td class="${Math.random() > 0.8 ? 'cell-warn font-bold' : ''}">${Math.floor(Math.random() * 300)}</td>
+                    <td>${Math.random() > 0.9 ? '20%' : '0%'}</td>
+                    <td class="${isErr ? 'text-red-600 font-bold' : ''}">${isErr ? 'No_Sync' : 'OK'}</td>
+                </tr>`;
+            }
+            tbody.innerHTML = html;
+        }
+
+        let chartsInstance = {};
+
+        function transformToPro() {
+            const excel = document.getElementById('excel-wrapper');
+            const btn = document.getElementById('btn-transformar');
+            const dash = document.getElementById('dashboard-wrapper');
+            const chatBtn = document.getElementById('ai-chatbot');
+
+            excel.style.transform = 'scale(1.1) translateY(-20px)';
+            excel.style.opacity = '0';
+            btn.style.opacity = '0';
+            
+            setTimeout(() => {
+                excel.style.display = 'none';
+                btn.style.display = 'none';
+                dash.classList.remove('hidden');
+                chatBtn.classList.remove('hidden');
+                
+                animateNumbers();
+                setTimeout(() => { document.getElementById('bar-sales').style.width = '85%'; }, 500);
+                initCharts();
+            }, 600);
+        }
+
+        function animateNumbers() {
+            const elements = document.querySelectorAll('.num-animate');
+            elements.forEach(el => {
+                const target = parseFloat(el.getAttribute('data-val'));
+                const duration = 1000;
+                const steps = 40;
+                const stepTime = duration / steps;
+                let current = 0;
+                const isCurrency = el.id !== 'kpi-margin';
+
+                const timer = setInterval(() => {
+                    current += target / steps;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    el.innerText = isCurrency ? Math.floor(current).toLocaleString('es-MX') : Math.floor(current);
+                }, stepTime);
+            });
+        }
+
+        function changePeriod(period, btnElement) {
+            const btns = document.querySelectorAll('.period-btn');
+            btns.forEach(b => {
+                b.classList.remove('bg-white', 'shadow-sm', 'text-indigo-600', 'font-bold', 'font-extrabold');
+                b.classList.add('text-slate-600', 'font-semibold');
+            });
+            btnElement.classList.remove('text-slate-600', 'font-semibold');
+            btnElement.classList.add('bg-white', 'shadow-sm', 'text-indigo-600', 'font-bold');
+
+            const kpiSales = document.getElementById('kpi-sales');
+            const kpiMargin = document.getElementById('kpi-margin');
+            const barSales = document.getElementById('bar-sales');
+            const pctText = document.getElementById('kpi-sales-pct');
+            const targetText = document.getElementById('kpi-sales-target');
+
+            barSales.style.width = '0%';
+
+            if(period === 'mes_anterior') {
+                kpiSales.setAttribute('data-val', '390000'); kpiMargin.setAttribute('data-val', '32');
+                targetText.innerText = 'Meta: $400,000'; pctText.innerText = '97% logrado';
+                setTimeout(() => barSales.style.width = '97%', 100);
+            } else if (period === 'hoy') {
+                kpiSales.setAttribute('data-val', '18500'); kpiMargin.setAttribute('data-val', '36');
+                targetText.innerText = 'Meta diaria: $15,000'; pctText.innerText = 'Meta superada ✅';
+                setTimeout(() => barSales.style.width = '100%', 100);
+            } else if(period === 'mes') {
+                kpiSales.setAttribute('data-val', '425000'); kpiMargin.setAttribute('data-val', '35');
+                targetText.innerText = 'Meta: $500,000'; pctText.innerText = '85% logrado';
+                setTimeout(() => barSales.style.width = '85%', 100);
+            } else if (period === 'ytd') {
+                kpiSales.setAttribute('data-val', '3250000'); kpiMargin.setAttribute('data-val', '34');
+                targetText.innerText = 'Meta anual: $4,000,000'; pctText.innerText = '81% logrado';
+                setTimeout(() => barSales.style.width = '81%', 100);
+            }
+
+            animateNumbers();
+            if(chartsInstance.plan) chartsInstance.plan.update();
+        }
+
+        function initCharts() {
+            Chart.defaults.font.family = "'Outfit', sans-serif";
+            Chart.defaults.color = '#64748b';
+            
+            const ctxPlan = document.getElementById('planVsRealChart').getContext('2d');
+            chartsInstance.plan = new Chart(ctxPlan, {
+                type: 'bar',
+                data: {
+                    labels: ['Mayo', 'Junio', 'Julio', 'Agosto', 'Sept', 'Oct'],
+                    datasets: [
+                        { type: 'line', label: 'Tendencia Real', data: [360, 395, 390, 480, 510, 425], borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 3, tension: 0.4, pointRadius: 4, fill: false, order: 0 },
+                        { type: 'bar', label: 'Lo que planeamos', data: [350, 380, 400, 450, 480, 500], backgroundColor: '#cbd5e1', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8, order: 1 },
+                        { type: 'bar', label: 'Lo que vendimos', data: [360, 395, 390, 480, 510, 425], backgroundColor: '#4f46e5', borderRadius: 4, barPercentage: 0.6, categoryPercentage: 0.8, order: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    animation: { duration: 1500, easing: 'easeOutQuart' },
+                    plugins: { legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8, font: {size: 11} } }, tooltip: { callbacks: { label: function(ctx) { return ' $' + ctx.parsed.y + ',000'; } } } },
+                    scales: { y: { beginAtZero: true, border: {display: false}, grid: { color: '#f1f5f9' }, ticks: { callback: function(val) { return '$' + val + 'k'; }, font: {size: 11} } }, x: { border: {display: false}, grid: { display: false }, ticks: {font: {size: 11}} } }
+                }
+            });
+
+            const donutOptions = { responsive: true, maintainAspectRatio: false, cutout: '75%', animation: { animateScale: true, duration: 1200 }, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: {size: 11}, boxWidth: 8, padding: 12 } } }, layout: { padding: 0 } };
+
+            const ctxTop = document.getElementById('topProductsChart').getContext('2d');
+            chartsInstance.top = new Chart(ctxTop, {
+                type: 'doughnut',
+                data: { labels: ['T. Blanco', 'Bota Piel', 'Sandalia'], datasets: [{ data: [50, 30, 20], backgroundColor: ['#10b981', '#34d399', '#a7f3d0'], borderWidth: 0 }] },
+                options: donutOptions
+            });
+
+            const ctxWorst = document.getElementById('worstProductsChart').getContext('2d');
+            chartsInstance.worst = new Chart(ctxWorst, {
+                type: 'doughnut',
+                data: { labels: ['Zap. Neón', 'B. Lluvia', 'Mocasín'], datasets: [{ data: [60, 25, 15], backgroundColor: ['#e11d48', '#fb7185', '#fecdd3'], borderWidth: 0 }] },
+                options: donutOptions
+            });
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chat-window');
+            const btn = document.getElementById('chat-toggle-btn');
+            if (chat.style.display === 'flex') {
+                chat.style.display = 'none'; btn.style.transform = 'scale(1)';
+            } else {
+                chat.style.display = 'flex'; btn.style.transform = 'scale(0.9)'; document.getElementById('chat-input').focus();
+            }
+        }
+
+        function handleKeyPress(e) { if (e.key === 'Enter') handleSendClick(); }
+
+        function handleSendClick() {
+            const input = document.getElementById('chat-input'); const text = input.value.trim();
+            if(!text) return; input.value = ''; processMessage(text, 'user');
+        }
+
+        function sendQuickMessage(text) { processMessage(text, 'user'); }
+
+        function processMessage(text, sender) {
+            const container = document.getElementById('chat-messages');
+            if(sender === 'user') {
+                container.innerHTML += `<div class="chat-bubble user-bubble animate-fade-in">${text}</div>`;
+                container.scrollTop = container.scrollHeight;
+                
+                const typingId = 'typing-' + Date.now();
+                container.innerHTML += `<div id="${typingId}" class="typing-indicator animate-fade-in"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+                container.scrollTop = container.scrollHeight;
+                
+                setTimeout(() => {
+                    document.getElementById(typingId).remove();
+                    const response = getSmartResponse(text);
+                    container.innerHTML += `<div class="chat-bubble bot-bubble animate-fade-in">${response}</div>`;
+                    container.scrollTop = container.scrollHeight;
+                }, 1500 + Math.random() * 500);
+            }
+        }
+
+        function getSmartResponse(text) {
+            const lowerText = text.toLowerCase();
+            if(lowerText.includes('atorado') || lowerText.includes('dinero') || lowerText.includes('hueso')) return `Tienes <strong>$85,000 atorados</strong> en la bodega. El mayor problema son las "Zapatillas de Fiesta Neón" (60 pares llevan 6 meses ahí sin moverse). <br><br>💡 <em>Mi consejo:</em> Ponles un 40% de descuento este fin de semana en mostrador. ¿Quieres que prepare el cartel de la promoción?`;
+            if(lowerText.includes('talla') || lowerText.includes('urge') || lowerText.includes('pedir')) return `🚨 ¡Urgente! Te quedaste sin tallas <strong>#26 y #27.5</strong> del Tenis Urbano Blanco. Es nuestro campeón de ventas (salen 5 diarios). <br><br>Si no pides hoy, calculo que perderemos aprox. $4,000 en ventas esta semana. ¿Le mando mensaje por WhatsApp al proveedor?`;
+            if(lowerText.includes('venta') || lowerText.includes('resumen') || lowerText.includes('vamos')) return `¡Vamos excelente! Llevas <strong>$425,000 vendidos este mes</strong> (85% de tu meta mensual). Además, lograste subir tu margen de ganancia al 35% porque impulsaste la venta de Bota de Piel. Sigue así. 🚀`;
+            if(lowerText.includes('hola') || lowerText.includes('buenos dias')) return `¡Hola! Aquí estoy monitoreando el negocio. Hoy arrancamos muy bien, ya vendimos 4 pares de Tenis Blanco en la mañana. ¿Qué dato necesitas para tomar decisiones?`;
+            return `Analizando eso... Te sugiero enfocarte hoy en resurtir las tallas que más vendes (26 y 27) y armar una promo para sacar el zapato de temporada pasada. Es donde más impacto tendremos.`;
+        }
+
+        // Llamar la funcion directamente asegura que cargue sin esperar el evento onload del iframe
+        generateChaos();
+    </script>
+</body>
+</html>
+</textarea>
+
     <script>
         const splashAnimation = {
             init: function(callback) {
                 const splashScreen = document.getElementById('splash-screen');
                 const canvas = document.getElementById('particle-canvas');
-                const ctx = canvas.getContext('2d');
+                const ctx = canvas ? canvas.getContext('2d') : null;
                 const logo = document.getElementById('splash-logo');
                 const logoFallback = document.getElementById('splash-logo-fallback');
                 
@@ -840,6 +1458,17 @@
                     if(logo) logo.classList.add('show'); 
                     if(logoFallback) logoFallback.style.opacity = '1';
                 }, 100);
+
+                if(!canvas || !ctx) {
+                    setTimeout(() => {
+                        if(splashScreen) splashScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            if(splashScreen) splashScreen.style.display = 'none';
+                            if(callback) callback();
+                        }, 1000);
+                    }, 1500);
+                    return;
+                }
 
                 const resizeCanvas = () => {
                     canvas.width = window.innerWidth || document.documentElement.clientWidth;
@@ -874,71 +1503,82 @@
                         ctx.strokeStyle = i === 0 ? 'rgba(37, 99, 235, 0.15)' : 'rgba(139, 92, 246, 0.15)';
                         ctx.lineWidth = 2; ctx.shadowBlur = 15; ctx.shadowColor = ctx.strokeStyle; ctx.stroke();
                     }
-
+                    
                     dust.forEach(p => {
                         p.x += p.vx; p.y += p.vy;
-                        if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
-                        if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
-                        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                        ctx.fillStyle = p.color; ctx.shadowBlur = 10; ctx.shadowColor = p.color; ctx.fill();
+                        if(p.x < 0) p.x = canvas.width;
+                        if(p.x > canvas.width) p.x = 0;
+                        if(p.y < 0) p.y = canvas.height;
+                        if(p.y > canvas.height) p.y = 0;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = p.color;
+                        ctx.fill();
                     });
                     
                     ctx.globalCompositeOperation = 'source-over';
-                    time += 0.015; 
+                    time += 0.015;
                     requestAnimationFrame(animate);
                 }
-
+                
                 requestAnimationFrame(animate);
-
+                
                 setTimeout(() => {
-                    splashScreen.style.opacity = '0';
+                    if(splashScreen) splashScreen.style.opacity = '0';
                     setTimeout(() => {
-                        isAnimating = false; splashScreen.style.display = 'none';
+                        isAnimating = false;
+                        if(splashScreen) splashScreen.style.display = 'none';
                         if(callback) callback();
-                    }, 1000); 
-                }, 3000); 
+                    }, 1000);
+                }, 2500); 
             }
         };
 
         const state = { view: '', category: 'dashboards', subs: { dashboards: 'ventas', web: 'tienda', redes: 'anuncios', precios: 'planes' }, beforeAfter: 'before', avatarClosed: false };
 
         const categoriesData = {
-            dashboards: [ { id: 'ventas', name: 'Ventas' }, { id: 'gastos', name: 'Gastos' }, { id: 'inventario', name: 'Stock' } ],
-            web: [ { id: 'tienda', name: 'Tienda' }, { id: 'landing', name: 'Landing' }, { id: 'servicios', name: 'Corporativa' } ],
-            redes: [ { id: 'anuncios', name: 'Ads' }, { id: 'reels', name: 'Reels' }, { id: 'contenido', name: 'Posts' } ],
+            dashboards: [ 
+                { id: 'ventas', name: 'Control Ventas' }, 
+                { id: 'gastos', name: 'Control Gastos' }, 
+                { id: 'inventario', name: 'Inventario' }, 
+                { id: 'demo', name: '🌟 Simulador' } 
+            ],
+            web: [ { id: 'tienda', name: 'Tienda Online' }, { id: 'landing', name: 'Captura (Landing)' }, { id: 'servicios', name: 'Corporativa' } ],
+            redes: [ { id: 'anuncios', name: 'Anuncios' }, { id: 'reels', name: 'Reels' }, { id: 'contenido', name: 'Posts' } ],
             precios: [ { id: 'planes', name: 'Planes' } ]
         };
 
         const avatarCopy = {
             home: "¡Hola! Veo que tienes un negocio. ¿Estás ganando dinero de verdad o solo estás sobreviviendo? <strong>Dime qué te duele y te lo arreglo.</strong>",
             dashboards: {
-                ventas: { before: "❌ <strong>¡Mírate!</strong> Usando libretas y Excels rotos. Así es IMPOSIBLE saber si este mes ganaste dinero o si solo estás cambiando billetes. Es un peligro.", after: "✅ <strong>¡PUM! Entras a tu celular y ves esto.</strong> Tus ventas reales, ganancia libre al centavo y lo que te deben. Toma decisiones rápidas y deja de estresarte." },
-                gastos: { before: "❌ Tienes los tickets del súper mezclados con los de la empresa en una caja de zapatos. <strong>'¿Dónde quedó el dinero?'</strong> te preguntas cada viernes.", after: "✅ Todo clasificado en automático. Sabes exactamente <strong>cuánto te cuesta operar</strong> y dónde puedes recortar para que te sobre más dinero a fin de mes." },
-                inventario: { before: "❌ 'Creo que quedan 5 en bodega'... Le vendes a un cliente, te paga y resulta que ya no hay. <strong>Quedas súper mal</strong> y pierdes dinero.", after: "✅ El sistema inteligente te avisa antes de que se acabe. Sabes qué producto es el que más te deja dinero y <strong>cuál está acumulando polvo.</strong>" }
+                ventas: { before: "❌ <strong>¡Mírate!</strong> Usando libretas y Excels rotos. Así es IMPOSIBLE saber si ganas dinero o solo cambias billetes.", after: "✅ <strong>¡PUM!</strong> Tus ventas reales, ganancia libre y lo que te deben. Toma decisiones rápidas y deja de estresarte." },
+                gastos: { before: "❌ Tienes los tickets del súper mezclados en una caja. <strong>'¿Dónde quedó el dinero?'</strong> te preguntas cada viernes.", after: "✅ Todo clasificado en automático. Sabes exactamente <strong>cuánto te cuesta operar</strong> y dónde recortar." },
+                inventario: { before: "❌ 'Creo que quedan 5'... Le vendes a un cliente y resulta que ya no hay. <strong>Quedas súper mal</strong> y pierdes dinero.", after: "✅ El sistema te avisa antes de que se acabe. Sabes qué producto deja dinero y <strong>cuál acumula polvo.</strong>" },
+                demo: { before: "❌ <strong>Esto es lo que frena tu crecimiento.</strong> Un archivo enredado que solo tú entiendes. Entra a 'Mi Solución' para ver la magia.", after: "✅ <strong>¡Este sistema está vivo!</strong> Mira la pantalla. Juega con los botones de meses y pregúntale a Sofía en el chat. ¡Diviértete!" }
             },
             web: {
-                tienda: { before: "❌ <strong>Esa página vieja espanta a la gente.</strong> Entran, creen que los vas a estafar o que ya cerraste el negocio y se van con tu competencia.", after: "✅ <strong>Una tienda online que da confianza inmediata.</strong> La gente entra, confía, pone su tarjeta a las 3 de la mañana y tú solo te encargas de enviar." },
-                landing: { before: "❌ Mandas a la gente a un formulario larguísimo. <strong>Nadie te deja sus datos</strong> porque se ve súper amateur y desesperado.", after: "✅ <strong>Páginas diseñadas con psicología.</strong> Ofreces algo de valor, el cliente deja su WhatsApp contento y tú tienes un prospecto caliente listo para comprar." },
-                servicios: { before: "❌ A nadie le importa tu 'Misión y Visión' de 5 párrafos. El cliente se aburre a los 3 segundos de leer eso y <strong>cierra la pestaña.</strong>", after: "✅ <strong>Vas directo al grano.</strong> Le dices qué problema resuelves, muestras garantías y testimonios. El cliente lee y dice: 'Toma mi dinero'." }
+                tienda: { before: "❌ <strong>Esa página vieja espanta a la gente.</strong> Creen que ya cerraste el negocio y se van con tu competencia.", after: "✅ <strong>Una tienda online que da confianza.</strong> La gente entra, pone su tarjeta a las 3 de la mañana y tú solo envías." },
+                landing: { before: "❌ Mandas a la gente a un formulario larguísimo. <strong>Nadie deja sus datos</strong> porque se ve desesperado.", after: "✅ <strong>Páginas diseñadas con psicología.</strong> Ofreces valor, el cliente deja su WhatsApp contento y tú tienes prospectos." },
+                servicios: { before: "❌ A nadie le importa tu 'Misión y Visión' de 5 párrafos. El cliente se aburre y <strong>cierra la pestaña.</strong>", after: "✅ <strong>Vas directo al grano.</strong> Dices qué problema resuelves. El cliente lee y dice: 'Toma mi dinero'." }
             },
             redes: {
-                anuncios: { before: "❌ Gastar en el botón de 'Promocionar' para que le den Like tus tías NO es hacer marketing. <strong>Estás regalándole dinero a Facebook.</strong>", after: "✅ Campañas de ataque. Inviertes dinero y te regresan clientes. <strong>Tu WhatsApp no dejará de sonar</strong> con gente preguntando 'Dónde deposito'." },
-                reels: { before: "❌ Subes videos aburridos mostrando tus productos como diapositivas. <strong>Tienes 12 vistas</strong> y cero ventas. Qué triste.", after: "✅ Hooks (ganchos) visuales que captan la atención en los primeros 2 segundos. Contenido dinámico que <strong>educa y vende sin parecer comercial.</strong>" },
-                contenido: { before: "❌ Subir una imagen diciendo 'Feliz Lunes' no sirve de nada. <strong>No demuestra que sabes de lo que hablas.</strong>", after: "✅ Casos de éxito reales y posts educativos. Cuando tu cliente lea esto dirá: <strong>'Ellos son los expertos, quiero contratarlos'.</strong>" }
+                anuncios: { before: "❌ Gastar en 'Promocionar' para que le den Like tus tías NO es marketing. <strong>Regalas dinero a Facebook.</strong>", after: "✅ Campañas de ataque. Inviertes y regresan clientes. <strong>Tu WhatsApp no dejará de sonar.</strong>" },
+                reels: { before: "❌ Subes videos mostrando tus productos como diapositivas. <strong>Tienes 12 vistas</strong> y cero ventas. Qué triste.", after: "✅ Hooks visuales que captan en 2 segundos. Contenido dinámico que <strong>educa y vende sin parecer comercial.</strong>" },
+                contenido: { before: "❌ Subir los buenos días no sirve de nada. <strong>No demuestra que sabes de lo que hablas.</strong>", after: "✅ Casos de éxito reales y posts educativos. Tu cliente dirá: <strong>'Son los expertos, quiero contratarlos'.</strong>" }
             },
             precios: {
-                planes: { before: "Aquí tienes la inversión sobre la mesa. <strong>Sin costos ocultos ni sorpresas.</strong> Revisa qué solución se ajusta a la urgencia actual de tu negocio y mándame un mensaje.", after: "Aquí tienes la inversión sobre la mesa. <strong>Sin costos ocultos ni sorpresas.</strong> Revisa qué solución se ajusta a la urgencia actual de tu negocio y mándame un mensaje." }
+                planes: { before: "Aquí tienes la inversión sobre la mesa. <strong>Sin costos ocultos ni sorpresas.</strong> Revisa qué solución se ajusta a tu urgencia actual.", after: "Aquí tienes la inversión sobre la mesa. <strong>Sin costos ocultos ni sorpresas.</strong> Revisa qué solución se ajusta a tu urgencia actual." }
             }
         };
-
-        let chartInstances = {};
 
         const app = {
             init: function() {
                 Chart.defaults.font.family = "'Inter', sans-serif"; Chart.defaults.color = '#475569';
                 this.setMainView('home');
                 const avatarContainer = document.getElementById('avatar-container');
-                avatarContainer.style.opacity = '1'; avatarContainer.style.pointerEvents = 'auto';
+                if(avatarContainer) { avatarContainer.style.opacity = '1'; avatarContainer.style.pointerEvents = 'auto'; }
             },
 
             openIG: function(action) {
@@ -971,13 +1611,18 @@
 
             enterWorkspace: function(catId) {
                 const overlay = document.getElementById('intro-overlay');
-                overlay.style.transform = 'translateY(0)';
-                setTimeout(() => { document.getElementById('loader-fill').style.width = '100%'; }, 100);
+                const loader = document.getElementById('loader-fill');
+                
+                if (overlay) overlay.style.transform = 'translateY(0)';
+                if (loader) setTimeout(() => { loader.style.width = '100%'; }, 100);
 
                 setTimeout(() => {
                     this.setMainView('workspace'); this.setCategory(catId);
-                    overlay.style.transform = 'translateY(-100%)';
-                    setTimeout(() => { overlay.style.transform = 'translateY(100%)'; document.getElementById('loader-fill').style.width = '0%'; }, 600);
+                    if (overlay) overlay.style.transform = 'translateY(-100%)';
+                    setTimeout(() => { 
+                        if (overlay) overlay.style.transform = 'translateY(100%)'; 
+                        if (loader) loader.style.width = '0%'; 
+                    }, 600);
                 }, 1200);
             },
 
@@ -1007,16 +1652,17 @@
                         if(id === 'precios') {
                             btn.classList.toggle('bg-brand-green/40', id === catId); btn.classList.toggle('bg-brand-green/20', id !== catId);
                             btn.classList.toggle('text-brand-green', id !== catId); btn.classList.toggle('border-brand-green/50', id !== catId);
-                            btn.classList.toggle('border-white/50', id === catId);
                         }
                     }
                 });
 
                 const controlsArea = document.getElementById('workspace-controls');
-                controlsArea.style.display = catId === 'precios' ? 'none' : 'block';
+                controlsArea.style.display = (catId === 'precios') ? 'none' : 'block';
+                document.getElementById('sub-menu-container').style.display = 'flex';
 
                 document.querySelectorAll('.category-group').forEach(el => el.classList.add('hidden'));
                 document.getElementById(`cat-${catId}`).classList.remove('hidden');
+                document.getElementById(`cat-${catId}`).classList.add('flex');
 
                 if(catId !== 'precios') {
                     const subMenuContainer = document.getElementById('sub-menu-container');
@@ -1049,29 +1695,51 @@
 
             renderContent: function() {
                 const cat = state.category; const sub = state.subs[cat]; const ba = state.beforeAfter;
-                document.querySelectorAll(`#cat-${cat} .content-panel`).forEach(el => el.classList.remove('active'));
                 
-                const targetId = `content-${cat}-${sub}-${ba}`;
-                const targetPanel = document.getElementById(targetId);
+                document.querySelectorAll(`#cat-${cat} .content-panel`).forEach(el => el.classList.remove('active'));
+                const targetPanel = document.getElementById(`content-${cat}-${sub}-${ba}`);
                 if(targetPanel) targetPanel.classList.add('active');
 
-                const speechText = avatarCopy[cat][sub][ba];
-                let contextChoices = [];
-                
-                if(cat === 'precios') {
-                    contextChoices = [ { text: "💬 Cotizar mi proyecto", action: () => this.openIG('chat'), highlight: true }, { text: "↩️ Regresar al menú", action: () => this.setMainView('home') } ];
-                } else if(ba === 'before') {
-                    contextChoices = [ { text: "✅ Ver cómo lo solucionas", action: () => this.setState('after'), highlight: true } ];
-                } else {
-                    contextChoices = [ { text: "💬 Me interesa esto", action: () => this.openIG('chat'), highlight: true }, { text: "↩️ Ver otras soluciones", action: () => this.setMainView('home') } ];
+                // Lógica de iframe Simulator (Uso Seguro del Textarea)
+                if(cat === 'dashboards' && sub === 'demo') {
+                    const iframe = document.getElementById('demo-iframe');
+                    if (iframe && ba === 'after' && !iframe.srcdoc) {
+                        iframe.srcdoc = document.getElementById('demo-template').value;
+                        this.setDevice('laptop'); 
+                    }
                 }
 
-                this.updateAvatar(speechText, contextChoices);
-                if(cat === 'dashboards' && ba === 'after') { setTimeout(() => this.drawCharts(sub), 50); }
+                let choices = [];
+                if(cat === 'precios') {
+                    choices = [ { text: "💬 Cotizar mi proyecto", action: () => this.openIG('chat'), highlight: true }, { text: "↩️ Regresar al menú", action: () => this.setMainView('home') } ];
+                } else if(ba === 'before') {
+                    choices = [ { text: "✅ Ver cómo lo solucionas", action: () => this.setState('after'), highlight: true } ];
+                } else {
+                    choices = [ { text: "💬 Me interesa esto", action: () => this.openIG('chat'), highlight: true }, { text: "↩️ Ver otras soluciones", action: () => this.setMainView('home') } ];
+                }
+                this.updateAvatar(avatarCopy[cat][sub][ba], choices);
+            },
+
+            setDevice: function(type) {
+                const frame = document.getElementById('device-frame');
+                const base = document.getElementById('laptop-base');
+                if (!frame) return;
+
+                if (type === 'laptop') {
+                    frame.className = "transition-all duration-700 ease-in-out w-full max-w-5xl aspect-[16/10] md:aspect-[16/9] border-[8px] md:border-[16px] border-slate-800 rounded-xl md:rounded-2xl bg-black relative shadow-[0_20px_50px_rgba(0,0,0,0.3)] mx-auto flex-shrink-0 z-10";
+                    if(base) base.style.display = 'flex';
+                    document.getElementById('btn-device-laptop').className = "bg-brand-blue text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 shadow-sm border border-blue-600";
+                    document.getElementById('btn-device-mobile').className = "glass-panel bg-white/60 text-slate-700 px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 hover:bg-white/90 hover:text-slate-900 border border-white";
+                } else {
+                    frame.className = "transition-all duration-700 ease-in-out w-[320px] h-[600px] sm:h-[650px] border-[12px] md:border-[16px] border-slate-900 rounded-[2.5rem] bg-black relative shadow-[0_20px_50px_rgba(0,0,0,0.3)] mx-auto flex-shrink-0 z-10";
+                    if(base) base.style.display = 'none';
+                    document.getElementById('btn-device-mobile').className = "bg-brand-blue text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 shadow-sm border border-blue-600";
+                    document.getElementById('btn-device-laptop').className = "glass-panel bg-white/60 text-slate-700 px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 hover:bg-white/90 hover:text-slate-900 border border-white";
+                }
             },
 
             updateAvatar: function(text, choices = []) {
-                const bubble = document.getElementById('avatar-text'); bubble.innerHTML = text;
+                document.getElementById('avatar-text').innerHTML = text;
                 const choicesContainer = document.getElementById('avatar-choices'); choicesContainer.innerHTML = ''; 
                 
                 if (choices && choices.length > 0) {
@@ -1090,27 +1758,6 @@
 
                 if(state.avatarClosed) {
                     document.getElementById('avatar-dot').classList.remove('hidden'); document.getElementById('avatar-dot-solid').classList.remove('hidden');
-                }
-            },
-
-            drawCharts: function(subId) {
-                const safeContext = (id) => {
-                    if(chartInstances[id]) { chartInstances[id].destroy(); }
-                    const canvas = document.getElementById(id); return canvas ? canvas.getContext('2d') : null;
-                };
-                const commonOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: {size: 10} } } } };
-
-                if(subId === 'ventas') {
-                    const ctx = safeContext('chart-d-ventas');
-                    if(ctx) chartInstances['chart-d-ventas'] = new Chart(ctx, { type: 'line', data: { labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'], datasets: [{ label: 'Ventas ($)', data: [1500, 2200, 1800, 3100, 4500, 4200], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true, tension: 0.3 }] }, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } });
-                }
-                else if(subId === 'gastos') {
-                    const ctx = safeContext('chart-d-gastos');
-                    if(ctx) chartInstances['chart-d-gastos'] = new Chart(ctx, { type: 'doughnut', data: { labels: ['Mercancía', 'Nómina', 'Servicios', 'Marketing'], datasets: [{ data: [45, 30, 15, 10], backgroundColor: ['#ef4444', '#f59e0b', '#64748b', '#3b82f6'], borderWidth: 0 }] }, options: { ...commonOptions, cutout: '65%' } });
-                }
-                else if(subId === 'inventario') {
-                    const ctx = safeContext('chart-d-inventario');
-                    if(ctx) chartInstances['chart-d-inventario'] = new Chart(ctx, { type: 'bar', data: { labels: ['Prod A', 'Prod B', 'Prod C'], datasets: [{ label: 'Stock Actual', data: [85, 40, 12], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], borderRadius: 4 }] }, options: { ...commonOptions, indexAxis: 'y', plugins: { legend: { display: false } } } });
                 }
             }
         };
